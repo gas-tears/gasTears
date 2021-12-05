@@ -20,8 +20,6 @@ export default async function handler(
 
   const allAddressesTransactions = await Promise.all(addresses.map((address: string) => getAllTractionsForAddress(address)))
 
-  console.log(allAddressesTransactions)
-
   const addressToTransactionsMap = {}
 
   addresses.forEach((address, index) => addressToTransactionsMap[address] = allAddressesTransactions[index])
@@ -29,11 +27,14 @@ export default async function handler(
   res.status(200).json({ addressToTransactionsMap })
 }
 
+
 const getAllTractionsForAddress = (address: string) => {
   return new Promise(async (resolve, reject) => {
     const url = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&sort=asc&apikey=${API_KEY}`
     const etherscanRes = await fetch(url)
     const resJSON = await etherscanRes.json()
+
+    if (resJSON.status !== "1") resolve(resJSON) // Return early if there was error with api query, don't want to reject because that will fail the Promise.all
 
     let resultTransactions = resJSON.result
     const totalTransactions = resultTransactions
