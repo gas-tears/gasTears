@@ -2,34 +2,52 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { EtherscanTransaction } from "types"
 
-type RequestData = {
-  addresses: string
+const API_KEY = process.env.ETHERSCAN_API_KEY
+
+type AddressToTransactionsMap = {
+  [address: string]: EtherscanTransaction[]
 }
 
 type Data = {
-  transactions: EtherscanTransaction[]
+  addressToTransactionsMap: AddressToTransactionsMap
 }
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { addresses } = req.body
-  console.log(addresses)
+  const { addresses } = JSON.parse(req.body)
 
-  const apikey = process.env.ETHERSCAN_API_KEY
-  const etherscanRes = await fetch(`
-    https://api.etherscan.io/api
-      ?module=account
-      &action=txlist
-      &address=0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a
-      &startblock=0
-      &endblock=99999999
-      &page=1
-      &offset=10
-      &sort=asc
-      &apikey=${apikey}
-  `)
-  const resJSON = await etherscanRes.json()
-  res.status(200).json({ transactions: resJSON.results })
+  const allAddressesTransactions = await Promise.all(addresses.map((address: string) => getAllTractionsForAddress(address)))
+
+  console.log(allAddressesTransactions)
+
+  const addressToTransactionsMap = {}
+
+  addresses.forEach((address, index) => addressToTransactionsMap[address] = allAddressesTransactions[index])
+
+  res.status(200).json({ addressToTransactionsMap })
+}
+
+const getAllTractionsForAddress = (address: string) => {
+  return new Promise(async (resolve, reject) => {
+    const url = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&sort=asc&apikey=${API_KEY}`
+    const etherscanRes = await fetch(url)
+    const resJSON = await etherscanRes.json()
+
+    let resultTransactions = resJSON.result
+    const totalTransactions = resultTransactions
+
+    while (resultTransactions.length === 10000) { //10,000 is the max result the api will return
+      const prevLastBlock = resultTransactions[resultTransactions.length - 1].blockNumber
+      const url = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=${prevLastBlock}&endblock=99999999&page=1&sort=asc&apikey=${API_KEY}`
+      const etherscanRes = await fetch(url)
+      const resJSON = await etherscanRes.json()
+
+      resultTransactions = resJSON.result
+      totalTransactions.concat(resultTransactions)
+    }
+
+    resolve(totalTransactions)
+  })
 }
