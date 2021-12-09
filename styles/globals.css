@@ -1,9 +1,11 @@
 html,
-body {
+body,
+#__next {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  height: 100%;
 }
 
 a {
@@ -13,4 +15,104 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+button {
+  border: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.content-container {
+  width: 100%;
+  max-width: 1120px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* COMPONENTS */
+.btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  color: white
+}
+
+.btn-rounded {
+  border-radius: 1000px;
+}
+
+.input-field-wrapper {
+  margin-bottom: 1rem;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.input-field-wrapper:last-of-type {
+  margin-bottom: 0;
+}
+
+.addresses-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.address-text-input {
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem;
+}
+
+.crud-button {
+  border-radius: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.address-remove-button {
+  margin-left: 0.5rem;
+}
+
+.address-add-button {
+  align-self: center;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  background: none;
+  border: 2px solid gray;
+  color: black;
+  opacity: 50%;
+  transition: opacity ease-in-out 200ms;
+}
+
+.address-add-button:hover {
+  opacity: 80%;
+}
+
+/* PAGES */
+/* search page */
+.search-page-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-page-top-bar{
+  /* height: 75px; */
+  padding: 2rem 4rem;
+}
+
+.search-page-main{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

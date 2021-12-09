@@ -1,22 +1,19 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import AddAccountsForm from '../components/AddAccountsForm'
 
 const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Gas Usage Tracker</title>
-        <meta name="description" content="Keep track of all the gas that you spent through your blockchain exploration" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
+    <div className="search-page-container">
+      <div className="search-page-top-bar">
+        <div className="content-container">
+          <button className="btn btn-primary btn-rounded">Connect Wallet</button>
+        </div>
+      </div>
+      <div className="search-page-main">
         <AddAccountsForm />
-      </main>
-    </div>
+      </div>
+    </div >
   )
 }
 

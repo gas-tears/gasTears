@@ -1,7 +1,7 @@
 import React from 'react'
 import { Formik, Field, Form, FieldArray } from 'formik';
 import { useRouter } from 'next/dist/client/router';
-
+import InputField from './FormItems/InputField';
 
 export default function AddAccountsForm() {
     const router = useRouter()
@@ -22,26 +22,30 @@ export default function AddAccountsForm() {
             }}
         >
             {({ values }) => (
-                <Form>
+                <Form className='addresses-form'>
                     <FieldArray
                         name="addresses"
                     >
                         {(arrayHelpers) => (<>
                             {values.addresses.map((address, index) => (
-                                <div key={index}>
-                                    <Field name={`addresses.${index}`} as="input" value={address} />
-                                    <button type="button" onClick={() => arrayHelpers.remove(index)}>X</button>
-                                </div>
+                                <Field name={`addresses.${index}`} as={InputField} value={address} onDelete={() => arrayHelpers.remove(index)} />
                             ))}
                             <button
                                 onClick={() => arrayHelpers.push("")}
                                 type="button"
+                                className='crud-button address-add-button'
                             >
-                                Add Another Wallet Address
+                                <span className="material-icons">add</span>
                             </button>
                         </>)}
                     </FieldArray>
-                    <Field as="button" type="submit">See Gas</Field>
+                    <Field
+                        as="button"
+                        type="submit"
+                        className="btn btn-primary btn-rounded"
+                    >
+                        See Gas
+                    </Field>
                 </Form>
             )}
         </Formik>

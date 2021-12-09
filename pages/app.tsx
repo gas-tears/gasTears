@@ -58,10 +58,7 @@ const App: NextPage = () => {
                         return total + gas
                     }, 0)
                 const totalGasInUSD = totalGas * price
-                return {
-                    address,
-                    totalGasInUSD
-                }
+                return { address, totalGasInUSD }
             })
         setData(data)
     }, [walletToTransactionsMap, price])
