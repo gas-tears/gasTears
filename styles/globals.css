@@ -27,14 +27,15 @@ button:hover {
 
 .content-container {
   width: 100%;
-  max-width: 1120px;
+  max-width: 1200px;
   display: flex;
   justify-content: flex-end;
+  padding: clamp(1rem, 3vw, 2rem);
 }
 
 /* COMPONENTS */
 .btn {
-  padding: 0.5rem 1rem;
+  padding: 0.5em 1em;
   font-size: 1rem;
 }
 
@@ -52,6 +53,10 @@ button:hover {
   white-space: nowrap;
   display: flex;
   align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 1.2rem;
 }
 
 .input-field-wrapper:last-of-type {
@@ -61,11 +66,21 @@ button:hover {
 .addresses-form {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .address-text-input {
   font-size: 1.25rem;
   padding: 0.5rem 1rem;
+  flex: 1;
+  max-width: 31.5rem;
+}
+
+@media only screen and (min-width: 500px) {
+  .address-text-input {
+      margin-left: 2rem;
+  }
 }
 
 .crud-button {
@@ -106,8 +121,8 @@ button:hover {
 }
 
 .search-page-top-bar{
-  /* height: 75px; */
-  padding: 2rem 4rem;
+  display: flex;
+  justify-content: center;
 }
 
 .search-page-main{

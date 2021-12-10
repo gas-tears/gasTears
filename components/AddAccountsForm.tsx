@@ -1,15 +1,21 @@
-import React from 'react'
-import { Formik, Field, Form, FieldArray } from 'formik';
+import React, { useEffect, useState } from 'react'
+import { Formik, Field, Form, FieldArray, useFormikContext } from 'formik';
 import { useRouter } from 'next/dist/client/router';
 import InputField from './FormItems/InputField';
 
-export default function AddAccountsForm() {
+type Props = {
+    connectedWallets: string[]
+}
+
+const AddAccountsForm: React.FC<Props> = ({
+    connectedWallets
+}) => {
     const router = useRouter()
 
     return (
         <Formik
             initialValues={{
-                addresses: [""]
+                addresses: connectedWallets || [""]
             }}
             onSubmit={(values) => {
                 const { addresses } = values
@@ -20,6 +26,7 @@ export default function AddAccountsForm() {
                 console.log(query)
                 router.push(`/app?${query}`)
             }}
+            enableReinitialize
         >
             {({ values }) => (
                 <Form className='addresses-form'>
@@ -28,7 +35,7 @@ export default function AddAccountsForm() {
                     >
                         {(arrayHelpers) => (<>
                             {values.addresses.map((address, index) => (
-                                <Field name={`addresses.${index}`} as={InputField} value={address} onDelete={() => arrayHelpers.remove(index)} />
+                                <Field key={index} name={`addresses.${index}`} as={InputField} value={address} onDelete={() => arrayHelpers.remove(index)} />
                             ))}
                             <button
                                 onClick={() => arrayHelpers.push("")}
@@ -43,6 +50,7 @@ export default function AddAccountsForm() {
                         as="button"
                         type="submit"
                         className="btn btn-primary btn-rounded"
+                        style={{ width: "100%", maxWidth: 300 }}
                     >
                         See Gas
                     </Field>
@@ -51,3 +59,6 @@ export default function AddAccountsForm() {
         </Formik>
     )
 }
+
+
+export default AddAccountsForm
