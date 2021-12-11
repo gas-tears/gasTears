@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Formik, Field, Form, FieldArray, useFormikContext } from 'formik';
 import { useRouter } from 'next/dist/client/router';
 import InputField from './FormItems/InputField';
+import { WalletConnectContext } from "components/WalletConnectContext"
 
-type Props = {
-    connectedWallets: string[]
-}
-
-const AddAccountsForm: React.FC<Props> = ({
-    connectedWallets
-}) => {
+const AddAccountsForm: React.FC = () => {
     const router = useRouter()
+    const { connectedWallets } = useContext(WalletConnectContext)
 
     return (
         <Formik
@@ -26,7 +22,6 @@ const AddAccountsForm: React.FC<Props> = ({
                 console.log(query)
                 router.push(`/app?${query}`)
             }}
-            enableReinitialize
         >
             {({ values }) => (
                 <Form className='addresses-form'>
@@ -54,10 +49,31 @@ const AddAccountsForm: React.FC<Props> = ({
                     >
                         See Gas
                     </Field>
+                    <FormikHack accounts={connectedWallets} />
                 </Form>
             )}
         </Formik>
     )
+}
+
+const FormikHack = ({ accounts }) => {
+    const { values, setFieldValue } = useFormikContext();
+
+    useEffect(() => {
+        if (!accounts || accounts.length === 0) return
+        let newValues = [...values.addresses]
+        const replaceIdx = newValues.indexOf("")
+
+        if (replaceIdx !== -1) {
+            newValues[replaceIdx] = accounts[0]
+        } else {
+            newValues.push(accounts[0])
+        }
+
+        setFieldValue("addresses", newValues)
+    }, [accounts])
+
+    return null
 }
 
 

@@ -2,10 +2,11 @@ import type { NextPage } from 'next'
 import styles from '../styles/Home.module.css'
 import AddAccountsForm from '../components/AddAccountsForm'
 import useWalletConnect from 'hooks/useWalletConnect'
-
+import { WalletConnectContext } from "components/WalletConnectContext"
+import { useContext } from "react"
 
 const Home: NextPage = () => {
-  const { connectedWallets, getWallets } = useWalletConnect()
+  const { getWallets } = useContext(WalletConnectContext)
 
   return (
     <div className="search-page-container">
@@ -18,7 +19,7 @@ const Home: NextPage = () => {
         </div>
       </div>
       <div className="search-page-main">
-        <AddAccountsForm connectedWallets={connectedWallets} />
+        <AddAccountsForm />
       </div>
     </div >
   )

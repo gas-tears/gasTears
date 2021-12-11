@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import WalletConnectProvider from 'components/WalletConnectContext'
 
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -11,7 +12,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <link rel="icon" href="/favicon.ico" />
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
     </Head>
-    <Component {...pageProps} />
+    <WalletConnectProvider>
+      <Component {...pageProps} />
+    </WalletConnectProvider>
   </>)
 }
 

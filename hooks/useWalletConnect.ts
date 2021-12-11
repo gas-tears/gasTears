@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import MetaMaskOnboarding from '@metamask/onboarding';
 
 export default function useWalletConnect() {
-    const [connectedWallets, setConnectedWallets] = useState()
+    const [connectedWallets, setConnectedWallets] = useState<string[]>()
     const onboarding = useRef<MetaMaskOnboarding>();
 
     useEffect(() => {
