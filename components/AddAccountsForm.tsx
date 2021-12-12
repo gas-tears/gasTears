@@ -3,15 +3,16 @@ import { Formik, Field, Form, FieldArray, useFormikContext } from 'formik';
 import { useRouter } from 'next/dist/client/router';
 import InputField from './FormItems/InputField';
 import { WalletConnectContext } from "components/WalletConnectContext"
+import useLocalStorage from 'hooks/useLocalStorage';
 
 const AddAccountsForm: React.FC = () => {
     const router = useRouter()
-    const { connectedWallets } = useContext(WalletConnectContext)
+    const [storedWallets, setStoredWallets] = useLocalStorage("wallets", [""])
 
     return (
         <Formik
             initialValues={{
-                addresses: connectedWallets || [""]
+                addresses: storedWallets || [""]
             }}
             onSubmit={(values) => {
                 const { addresses } = values
@@ -49,29 +50,37 @@ const AddAccountsForm: React.FC = () => {
                     >
                         See Gas
                     </Field>
-                    <FormikHack accounts={connectedWallets} />
+                    <FormikHack setStoredWallets={setStoredWallets} />
                 </Form>
             )}
         </Formik>
     )
 }
 
-const FormikHack = ({ accounts }) => {
+const FormikHack = ({ setStoredWallets }) => {
     const { values, setFieldValue } = useFormikContext();
+    const { connectedWallets } = useContext(WalletConnectContext)
 
     useEffect(() => {
-        if (!accounts || accounts.length === 0) return
+        if (!connectedWallets || connectedWallets.length === 0) return
+        if (values.addresses.indexOf(connectedWallets[0]) !== -1) return // the connected wallet address is already in the array
+
         let newValues = [...values.addresses]
         const replaceIdx = newValues.indexOf("")
 
         if (replaceIdx !== -1) {
-            newValues[replaceIdx] = accounts[0]
+            newValues[replaceIdx] = connectedWallets[0]
         } else {
-            newValues.push(accounts[0])
+            newValues.push(connectedWallets[0])
         }
 
         setFieldValue("addresses", newValues)
-    }, [accounts])
+    }, [connectedWallets])
+
+    useEffect(() => {
+        console.log(values.addresses)
+        setStoredWallets(values.addresses)
+    }, [values.addresses])
 
     return null
 }
