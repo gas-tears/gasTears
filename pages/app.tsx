@@ -1,9 +1,10 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import { useRouter } from 'next/dist/client/router'
-import styles from '../styles/Home.module.css'
 import { useState, useEffect } from "react"
 import useGeckoPrice from 'hooks/useGeckoPrice'
+import PageContainer from 'components/layouts/PageContainer'
+import ContentContainer from 'components/layouts/ContentContainer'
+import Button from 'components/Button'
 
 var formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -54,7 +55,7 @@ const App: NextPage = () => {
                 const totalGas = transactions
                     .filter((transaction) => transaction.from === address.toLowerCase())
                     .reduce((total, currentTransaction) => {
-                        const gas = parseFloat(currentTransaction.gasUsed) * parseFloat(currentTransaction.gasPrice) * (0.000000001) ** 2
+                        const gas = parseFloat(currentTransaction.gassUsed) * parseFloat(currentTransaction.gasPrice) * (0.000000001) ** 2
                         return total + gas
                     }, 0)
                 const totalGasInUSD = totalGas * price
@@ -64,14 +65,37 @@ const App: NextPage = () => {
     }, [walletToTransactionsMap, price])
 
     return (
-        <div className={styles.container}>
-            {data && data.map(({ address, totalGasInUSD }) => (
-                <div key={address}>
-                    <b>{address}: </b>
-                    {formatter.format(totalGasInUSD)}
+        <PageContainer>
+            <ContentContainer>
+                <div className="dashboardTopBar">
+                    <Button
+                        primary
+                        onClick={() => router.back()}
+                    >
+                        <span className="material-icons">
+                            arrow_back
+                        </span>
+                        Edit Addresses
+                    </Button>
+                    <select>
+                        <option value="usd">USD</option>
+                        <option value="cad">CAD</option>
+                        <option value="eth">ETH</option>
+                        <option value="btc">BTC</option>
+                    </select>
                 </div>
-            ))}
-        </div>
+            </ContentContainer>
+            <ContentContainer>
+                <div className="dashboardMain">
+                    {data && data.map(({ address, totalGasInUSD }) => (
+                        <div key={address}>
+                            <b>{address}: </b>
+                            {formatter.format(totalGasInUSD)}
+                        </div>
+                    ))}
+                </div>
+            </ContentContainer>
+        </PageContainer>
     )
 }
 

@@ -4,24 +4,31 @@ import AddAccountsForm from '../components/AddAccountsForm'
 import useWalletConnect from 'hooks/useWalletConnect'
 import { WalletConnectContext } from "components/WalletConnectContext"
 import { useContext } from "react"
+import ContentContainer from 'components/layouts/ContentContainer'
+import PageContainer from 'components/layouts/PageContainer'
+import Button from 'components/Button'
+
 
 const Home: NextPage = () => {
   const { getWallets } = useContext(WalletConnectContext)
 
   return (
-    <div className="search-page-container">
-      <div className="search-page-top-bar">
-        <div className="content-container">
-          <button
-            className="btn btn-primary btn-rounded"
+    <PageContainer>
+      <ContentContainer>
+        <div className="search-page-top-bar">
+          <Button
+            primary
+            rounded
             onClick={() => getWallets()}
-          >Connect Wallet</button>
+          >
+            Connect Wallet
+          </Button>
         </div>
-      </div>
+      </ContentContainer>
       <div className="search-page-main">
         <AddAccountsForm />
       </div>
-    </div >
+    </PageContainer>
   )
 }
 

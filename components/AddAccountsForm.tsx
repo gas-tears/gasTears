@@ -4,6 +4,7 @@ import { useRouter } from 'next/dist/client/router';
 import InputField from './FormItems/InputField';
 import { WalletConnectContext } from "components/WalletConnectContext"
 import useLocalStorage from 'hooks/useLocalStorage';
+import Button from './Button';
 
 const AddAccountsForm: React.FC = () => {
     const router = useRouter()
@@ -20,7 +21,6 @@ const AddAccountsForm: React.FC = () => {
                     .filter(address => address !== "")
                     .map(address => "addresses=" + address)
                     .join("&")
-                console.log(query)
                 router.push(`/app?${query}`)
             }}
         >
@@ -43,9 +43,10 @@ const AddAccountsForm: React.FC = () => {
                         </>)}
                     </FieldArray>
                     <Field
-                        as="button"
+                        as={Button}
                         type="submit"
-                        className="btn btn-primary btn-rounded"
+                        primary
+                        rounded
                         style={{ width: "100%", maxWidth: 300 }}
                     >
                         See Gas
@@ -78,7 +79,6 @@ const FormikHack = ({ setStoredWallets }) => {
     }, [connectedWallets])
 
     useEffect(() => {
-        console.log(values.addresses)
         setStoredWallets(values.addresses)
     }, [values.addresses])
 
