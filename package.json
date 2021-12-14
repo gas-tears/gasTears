@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@coingecko/cryptoformat": "^0.4.4",
     "@metamask/onboarding": "^1.0.1",
     "classnames": "^2.3.1",
     "formik": "^2.2.9",
