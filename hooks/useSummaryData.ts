@@ -6,6 +6,13 @@ type Params = {
     viewCurrency: VSCurrencies
 }
 
+type Overview = {
+    totalGas: number,
+    totalTransactions: number,
+    totalSuccessTransactions: number,
+    totalFailedTransactions: number,
+}
+
 export default function useSummaryData({
     addresses,
     viewCurrency
@@ -13,11 +20,15 @@ export default function useSummaryData({
     const price = useGeckoPrice({ tokens: ["ethereum"] })
 
     const [walletToTransactionsMap, setWalletToTransactionsMap] = useState()
-    const [data, setData] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [walletInfoArray, setWalletInfoArray] = useState<any[]>([])
+    const [totalOverview, setTotalOverview] = useState<Overview>()
 
     useEffect(() => {
         if (addresses?.length === 0) return
+
         const getTransactions = async () => {
+            setIsLoading(true)
             const apiRes = await fetch("/api/explorer", {
                 method: "POST",
                 body: JSON.stringify({
@@ -25,6 +36,7 @@ export default function useSummaryData({
                 })
             })
             const apiJSON = await apiRes.json()
+            setIsLoading(false)
             setWalletToTransactionsMap(apiJSON.addressToTransactionsMap)
         }
         getTransactions()
@@ -33,21 +45,43 @@ export default function useSummaryData({
     useEffect(() => {
         if (!walletToTransactionsMap || !price) return
 
-        const data = Object
+        const overview: Overview = {
+            totalGas: 0,
+            totalTransactions: 0,
+            totalSuccessTransactions: 0,
+            totalFailedTransactions: 0,
+        }
+
+        const walletInfos = Object
             .entries(walletToTransactionsMap)
             .map(([address, transactions]) => {
-                if (!transactions || !Array.isArray(transactions)) return { address, totalGasInUSD: 0 }
+                if (!transactions || !Array.isArray(transactions)) return { address, totalGasInSelectedCurrency: 0 }
                 const totalGas = transactions
                     .filter((transaction) => transaction.from === address.toLowerCase())
                     .reduce((total, currentTransaction) => {
+                        overview["totalTransactions"] += 1
+                        if (currentTransaction.isError === "1") {
+                            overview["totalFailedTransactions"] += 1
+                        } else {
+                            overview["totalSuccessTransactions"] += 1
+                        }
+
                         const gas = parseFloat(currentTransaction.gasUsed) * parseFloat(currentTransaction.gasPrice) * (0.000000001) ** 2
                         return total + gas
                     }, 0)
-                const totalGasInUSD = totalGas * price["ethereum"][viewCurrency]
-                return { address, totalGasInUSD }
+
+                const totalGasInSelectedCurrency = totalGas * price["ethereum"][viewCurrency.toLowerCase()]
+                overview["totalGas"] += totalGasInSelectedCurrency
+                return { address, totalGasInSelectedCurrency }
             })
-        setData(data)
+        setTotalOverview(overview)
+        setWalletInfoArray(walletInfos)
     }, [walletToTransactionsMap, price, viewCurrency])
 
-    return data
+    return {
+        totalOverview,
+        walletInfoArray,
+        totalOverview,
+        isLoading
+    }
 } 

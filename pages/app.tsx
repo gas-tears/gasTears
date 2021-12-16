@@ -14,7 +14,7 @@ const App: NextPage = () => {
 
     const [addresses, setAddresses] = useState([])
     const [viewCurrency, setViewCurrency] = useLocalStorage<VSCurrencies>("selectedCurrency", "usd")
-    const data = useSummaryData({ addresses, viewCurrency })
+    const { walletInfoArray, totalOverview, isLoading } = useSummaryData({ addresses, viewCurrency })
 
     useEffect(() => {
         const { addresses } = router.query
@@ -41,19 +41,25 @@ const App: NextPage = () => {
                         Edit Addresses
                     </Button>
                     <select value={viewCurrency} onChange={(e) => setViewCurrency(e.target.value)}>
-                        <option value="usd">USD</option>
-                        <option value="cad">CAD</option>
-                        <option value="eth">ETH</option>
-                        <option value="btc">BTC</option>
+                        <option value="USD">USD</option>
+                        <option value="CAD">CAD</option>
+                        <option value="ETH">ETH</option>
+                        <option value="BTC">BTC</option>
                     </select>
                 </div>
             </ContentContainer>
             <ContentContainer>
                 <div className="dashboardMain">
-                    {data && data.map(({ address, totalGasInUSD }) => (
+                    <div>
+                        <div>Total gas spent: {formatCurrency(totalOverview?.totalGas, viewCurrency, "en")}</div>
+                        <div>Total transactions: {totalOverview?.totalTransactions}</div>
+                        <div>{totalOverview?.totalSuccessTransactions} transactions succeed</div>
+                        <div>{totalOverview?.totalFailedTransactions} transactions failed</div>
+                    </div>
+                    {walletInfoArray && walletInfoArray.map(({ address, totalGasInSelectedCurrency }) => (
                         <div key={address}>
                             <b>{address}: </b>
-                            {formatCurrency(totalGasInUSD, viewCurrency.toUpperCase(), "en")}
+                            {formatCurrency(totalGasInSelectedCurrency, viewCurrency, "en")}
                         </div>
                     ))}
                 </div>
