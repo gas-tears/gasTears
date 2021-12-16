@@ -8,6 +8,7 @@ import useSummaryData from 'hooks/useSummaryData'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { VSCurrencies } from 'hooks/useGeckoPrice'
 import { formatCurrency } from "@coingecko/cryptoformat";
+import OverviewItem from 'components/OverviewItem'
 
 const App: NextPage = () => {
     const router = useRouter()
@@ -50,12 +51,27 @@ const App: NextPage = () => {
             </ContentContainer>
             <ContentContainer>
                 <div className="dashboardMain">
-                    <div>
-                        <div>Total gas spent: {formatCurrency(totalOverview?.totalGas, viewCurrency, "en")}</div>
-                        <div>Total transactions: {totalOverview?.totalTransactions}</div>
-                        <div>{totalOverview?.totalSuccessTransactions} transactions succeed</div>
-                        <div>{totalOverview?.totalFailedTransactions} transactions failed</div>
+                    <div className="topLevelInfoGrid">
+                        <OverviewItem
+                            label='Total gas spent'
+                            displayValue={formatCurrency(totalOverview?.totalGas, viewCurrency, "en")}
+                        />
+                        <OverviewItem
+                            label='Total transactions'
+                            displayValue={totalOverview?.totalTransactions}
+                        />
+                        <OverviewItem
+                            label='Successful transactions'
+                            displayValue={totalOverview?.totalSuccessTransactions}
+                        />
+                        <OverviewItem
+                            label='Failed Transactions'
+                            displayValue={totalOverview?.totalFailedTransactions}
+                        />
                     </div>
+                    <h1>Gas usage history</h1>
+                    <h1>Gas usage per chain</h1>
+                    <h1>Wallets</h1>
                     {walletInfoArray && walletInfoArray.map(({ address, totalGasInSelectedCurrency }) => (
                         <div key={address}>
                             <b>{address}: </b>
