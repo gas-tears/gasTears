@@ -150,6 +150,7 @@ h1 {
 
 .dashboardMain {
   width: 100%;
+  padding-bottom: 2rem;
 }
 
 .topLevelInfoGrid {

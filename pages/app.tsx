@@ -9,13 +9,18 @@ import useLocalStorage from 'hooks/useLocalStorage'
 import { VSCurrencies } from 'hooks/useGeckoPrice'
 import { formatCurrency } from "@coingecko/cryptoformat";
 import OverviewItem from 'components/OverviewItem'
+import HighCharts from 'components/HighCharts'
+import useGasHistoryChart from 'hooks/useGasHistoryChart'
+import useChainDistributionChart from 'hooks/useChainDistributionChart'
 
 const App: NextPage = () => {
     const router = useRouter()
 
     const [addresses, setAddresses] = useState([])
     const [viewCurrency, setViewCurrency] = useLocalStorage<VSCurrencies>("selectedCurrency", "usd")
-    const { walletInfoArray, totalOverview, isLoading } = useSummaryData({ addresses, viewCurrency })
+    const { walletInfoArray, totalOverview, isLoading, walletToTransactionsMap } = useSummaryData({ addresses, viewCurrency })
+    const gasHistoryOptions = useGasHistoryChart({ walletToTransactionsMap })
+    const chainDistributionOptions = useChainDistributionChart({ walletToTransactionsMap })
 
     useEffect(() => {
         const { addresses } = router.query
@@ -70,7 +75,13 @@ const App: NextPage = () => {
                         />
                     </div>
                     <h1>Gas usage history</h1>
+                    <HighCharts
+                        options={gasHistoryOptions}
+                    />
                     <h1>Gas usage per chain</h1>
+                    <HighCharts
+                        options={chainDistributionOptions}
+                    />
                     <h1>Wallets</h1>
                     {walletInfoArray && walletInfoArray.map(({ address, totalGasInSelectedCurrency }) => (
                         <div key={address}>

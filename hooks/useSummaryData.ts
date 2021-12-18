@@ -81,7 +81,7 @@ export default function useSummaryData({
     return {
         totalOverview,
         walletInfoArray,
-        totalOverview,
-        isLoading
+        isLoading,
+        walletToTransactionsMap
     }
 } 
