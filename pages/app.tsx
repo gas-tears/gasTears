@@ -6,19 +6,23 @@ import ContentContainer from 'components/layouts/ContentContainer'
 import Button from 'components/Button'
 import useSummaryData from 'hooks/useSummaryData'
 import useLocalStorage from 'hooks/useLocalStorage'
-import { VSCurrencies } from 'hooks/useGeckoPrice'
+import useGeckoPrice, { VSCurrencies } from 'hooks/useGeckoPrice'
 import { formatCurrency } from "@coingecko/cryptoformat";
 import OverviewItem from 'components/OverviewItem'
 import HighCharts from 'components/HighCharts'
 import useGasHistoryChart from 'hooks/useGasHistoryChart'
 import useChainDistributionChart from 'hooks/useChainDistributionChart'
 
+
 const App: NextPage = () => {
+    const price = useGeckoPrice({ tokens: ["ethereum"] })
     const router = useRouter()
 
     const [addresses, setAddresses] = useState([])
     const [viewCurrency, setViewCurrency] = useLocalStorage<VSCurrencies>("selectedCurrency", "usd")
-    const { walletInfoArray, totalOverview, isLoading, walletToTransactionsMap } = useSummaryData({ addresses, viewCurrency })
+
+    const { walletInfoArray, totalOverview, isLoading, walletToTransactionsMap } = useSummaryData({ addresses, viewCurrency, price })
+
     const gasHistoryOptions = useGasHistoryChart({ walletToTransactionsMap })
     const chainDistributionOptions = useChainDistributionChart({ walletToTransactionsMap })
 
@@ -82,13 +86,14 @@ const App: NextPage = () => {
                     <HighCharts
                         options={chainDistributionOptions}
                     />
-                    <h1>Wallets</h1>
-                    {walletInfoArray && walletInfoArray.map(({ address, totalGasInSelectedCurrency }) => (
-                        <div key={address}>
-                            <b>{address}: </b>
-                            {formatCurrency(totalGasInSelectedCurrency, viewCurrency, "en")}
-                        </div>
-                    ))}
+                    {walletInfoArray && walletInfoArray.length > 1 && (<>
+                        <h1>Wallets</h1>
+                        {walletInfoArray.map(({ address, totalGasNative }) => (
+                            <div key={address}>
+                                <b>{address}: </b>
+                                {formatCurrency(totalGasNative * price['ethereum'][viewCurrency.toLowerCase()], viewCurrency, "en")}
+                            </div>))}
+                    </>)}
                 </div>
             </ContentContainer>
         </PageContainer>

@@ -1,11 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { EtherscanTransaction } from "types"
+import { Transaction } from "types"
 
 const API_KEY = process.env.ETHERSCAN_API_KEY
 
 type AddressToTransactionsMap = {
-  [address: string]: EtherscanTransaction[]
+  [address: string]: Transaction[]
 }
 
 type Data = {

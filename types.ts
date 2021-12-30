@@ -1,4 +1,4 @@
-export interface EtherscanTransaction {
+export interface Transaction {
     blockNumber: string,
     timeStamp: string,
     hash: string,
@@ -16,5 +16,6 @@ export interface EtherscanTransaction {
     contractAddress: string,
     cumulativeGasUsed: string,
     gasUsed: string,
-    confirmations: string
+    confirmations: string,
+    gasInUSD?: number
 }
