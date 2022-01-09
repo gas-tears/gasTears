@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import HighchartsReact from 'highcharts-react-official'
+import { HighchartHookParam } from './charts-types'
 
 const useChainDistributionChart = ({
     walletToTransactionsMap
-}) => {
+}: HighchartHookParam) => {
     const [chartOption, setChartOption] = useState<HighchartsReact.Props>({})
 
     useEffect(() => {
@@ -16,7 +17,7 @@ const useChainDistributionChart = ({
                     name: walletAddress,
                     data: transactions.map((transaction) => {
                         const gasInEth = parseFloat(transaction.gasUsed) * parseFloat(transaction.gasPrice) * (0.000000001) ** 2
-                        return [parseInt(transaction.timeStamp * 1000), gasInEth]
+                        return [parseInt(transaction.timeStamp) * 1000, gasInEth]
                     })
                 }
             })

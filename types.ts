@@ -19,3 +19,7 @@ export interface Transaction {
     confirmations: string,
     gasInUSD?: number
 }
+
+export type WalletToTransactions = {
+    [key: string]: Transaction[]
+}

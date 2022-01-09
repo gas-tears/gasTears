@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import HighchartsReact from 'highcharts-react-official'
+import { HighchartHookParam } from './charts-types'
+import { formatCurrency } from "@coingecko/cryptoformat";
+
 
 const useGasHistoryChart = ({
     walletToTransactionsMap
-}) => {
+}: HighchartHookParam) => {
     const [chartOption, setChartOption] = useState<HighchartsReact.Props>({})
 
     useEffect(() => {
@@ -16,13 +19,14 @@ const useGasHistoryChart = ({
                     name: walletAddress,
                     data: transactions.map((transaction) => {
                         const gasInEth = parseFloat(transaction.gasUsed) * parseFloat(transaction.gasPrice) * (0.000000001) ** 2
-                        return [parseInt(transaction.timeStamp * 1000), gasInEth]
+                        return { x: parseInt(transaction.timeStamp) * 1000, y: gasInEth, transactionHash: transaction.hash }
                     })
                 }
             })
         const option: HighchartsReact.Props = {
             chart: {
-                type: "scatter"
+                type: "scatter",
+                zoomType: "x"
             },
             title: {
                 text: ""
@@ -43,7 +47,26 @@ const useGasHistoryChart = ({
                 series: {
                     marker: {
                         enabled: true
+                    },
+                    cursor: "pointer",
+                    point: {
+                        events: {
+                            click: function () {
+                                const url = "https://etherscan.io/tx/" + this.options.transactionHash
+                                window.open(url, "_blank")?.focus()
+                            }
+                        }
                     }
+                }
+            },
+
+            tooltip: {
+                formatter: function () {
+                    const date = new Date(this.x)
+                    return `
+                        <div><b>${date.toLocaleString()}</b></div><br/>
+                        <div>Transaction Cost: ${formatCurrency(this.y, "eth")}</div>
+                    `
                 }
             },
 
