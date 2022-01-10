@@ -2,6 +2,7 @@ import React from 'react'
 import { FieldProps } from 'formik'
 
 type Props = {
+    isConnectedByUser?: boolean
     onDelete?: () => void
 }
 
@@ -9,11 +10,17 @@ const InputField: React.FC<FieldProps & Props> = ({
     field,
     form,
     onDelete,
+    isConnectedByUser = false,
     ...props
 }) => {
     return (
         <div className='input-field-wrapper'>
-            <input className="address-text-input" type="text" {...field} {...props} />
+            <input
+                className="address-text-input"
+                type="text"
+                {...field}
+                {...props}
+            />
             {onDelete && (
                 <button
                     type='button'

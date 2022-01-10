@@ -10,7 +10,7 @@ import Button from 'components/Button'
 
 
 const Home: NextPage = () => {
-  const { getWallets } = useContext(WalletConnectContext)
+  const { getWallets, connectedWallets } = useContext(WalletConnectContext)
 
   return (
     <PageContainer>
@@ -20,8 +20,9 @@ const Home: NextPage = () => {
             primary
             rounded
             onClick={() => getWallets()}
+            disabled={connectedWallets.length > 0}
           >
-            Connect Wallet
+            {connectedWallets.length > 0 ? "Connected" : "Connect Wallet"}
           </Button>
         </div>
       </ContentContainer>

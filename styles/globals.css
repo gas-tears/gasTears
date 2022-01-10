@@ -44,6 +44,12 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: opacity 200 ease;
+}
+
+.btn:disabled{
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .btnPrimary {

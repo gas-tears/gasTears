@@ -8,18 +8,19 @@ import Button from './Button';
 
 const AddAccountsForm: React.FC = () => {
     const router = useRouter()
-    const [storedWallets, setStoredWallets] = useLocalStorage("wallets", [""])
+    const [storedWallets, setStoredWallets] = useLocalStorage("wallets", [{ address: "", isConnectedByUser: false }])
 
     return (
         <Formik
             initialValues={{
-                addresses: storedWallets || [""]
+                wallets: storedWallets
             }}
             onSubmit={(values) => {
-                const { addresses } = values
-                const query = addresses
-                    .filter(address => address !== "")
-                    .map(address => "addresses=" + address)
+                console.log(values)
+                const { wallets } = values
+                const query = wallets
+                    .filter(wallet => wallet.address !== "")
+                    .map(wallet => "addresses=" + wallet.address)
                     .join("&")
                 router.push(`/app?${query}`)
             }}
@@ -27,14 +28,20 @@ const AddAccountsForm: React.FC = () => {
             {({ values }) => (
                 <Form className='addresses-form'>
                     <FieldArray
-                        name="addresses"
+                        name="wallets"
                     >
                         {(arrayHelpers) => (<>
-                            {values.addresses.map((address, index) => (
-                                <Field key={index} name={`addresses.${index}`} as={InputField} value={address} onDelete={() => arrayHelpers.remove(index)} />
+                            {values.wallets.map((wallet, index) => (
+                                <Field
+                                    key={index}
+                                    name={`wallets[${index}].address`}
+                                    as={InputField}
+                                    // value={wallet.address}
+                                    onDelete={() => arrayHelpers.remove(index)}
+                                />
                             ))}
                             <button
-                                onClick={() => arrayHelpers.push("")}
+                                onClick={() => arrayHelpers.push({ address: "", isConnectedByUser: false })}
                                 type="button"
                                 className='crud-button address-add-button'
                             >
@@ -64,23 +71,26 @@ const FormikHack = ({ setStoredWallets }) => {
 
     useEffect(() => {
         if (!connectedWallets || connectedWallets.length === 0) return
-        if (values.addresses.indexOf(connectedWallets[0]) !== -1) return // the connected wallet address is already in the array
+        const currentConnectedWallet = connectedWallets[0]
+        // the connected wallet address is already in the array
+        if (values.wallets.findIndex((wallet) => wallet.address === currentConnectedWallet) !== -1) return
 
-        let newValues = [...values.addresses]
-        const replaceIdx = newValues.indexOf("")
+        let newWallets = [...values.wallets]
 
+        const replaceIdx = connectedWallets.findIndex((wallet) => wallet.address === "")
+        const newWallet = { address: connectedWallets[0], isConnectedByUser: true }
         if (replaceIdx !== -1) {
-            newValues[replaceIdx] = connectedWallets[0]
+            newWallets[replaceIdx] = newWallet
         } else {
-            newValues.push(connectedWallets[0])
+            newWallets.push(newWallet)
         }
 
-        setFieldValue("addresses", newValues)
+        setFieldValue("wallets", newWallets)
     }, [connectedWallets])
 
     useEffect(() => {
-        setStoredWallets(values.addresses)
-    }, [values.addresses])
+        setStoredWallets(values.wallets)
+    }, [values.wallets])
 
     return null
 }

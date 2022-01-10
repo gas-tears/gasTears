@@ -3,12 +3,12 @@ import useWalletConnect from "hooks/useWalletConnect";
 
 interface WalletConnectContext {
     getWallets: () => Promise<any> | null,
-    connectedWallets: string[] | undefined
+    connectedWallets: string[] | undefined,
 }
 
 export const WalletConnectContext = createContext<WalletConnectContext>({
     getWallets: () => null,
-    connectedWallets: []
+    connectedWallets: [],
 })
 
 const WalletConnectProvider: React.FC = ({

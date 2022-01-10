@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import MetaMaskOnboarding from '@metamask/onboarding';
 
 export default function useWalletConnect() {
-    const [connectedWallets, setConnectedWallets] = useState<string[]>()
+    const [connectedWallets, setConnectedWallets] = useState<string[]>([])
     const onboarding = useRef<MetaMaskOnboarding>();
 
     useEffect(() => {
@@ -16,14 +16,14 @@ export default function useWalletConnect() {
         if (!MetaMaskOnboarding.isMetaMaskInstalled()) return
 
         const addresses = window.ethereum?._state?.accounts.length === 0 ? null : window.ethereum?._state?.accounts
-        setConnectedWallets(addresses)
+        setConnectedWallets(addresses || [])
 
         window.ethereum.on('accountsChanged', setConnectedWallets);
 
         return () => {
             window.ethereum.removeListener('accountsChanged', setConnectedWallets)
         }
-    })
+    }, [])
 
     const getWallets = async () => {
         if (MetaMaskOnboarding.isMetaMaskInstalled()) {
@@ -34,8 +34,9 @@ export default function useWalletConnect() {
         }
     }
 
+
     return {
         getWallets,
-        connectedWallets
+        connectedWallets,
     }
 }
