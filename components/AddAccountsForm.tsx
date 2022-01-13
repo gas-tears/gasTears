@@ -6,9 +6,18 @@ import { WalletConnectContext } from "components/WalletConnectContext"
 import useLocalStorage from 'hooks/useLocalStorage';
 import Button from './Button';
 
+type Wallet = {
+    address: string,
+    isConnectedByUser: boolean
+}
+
+type FieldValues = {
+    wallets: Wallet[]
+}
+
 const AddAccountsForm: React.FC = () => {
     const router = useRouter()
-    const [storedWallets, setStoredWallets] = useLocalStorage("wallets", [{ address: "", isConnectedByUser: false }])
+    const [storedWallets, setStoredWallets] = useLocalStorage<Wallet[]>("wallets", [{ address: "", isConnectedByUser: false }])
 
     return (
         <Formik
@@ -36,7 +45,7 @@ const AddAccountsForm: React.FC = () => {
                                     key={index}
                                     name={`wallets[${index}].address`}
                                     as={InputField}
-                                    // value={wallet.address}
+                                    isConnectedByUser={wallet.isConnectedByUser}
                                     onDelete={() => arrayHelpers.remove(index)}
                                 />
                             ))}
@@ -65,8 +74,12 @@ const AddAccountsForm: React.FC = () => {
     )
 }
 
-const FormikHack = ({ setStoredWallets }) => {
-    const { values, setFieldValue } = useFormikContext();
+type FormikHackProps = {
+    setStoredWallets: (value: Wallet[]) => void
+}
+
+const FormikHack = ({ setStoredWallets }: FormikHackProps) => {
+    const { values, setFieldValue } = useFormikContext<FieldValues>();
     const { connectedWallets } = useContext(WalletConnectContext)
 
     useEffect(() => {
@@ -76,8 +89,8 @@ const FormikHack = ({ setStoredWallets }) => {
         if (values.wallets.findIndex((wallet) => wallet.address === currentConnectedWallet) !== -1) return
 
         let newWallets = [...values.wallets]
+        const replaceIdx = newWallets.findIndex((wallet) => wallet.address === "")
 
-        const replaceIdx = connectedWallets.findIndex((wallet) => wallet.address === "")
         const newWallet = { address: connectedWallets[0], isConnectedByUser: true }
         if (replaceIdx !== -1) {
             newWallets[replaceIdx] = newWallet

@@ -14,24 +14,30 @@ const InputField: React.FC<FieldProps & Props> = ({
     ...props
 }) => {
     return (
-        <div className='input-field-wrapper'>
-            <input
-                className="address-text-input"
-                type="text"
-                {...field}
-                {...props}
-            />
-            {onDelete && (
-                <button
-                    type='button'
-                    onClick={() => onDelete()}
-                    className='crud-button address-remove-button'
-                >
-                    <span className="material-icons">
-                        close
-                    </span>
-                </button>
-            )}
+        <div className='addressInputFieldRow'>
+            <div className='addressInputFieldWrapper'>
+                {isConnectedByUser && <div className='addressInputFieldLabel'>Connected</div>}
+                <div className="addressInputFieldMain">
+                    <input
+                        className="addressTextInput"
+                        type="text"
+                        disabled={isConnectedByUser}
+                        {...field}
+                        {...props}
+                    />
+                    {onDelete && (
+                        <button
+                            type='button'
+                            onClick={() => onDelete()}
+                            className='crud-button address-remove-button'
+                        >
+                            <span className="material-icons">
+                                close
+                            </span>
+                        </button>
+                    )}
+                </div>
+            </div>
         </div>
     )
 }

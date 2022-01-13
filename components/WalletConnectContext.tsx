@@ -14,10 +14,10 @@ export const WalletConnectContext = createContext<WalletConnectContext>({
 const WalletConnectProvider: React.FC = ({
     children
 }) => {
-    const { getWallets, connectedWallets } = useWalletConnect()
+    const walletConnect = useWalletConnect()
 
     return (
-        <WalletConnectContext.Provider value={{ getWallets, connectedWallets }}>
+        <WalletConnectContext.Provider value={walletConnect}>
             {children}
         </WalletConnectContext.Provider>
     )

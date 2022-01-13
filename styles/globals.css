@@ -61,19 +61,28 @@ h1 {
   border-radius: 1000px;
 }
 
-.input-field-wrapper {
+.addressInputFieldRow {
   margin-bottom: 1rem;
   white-space: nowrap;
-  display: flex;
-  align-items: center;
   width: 100%;
   display: flex;
-  justify-content: center;
   padding: 0 1.2rem;
+  justify-content: center;
 }
 
-.input-field-wrapper:last-of-type {
+
+.addressInputFieldRow:last-of-type {
   margin-bottom: 0;
+}
+
+.addressInputFieldLabel{
+  font-size: 0.8rem;
+  opacity: 0.5;
+}
+
+.addressInputFieldMain {
+  display: flex;
+  align-items: center;
 }
 
 .addresses-form {
@@ -83,15 +92,17 @@ h1 {
   width: 100%;
 }
 
-.address-text-input {
+.addressTextInput {
   font-size: 1.25rem;
   padding: 0.5rem 1rem;
   flex: 1;
+  width: 37vw;
   max-width: 31.5rem;
+  min-width: 20rem;
 }
 
 @media only screen and (min-width: 500px) {
-  .address-text-input {
+  .addressTextInputWrapper {
       margin-left: 2rem;
   }
 }

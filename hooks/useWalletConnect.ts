@@ -11,7 +11,6 @@ export default function useWalletConnect() {
         }
     }, []);
 
-
     useEffect(() => {
         if (!MetaMaskOnboarding.isMetaMaskInstalled()) return
 
@@ -23,7 +22,7 @@ export default function useWalletConnect() {
         return () => {
             window.ethereum.removeListener('accountsChanged', setConnectedWallets)
         }
-    }, [])
+    }, [onboarding.current])
 
     const getWallets = async () => {
         if (MetaMaskOnboarding.isMetaMaskInstalled()) {
@@ -33,7 +32,6 @@ export default function useWalletConnect() {
             onboarding?.current?.startOnboarding()
         }
     }
-
 
     return {
         getWallets,
