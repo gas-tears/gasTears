@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react'
-
-export type GeckoCoins = "ethereum" | "binancecoin" | "solana" | "fantom" | "matic-network" | "avalanche-2" | "terra-luna"
-export type VSCurrencies = "usd" | "cad" | "eth" | "btc"
+import { Chains, VSCurrencies } from 'types'
 
 type Params = {
-    tokens?: GeckoCoins[],
+    tokens?: Chains[],
     vsCurrencies?: VSCurrencies[]
 }
 
 type TokenVSCurrencies = {
-    [C in GeckoCoins]?: {
+    [C in Chains]?: {
         [C in VSCurrencies]?: number
     }
 }

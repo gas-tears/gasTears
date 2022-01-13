@@ -25,3 +25,5 @@ export type WalletToTransactions = {
 }
 
 export type MetaMaskNetworkName = "eth" | "avax" | "ftm" | "bnb" | "matic"
+export type Chains = "ethereum" | "binancecoin" | "solana" | "fantom" | "matic-network" | "avalanche-2" | "terra-luna"
+export type VSCurrencies = "usd" | "cad" | "eth" | "btc"
