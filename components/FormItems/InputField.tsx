@@ -22,6 +22,7 @@ const InputField: React.FC<FieldProps & Props> = ({
                         className="addressTextInput"
                         type="text"
                         disabled={isConnectedByUser}
+                        placeholder='Connect or paste a valid crypto address here'
                         {...field}
                         {...props}
                     />

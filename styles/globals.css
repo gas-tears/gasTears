@@ -25,6 +25,10 @@ button:hover {
   cursor: pointer;
 }
 
+h1, h2, h3 {
+  margin: 0;
+}
+
 h1 {
   font-size: 1.5rem;
 }
@@ -101,8 +105,12 @@ h1 {
   min-width: 20rem;
 }
 
+.addressTextInput::-webkit-input-placeholder {
+  font-size: clamp(0.85rem, 1.5vw, 1.15rem);
+}
+
 @media only screen and (min-width: 500px) {
-  .addressTextInputWrapper {
+  .addressInputFieldWrapper {
       margin-left: 2rem;
   }
 }
@@ -123,7 +131,6 @@ h1 {
 .address-add-button {
   align-self: center;
   margin-top: 0.5rem;
-  margin-bottom: 1rem;
   background: none;
   border: 2px solid gray;
   color: black;
@@ -145,13 +152,13 @@ h1 {
 }
 
 /* search page */
-.search-page-top-bar{
+.searchPageTopBar{
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   flex: 1;
 }
 
-.search-page-main{
+.searchPageMainArea{
   flex: 1;
   display: flex;
   justify-content: center;
@@ -168,6 +175,10 @@ h1 {
 .dashboardMain {
   width: 100%;
   padding-bottom: 2rem;
+}
+
+.dashboardMain h1 {
+  margin-top: 1rem;
 }
 
 .topLevelInfoGrid {

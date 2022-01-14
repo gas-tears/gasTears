@@ -49,13 +49,16 @@ const AddAccountsForm: React.FC = () => {
                                     onDelete={() => arrayHelpers.remove(index)}
                                 />
                             ))}
-                            <button
-                                onClick={() => arrayHelpers.push({ address: "", isConnectedByUser: false })}
-                                type="button"
-                                className='crud-button address-add-button'
-                            >
-                                <span className="material-icons">add</span>
-                            </button>
+                            {values.wallets.length < 5 &&
+                                <button
+                                    onClick={() => arrayHelpers.push({ address: "", isConnectedByUser: false })}
+                                    type="button"
+                                    className='crud-button address-add-button'
+                                    title="add new address"
+                                >
+                                    <span className="material-icons">add</span>
+                                </button>
+                            }
                         </>)}
                     </FieldArray>
                     <Field
@@ -63,7 +66,7 @@ const AddAccountsForm: React.FC = () => {
                         type="submit"
                         primary
                         rounded
-                        style={{ width: "100%", maxWidth: 300 }}
+                        style={{ width: "100%", maxWidth: 300, marginTop: 25 }}
                     >
                         See Gas
                     </Field>

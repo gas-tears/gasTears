@@ -15,7 +15,10 @@ const Home: NextPage = () => {
   return (
     <PageContainer>
       <ContentContainer>
-        <div className="search-page-top-bar">
+        <div className="searchPageTopBar">
+          <div className="logo">
+            <h1>GasTears</h1>
+          </div>
           <Button
             primary
             rounded
@@ -26,7 +29,7 @@ const Home: NextPage = () => {
           </Button>
         </div>
       </ContentContainer>
-      <div className="search-page-main">
+      <div className="searchPageMainArea">
         <AddAccountsForm />
       </div>
     </PageContainer>

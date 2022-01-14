@@ -15,12 +15,15 @@ const useGasHistoryChart = ({
             .entries(walletToTransactionsMap)
             .filter(([_, transactions]) => Array.isArray(transactions))
             .map(([walletAddress, transactions]) => {
+                const processedTransactions = transactions.map((transaction) => {
+                    const gasInEth = parseFloat(transaction.gasUsed) * parseFloat(transaction.gasPrice) * (0.000000001) ** 2
+                    return { x: parseInt(transaction.timeStamp) * 1000, y: gasInEth, transactionHash: transaction.hash }
+                })
+                //Fixed the final date to today
+                processedTransactions.push({ x: (new Date()).getTime(), y: null, transactionHash: "" })
                 return {
                     name: walletAddress,
-                    data: transactions.map((transaction) => {
-                        const gasInEth = parseFloat(transaction.gasUsed) * parseFloat(transaction.gasPrice) * (0.000000001) ** 2
-                        return { x: parseInt(transaction.timeStamp) * 1000, y: gasInEth, transactionHash: transaction.hash }
-                    })
+                    data: processedTransactions
                 }
             })
         const option: HighchartsReact.Props = {
