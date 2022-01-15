@@ -23,3 +23,5 @@ export interface Transaction {
 export type WalletToTransactions = {
     [key: string]: Transaction[]
 }
+
+export type MetaMaskNetworkName = "eth" | "avax" | "ftm" | "bnb" | "matic"

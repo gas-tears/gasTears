@@ -7,7 +7,7 @@ import { useContext } from "react"
 import ContentContainer from 'components/layouts/ContentContainer'
 import PageContainer from 'components/layouts/PageContainer'
 import Button from 'components/Button'
-
+import SendTip from 'components/SendTip'
 
 const Home: NextPage = () => {
   const { getWallets, connectedWallets } = useContext(WalletConnectContext)
@@ -32,6 +32,7 @@ const Home: NextPage = () => {
       <div className="searchPageMainArea">
         <AddAccountsForm />
       </div>
+      <SendTip />
     </PageContainer>
   )
 }
