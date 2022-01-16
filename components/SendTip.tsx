@@ -26,17 +26,21 @@ export default function SendTip() {
             </div>
             <div className="tipJarContent">
                 {isManualTip ?
-                    <input
-                        type="number"
-                        value={tipValue}
-                        onChange={(e) => setTipValue(e.target.value)}
-                        id="tipValue"
-                    />
+                    <div className="sendTipGroupSeparator">
+                        <input
+                            className="tipManualInput"
+                            type="number"
+                            value={tipValue}
+                            onChange={(e) => setTipValue(e.target.value)}
+                            id="tipValue"
+                            placeholder='10'
+                        />
+                    </div>
                     :
-                    <div className="buttonGroup">
+                    <div className="buttonGroup sendTipGroupSeparator">
                         {autoTipOptions.map((option) => (
                             <button
-                                className='btn btnAutoTip'
+                                className='btn btnAutoTip btnSmall'
                                 onClick={() => sendTip(parseFloat(option))}
                             >
                                 {option}
@@ -46,6 +50,7 @@ export default function SendTip() {
                 <select
                     name="chainSelect"
                     id="chainSelect"
+                    className="tipChainSelect"
                     value={connectedChain}
                     onChange={(e) => changeNetwork(e.target.value)}
                 >
@@ -55,8 +60,10 @@ export default function SendTip() {
                 </select>
                 {isManualTip &&
                     <button
+                        className="btn btnPrimary btnRounded btnSmall"
+                        style={{ marginLeft: "1rem" }}
                         onClick={() => sendTip(parseFloat(tipValue))}
-                        disabled={!tipValue}
+                        disabled={!tipValue || parseFloat(tipValue) <= 0}
                     >
                         send
                     </button>

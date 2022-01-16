@@ -16,7 +16,9 @@ const InputField: React.FC<FieldProps & Props> = ({
     return (
         <div className='addressInputFieldRow'>
             <div className='addressInputFieldWrapper'>
-                {isConnectedByUser && <div className='addressInputFieldLabel'>Connected</div>}
+                {isConnectedByUser &&
+                    <div className="addressInputFieldLabel">Connected</div>
+                }
                 <div className="addressInputFieldMain">
                     <input
                         className="addressTextInput"
