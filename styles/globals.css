@@ -3,9 +3,36 @@ body,
 #__next {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Inter', sans-serif;
   height: 100%;
+}
+
+body {
+  position: relative;
+  /* background: radial-gradient(#42dda4, #1b1b1b); */
+  background: #1b1b1b;
+  background: radial-gradient(circle at top, rgb(46, 58, 54) 0%, rgba(27,27,27,1) 90%);
+  color: #42dda4;
+}
+
+/* body::before {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("/smoke-bomb.png");
+  filter: grayscale(100%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.12;
+  background-position: 20% 0;
+  z-index: 0;
+} */
+
+#__next {
+  position: relative;
 }
 
 a {
@@ -33,6 +60,26 @@ h1 {
   font-size: 1.5rem;
 }
 
+input {
+  border: none;
+}
+
+input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgb(219, 219, 219);
+  opacity: 1; /* Firefox */
+}
+
+input:disabled {
+  cursor: not-allowed;
+}
+
+.primaryTextGradient {
+  background: linear-gradient(45deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 150%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .contentContainer {
   width: 100%;
   max-width: 1240px;
@@ -43,7 +90,7 @@ h1 {
 
 /* COMPONENTS */
 .btn {
-  padding: 0.5em 1em;
+  padding: 0.65em 1.5em;
   font-size: 1rem;
   display: flex;
   align-items: center;
@@ -57,14 +104,33 @@ h1 {
 }
 
 .btnPrimary {
-  background-color: #0d6efd;
-  color: white
+  background: #42dda4;
+  /* background: rgb(66,221,164); */
+  background: linear-gradient(45deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 150%);
+  color: #f5fffc;
+  font-weight: bold;
 }
 
 .btnRounded {
   border-radius: 1000px;
 }
 
+.btnAutoTip {
+  font-size: 0.9rem;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.logo h1 {
+  font-size: 2rem;
+  background: linear-gradient(45deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 150%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .addressInputFieldRow {
   margin-bottom: 1rem;
   white-space: nowrap;
@@ -80,8 +146,10 @@ h1 {
 }
 
 .addressInputFieldLabel{
-  font-size: 0.8rem;
-  opacity: 0.5;
+  font-size: 0.75rem;
+  margin-left: 1.2rem;
+  color: #93b9ab;
+  font-weight: bold;
 }
 
 .addressInputFieldMain {
@@ -103,6 +171,19 @@ h1 {
   width: 37vw;
   max-width: 31.5rem;
   min-width: 20rem;
+  border-radius: 1000px;
+  outline: 1px solid #c5c5c5;
+  background: none;
+  color: white;
+}
+
+.addressTextInput:focus {
+  outline: 2px solid white;
+}
+
+.addressTextInput:disabled {  
+  outline: 1px solid #93b9ab;
+  color: #93b9ab;
 }
 
 .addressTextInput::-webkit-input-placeholder {
@@ -115,31 +196,61 @@ h1 {
   }
 }
 
-.crud-button {
+.crudButton {
   border-radius: 1000px;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 2rem;
   height: 2rem;
+  border: 2px solid white;
+  color: white;
+  opacity: 0.6;
+  background: none;
+  transition: all 0.1s ease;
 }
 
-.address-remove-button {
+.crudButton:hover {
+  opacity: 1;
+}
+
+.addressRemoveButton {
   margin-left: 0.5rem;
 }
 
-.address-add-button {
+.addressAddButton {
   align-self: center;
-  margin-top: 0.5rem;
-  background: none;
-  border: 2px solid gray;
-  color: black;
-  opacity: 50%;
-  transition: opacity ease-in-out 200ms;
+  margin-top: 0.75rem;
+  
 }
 
-.address-add-button:hover {
-  opacity: 80%;
+.tipJarWrapper {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.tipJarLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.tipJarContent {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.tipSwap {
+  color: white;
+  opacity: 0.8;
+  transition: opacity 100 ease;
+  font-size: 1.2rem;
+  margin-left: 0.25rem;
+}
+
+.tipSwap:hover{
+  cursor: pointer;
+  opacity: 1;
 }
 
 /* PAGES */
@@ -183,13 +294,13 @@ h1 {
 
 .topLevelInfoGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
   grid-gap: 1em;
 }
 
 .overviewItem {
   padding: 1rem;
-  background: rgb(233, 233, 233);
+  background: white;
   border-radius: 0.7rem;
 }
 

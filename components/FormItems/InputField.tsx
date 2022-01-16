@@ -30,7 +30,7 @@ const InputField: React.FC<FieldProps & Props> = ({
                         <button
                             type='button'
                             onClick={() => onDelete()}
-                            className='crud-button address-remove-button'
+                            className='crudButton addressRemoveButton'
                         >
                             <span className="material-icons">
                                 close
