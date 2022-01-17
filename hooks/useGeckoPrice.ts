@@ -6,7 +6,7 @@ type Params = {
     vsCurrencies?: VSCurrencies[]
 }
 
-type TokenVSCurrencies = {
+export type TokenVSCurrencies = {
     [C in Chains]?: {
         [C in VSCurrencies]?: number
     }
@@ -16,7 +16,7 @@ export default function useGeckoPrice({
     tokens = ["ethereum", "binancecoin", "solana", "fantom", "matic-network", "avalanche-2", "terra-luna"],
     vsCurrencies = ["usd", "cad", "eth", "btc"]
 }: Params) {
-    const [prices, setPrices] = useState<TokenVSCurrencies>()
+    const [prices, setPrices] = useState<TokenVSCurrencies>({})
 
     useEffect(() => {
         async function getPrices() {

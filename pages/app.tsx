@@ -6,16 +6,17 @@ import ContentContainer from 'components/layouts/ContentContainer'
 import Button from 'components/Button'
 import useSummaryData from 'hooks/useSummaryData'
 import useLocalStorage from 'hooks/useLocalStorage'
-import useGeckoPrice, { VSCurrencies } from 'hooks/useGeckoPrice'
+import useGeckoPrice from 'hooks/useGeckoPrice'
 import { formatCurrency } from "@coingecko/cryptoformat";
 import OverviewItem from 'components/OverviewItem'
 import HighCharts from 'components/HighCharts'
 import useGasHistoryChart from 'hooks/useGasHistoryChart'
 import useChainDistributionChart from 'hooks/useChainDistributionChart'
+import { VSCurrencies } from 'types'
 
 
 const App: NextPage = () => {
-    const price = useGeckoPrice({ tokens: ["ethereum"] })
+    const price = useGeckoPrice({})
     const router = useRouter()
 
     const [addresses, setAddresses] = useState([])

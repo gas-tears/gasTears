@@ -1,11 +1,22 @@
 import { useState, useEffect } from "react"
-import useGeckoPrice, { VSCurrencies, GeckoCoins, TokenVSCurrencies } from 'hooks/useGeckoPrice'
-import { Transaction } from "types"
+import { TokenVSCurrencies } from 'hooks/useGeckoPrice'
+import { ExplorerResponse, Transaction, VSCurrencies, Chains } from "types"
+import useGasHistoryChart from "./useGasHistoryChart"
 
 type Params = {
     addresses: string[],
     viewCurrency: VSCurrencies,
     price: TokenVSCurrencies
+}
+
+type WalletOverviewMap = {
+    [address: string] : WalletTransaction[]
+}
+
+type WalletTransaction = {
+    chain: Chains,
+    totalGasNative: number,
+    totalGasUSD: number
 }
 
 type Overview = {
@@ -15,17 +26,26 @@ type Overview = {
     totalFailedTransactions: number,
 }
 
-type ChainOverview = {
-    totalGasNative: number,
-    totalGasUSD: number,
-    totalTransactions: number,
-    totalSuccessTransactions: number,
-    totalFailedTransactions: number,
-    transactions: Transaction[]
+type ChainOverviewMap = {
+    [Chain in Chains]?: ChainOverview
 }
 
-type ChainInfo = {
-    [K in GeckoCoins]?: ChainOverview
+class ChainOverview {
+    totalGasNative: number
+    totalGasUSD: number
+    totalTransactions: number
+    totalSuccessTransactions: number
+    totalFailedTransactions: number
+    transactions: Transaction[]
+
+    constructor() {
+        this.totalGasNative = 0;
+        this.totalGasUSD = 0;
+        this.totalTransactions = 0;
+        this.totalSuccessTransactions = 0;
+        this.totalFailedTransactions = 0;
+        this.transactions = [];
+    }
 }
 
 export default function useSummaryData({
@@ -33,15 +53,14 @@ export default function useSummaryData({
     viewCurrency,
     price
 }: Params) {
-    const [walletToTransactionsMap, setWalletToTransactionsMap] = useState()
+    const [chainToAddressesMap, setChainToAddressesMap] = useState<ExplorerResponse>()
     const [isLoading, setIsLoading] = useState(false)
-    const [walletInfoArray, setWalletInfoArray] = useState<any[]>([])
-
-    const [chainInfo, setChainInfo] = useState<ChainInfo>()
+    const [walletOverviewMap, setWalletOverviewMap] = useState<WalletOverviewMap>()
+    const [chainOverviewMap, setChainOverviewMap] = useState<ChainOverviewMap>()
     const [totalOverview, setTotalOverview] = useState<Overview>()
 
     useEffect(() => {
-        if (addresses?.length === 0) return
+        if (!addresses?.length) return
 
         const getTransactions = async () => {
             setIsLoading(true)
@@ -53,62 +72,66 @@ export default function useSummaryData({
             })
             const apiJSON = await apiRes.json()
             setIsLoading(false)
-            setWalletToTransactionsMap(apiJSON.addressToTransactionsMap)
+            setChainToAddressesMap(apiJSON)
         }
         getTransactions()
     }, [addresses])
 
     useEffect(() => {
-        if (!walletToTransactionsMap || !price) return
+        if (!chainToAddressesMap || !price) return
 
-        //TODO: chainOverview and chainInfo are harcoded, 
-        //will have to fill this out based on the chains that will be returned from the back end 
-        const chainOverview: ChainOverview = {
-            totalGasNative: 0,
-            totalGasUSD: 0,
-            totalTransactions: 0,
-            totalFailedTransactions: 0,
-            totalSuccessTransactions: 0,
-            transactions: []
-        }
-
-        // Overview is computed while walletInfos is being extracted to save on operations
-        const walletInfos = Object
-            .entries(walletToTransactionsMap)
-            .map(([address, transactions]) => {
-                if (!transactions || !Array.isArray(transactions)) return { address, totalGasNative: 0 }
-
-                const totalOutgoingTransactions: Transaction[] = transactions
-                    .filter((transaction) => transaction.from === address.toLowerCase())//Only count transactions originated from the current address
-
-                const totalGasNative = totalOutgoingTransactions
-                    .reduce((total, currentTransaction) => {
-                        chainOverview["totalTransactions"] += 1
-                        if (currentTransaction.isError === "1") {
-                            chainOverview["totalFailedTransactions"] += 1
-                        } else {
-                            chainOverview["totalSuccessTransactions"] += 1
+        const chainOverviewMap : ChainOverviewMap = Object
+            .keys(chainToAddressesMap)
+            .reduce((acc, chain) => ({
+                ...acc, [chain]: new ChainOverview()
+            }), {})
+        
+        // Overview is computed while walletOverviewMap is being extracted to save on operations
+        const walletOverviewMap : WalletOverviewMap = {} 
+        Object.entries(chainToAddressesMap)
+            .forEach(([chain, addressToTransactionsMap]) => {
+                Object.entries(addressToTransactionsMap)
+                    .forEach(([address, transactions]) => {
+                        if (!(address in walletOverviewMap)) {
+                            walletOverviewMap[address] = [];
                         }
 
-                        const gas = parseFloat(currentTransaction.gasUsed) * parseFloat(currentTransaction.gasPrice) * (0.000000001) ** 2
-                        return total + gas
-                    }, 0)
+                        if (!transactions || !Array.isArray(transactions)) {
+                            walletOverviewMap[address].push({chain, totalGasNative: 0, totalGasUSD: 0})
+                            return
+                        }
+        
+                        const totalOutgoingTransactions: Transaction[] = transactions
+                            .filter((transaction) => transaction.from === address.toLowerCase()) //Only count transactions originated from the current address
+        
+                        const totalGasNative = totalOutgoingTransactions
+                            .reduce((acc, currentTransaction) => {
+                                chainOverviewMap[chain]["totalTransactions"] += 1
+                                if (currentTransaction.isError === "1") {
+                                    chainOverviewMap[chain]["totalFailedTransactions"] += 1
+                                } else {
+                                    chainOverviewMap[chain]["totalSuccessTransactions"] += 1
+                                }
+        
+                                const gas = parseFloat(currentTransaction.gasUsed) * parseFloat(currentTransaction.gasPrice) * (0.000000001) ** 2
+                                return acc + gas
+                            }, 0)
+    
+                        const totalGasUSD = totalGasNative * price[chain]["usd"]
 
-                chainOverview["totalGasNative"] += totalGasNative
-                chainOverview["transactions"] = chainOverview["transactions"].concat(totalOutgoingTransactions)
-                return { address, totalGasNative }
-            })
+                        chainOverviewMap[chain]["totalGasNative"] += totalGasNative
+                        chainOverviewMap[chain]["totalGasUSD"] += totalGasUSD
+                        chainOverviewMap[chain]["transactions"] = chainOverviewMap[chain]["transactions"].concat(totalOutgoingTransactions)
+                        walletOverviewMap[address].push({chain, totalGasNative, totalGasUSD})
+                    })
+                })
 
-        const chainInfo: ChainInfo = {
-            ethereum: chainOverview
-        }
-
-        setChainInfo(chainInfo)
-        setWalletInfoArray(walletInfos)
-    }, [walletToTransactionsMap, price])
+        setChainOverviewMap(chainOverviewMap)
+        setWalletOverviewMap(walletOverviewMap)
+    }, [chainToAddressesMap, price])
 
     useEffect(() => {
-        if (!chainInfo) return
+        if (!chainOverviewMap) return
 
         const overview: Overview = {
             totalGas: 0,
@@ -117,7 +140,7 @@ export default function useSummaryData({
             totalFailedTransactions: 0,
         }
 
-        Object.entries(chainInfo)
+        Object.entries(chainOverviewMap)
             .forEach(([chain, chainInfo]) => {
                 const { totalGasNative } = chainInfo
                 const totalGasInSelectedCurrency = totalGasNative * price[chain][viewCurrency.toLowerCase()]
@@ -128,13 +151,13 @@ export default function useSummaryData({
             })
 
         setTotalOverview(overview)
-    }, [chainInfo, viewCurrency])
+    }, [chainOverviewMap, viewCurrency])
 
     return {
         totalOverview,
-        chainInfo,
-        walletInfoArray,
+        chainOverviewMap,
+        walletOverviewMap,
         isLoading,
-        walletToTransactionsMap
+        chainToAddressesMap
     }
 } 
