@@ -1,10 +1,16 @@
 import React from 'react'
+import classNames from "classnames"
 
-const PageContainer: React.FC = ({
-    children
+type Props = {
+    isFirstPage?: boolean
+}
+
+const PageContainer: React.FC<Props> = ({
+    children,
+    isFirstPage
 }) => {
     return (
-        <div className='pageContainer'>
+        <div className={classNames({ pageContainer: true, isFirstPage })}>
             {children}
         </div>
     )

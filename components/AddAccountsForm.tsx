@@ -53,7 +53,7 @@ const AddAccountsForm: React.FC = () => {
                                 <button
                                     onClick={() => arrayHelpers.push({ address: "", isConnectedByUser: false })}
                                     type="button"
-                                    className='crud-button address-add-button'
+                                    className='crudButton addressAddButton'
                                     title="add new address"
                                 >
                                     <span className="material-icons">add</span>
@@ -66,7 +66,7 @@ const AddAccountsForm: React.FC = () => {
                         type="submit"
                         primary
                         rounded
-                        style={{ width: "100%", maxWidth: 300, marginTop: 25 }}
+                        style={{ width: "100%", maxWidth: 200, marginTop: "1rem" }}
                     >
                         See Gas
                     </Field>

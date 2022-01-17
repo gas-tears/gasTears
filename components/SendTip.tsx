@@ -9,21 +9,48 @@ export default function SendTip() {
     } = useContext(WalletConnectContext)
 
     const [tipValue, setTipValue] = useState("")
+    const [isManualTip, setIsManualTip] = useState(false)
 
     return (
-        <div style={{ margin: "1rem" }}>
-            <label htmlFor='tipValue' style={{ fontSize: "0.8rem" }}>Send me some tips</label><br />
-            <div style={{ display: "flex" }}>
-
-                <input
-                    type="number"
-                    value={tipValue}
-                    onChange={(e) => setTipValue(e.target.value)}
-                    id="tipValue"
-                />
+        <div className="tipJarWrapper">
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <label
+                    className="tipJarLabel primaryTextGradient"
+                    htmlFor='tipValue'
+                >
+                    Crypto tip jar
+                </label>
+                <span className="material-icons tipSwap" onClick={() => setIsManualTip(!isManualTip)}>
+                    swap_horiz
+                </span>
+            </div>
+            <div className="tipJarContent">
+                {isManualTip ?
+                    <div className="sendTipGroupSeparator">
+                        <input
+                            className="tipManualInput"
+                            type="number"
+                            value={tipValue}
+                            onChange={(e) => setTipValue(e.target.value)}
+                            id="tipValue"
+                            placeholder='10'
+                        />
+                    </div>
+                    :
+                    <div className="buttonGroup sendTipGroupSeparator">
+                        {autoTipOptions.map((option) => (
+                            <button
+                                className='btn btnAutoTip btnSmall'
+                                onClick={() => sendTip(parseFloat(option))}
+                            >
+                                {option}
+                            </button>
+                        ))}
+                    </div>}
                 <select
                     name="chainSelect"
                     id="chainSelect"
+                    className="tipChainSelect"
                     value={connectedChain}
                     onChange={(e) => changeNetwork(e.target.value)}
                 >
@@ -31,12 +58,26 @@ export default function SendTip() {
                         return <option key={value} value={value}>{label}</option>
                     })}
                 </select>
-                <button onClick={() => sendTip(parseFloat(tipValue))}>send</button>
+                {isManualTip &&
+                    <button
+                        className="btn btnPrimary btnRounded btnSmall"
+                        style={{ marginLeft: "1rem" }}
+                        onClick={() => sendTip(parseFloat(tipValue))}
+                        disabled={!tipValue || parseFloat(tipValue) <= 0}
+                    >
+                        send
+                    </button>
+                }
             </div>
         </div>
     )
 }
 
+const autoTipOptions = [
+    "0.01",
+    "0.1",
+    '1'
+]
 
 const options = [
     { value: "0x1", label: "ETH" },
