@@ -7,13 +7,11 @@ import Button from 'components/Button'
 import useSummaryData from 'hooks/useSummaryData'
 import useLocalStorage from 'hooks/useLocalStorage'
 import useGeckoPrice from 'hooks/useGeckoPrice'
-import { formatCurrency } from "@coingecko/cryptoformat";
-import OverviewTile from 'components/OverviewTile'
 import HighCharts from 'components/HighCharts'
 import useGasHistoryChart from 'hooks/useGasHistoryChart'
 import useChainDistributionChart from 'hooks/useChainDistributionChart'
 import { VSCurrencies } from 'types'
-
+import SummaryOverview from 'components/SummaryOverview'
 import classNames from 'classnames'
 
 const App: NextPage = () => {
@@ -22,28 +20,12 @@ const App: NextPage = () => {
 
     const [addresses, setAddresses] = useState([])
     const [viewCurrency, setViewCurrency] = useLocalStorage<VSCurrencies>("selectedCurrency", "usd")
+    const [selectedChain, setSelectedChain] = useLocalStorage("selectedChainView", "all")
 
-    const [chainFilter, setChainFilter] = useState([
-        { name: "All", isSelected: true },
-        { name: "Ethereum", isSelected: false },
-        { name: "BSC", isSelected: false },
-        { name: "Avalanche", isSelected: false },
-        { name: "Fantom", isSelected: false },
-        { name: "Polygon", isSelected: false },
-    ])
+    const { chainOverviewMap, netOverview, isLoading, walletOverviewMap } = useSummaryData({ addresses, viewCurrency, price })
 
-    const { walletInfoArray, totalOverview, isLoading, walletToTransactionsMap } = useSummaryData({ addresses, viewCurrency, price })
-
-    const gasHistoryOptions = useGasHistoryChart({ walletToTransactionsMap })
-    const chainDistributionOptions = useChainDistributionChart({ walletToTransactionsMap })
-
-    const setSelected = (name) => {
-        setChainFilter((filter) => {
-            return filter.map((chain) => {
-                return { ...chain, isSelected: chain.name === name }
-            })
-        })
-    }
+    // const gasHistoryOptions = useGasHistoryChart({ walletToTransactionsMap })
+    // const chainDistributionOptions = useChainDistributionChart({ walletToTransactionsMap })
 
     useEffect(() => {
         const { addresses } = router.query
@@ -83,60 +65,61 @@ const App: NextPage = () => {
             </ContentContainer>
             <ContentContainer>
                 <div className="dashboardMain">
-                    <div className="topLevelInfoGrid">
-                        <OverviewTile
-                            label='Total gas spent'
-                            displayValue={formatCurrency(totalOverview?.totalGas, viewCurrency, "en")}
-                        />
-                        <OverviewTile
-                            label='Total transactions'
-                            displayValue={totalOverview?.totalTransactions}
-                        />
-                        <OverviewTile
-                            label='Successful transactions'
-                            displayValue={totalOverview?.totalSuccessTransactions}
-                        />
-                        <OverviewTile
-                            label='Failed Transactions'
-                            displayValue={totalOverview?.totalFailedTransactions}
-                        />
-                    </div>
                     <div className="chainFiltersWrapper">
-                        {chainFilter.map(({ name, isSelected }) => (
+                        {chainOptions.map(({ label, value }) => (
                             <div
-                                className={classNames("chainFilterTile tilePrimary", { isSelected })}
-                                onClick={() => setSelected(name)}
-                                key={name}
+                                className={classNames("chainFilterTile tilePrimary", { isSelected: value === selectedChain })}
+                                onClick={() => setSelectedChain(value)}
+                                key={value}
                             >
-                                {name}
+                                {label}
                             </div>
                         ))}
                     </div>
-                    <h1>Gas usage history</h1>
+                    <SummaryOverview
+                        netOverview={netOverview}
+                        viewCurrency={viewCurrency}
+                        selectedChain={selectedChain}
+                        price={price}
+                        chainOverviewMap={chainOverviewMap}
+                    />
+
+                    <h1>Gas History</h1>
                     <div className='chartWrapper'>
                         <HighCharts
-                            options={gasHistoryOptions}
+                            options={{}}
                         />
                     </div>
+
                     <h1>Gas usage per chain</h1>
                     <div className="chartWrapper">
                         <HighCharts
-                            options={chainDistributionOptions}
+                            options={{}}
                         />
                     </div>
-                    {walletInfoArray && walletInfoArray.length > 1 && (<>
+
+                    {/* {walletInfoArray && walletInfoArray.length > 1 && (<>
                         <h1>Wallets</h1>
                         {walletInfoArray.map(({ address, totalGasNative }) => (
                             <div key={address}>
                                 <b>{address}: </b>
                                 {formatCurrency(totalGasNative * price['ethereum'][viewCurrency.toLowerCase()], viewCurrency, "en")}
                             </div>))}
-                    </>)}
+                    </>)} */}
                 </div>
             </ContentContainer>
         </PageContainer>
     )
 }
 
+const chainOptions = [
+    { label: "All", value: "all" },
+    { label: "Ethereum", value: "ethereum" },
+    // { label: "BSC", value: "binancecoin" },
+    // { label: "Solana", value: "solana" },
+    { label: "Avalanche", value: "avalanche-2" },
+    // { label: "Fantom", value: "fantom" },
+    // { label: "Polygon", value: "matic-network" },
+]
 
 export default App

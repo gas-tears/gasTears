@@ -342,7 +342,7 @@ input:disabled {
 }
 
 .dashboardMain h1 {
-  font-size: 1.75rem;
+  font-size: 1.65rem;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
 }
@@ -393,9 +393,9 @@ input:disabled {
 }
 
 .chainFiltersWrapper {
-  margin-top: 2rem;
+  margin-bottom: 2rem;
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .chainFilterTile {

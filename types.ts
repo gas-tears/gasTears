@@ -31,7 +31,47 @@ export type ExplorerResponse = {
 
 export type AddressToTransactionsMap = {
     [address: string]: Transaction[]
-}  
+}
 
 export type Chains = "ethereum" | "binancecoin" | "solana" | "fantom" | "matic-network" | "avalanche-2" | "terra-luna"
 export type VSCurrencies = "usd" | "cad" | "eth" | "btc"
+
+
+export type ChainOverviewMap = {
+    [Chain in Chains]?: ChainOverview
+}
+
+export class ChainOverview {
+    totalGasNative: number
+    totalGasUSD: number
+    totalTransactions: number
+    totalSuccessTransactions: number
+    totalFailedTransactions: number
+    transactions: Transaction[]
+
+    constructor() {
+        this.totalGasNative = 0;
+        this.totalGasUSD = 0;
+        this.totalTransactions = 0;
+        this.totalSuccessTransactions = 0;
+        this.totalFailedTransactions = 0;
+        this.transactions = [];
+    }
+}
+
+export type WalletOverviewMap = {
+    [address: string]: WalletTransaction[]
+}
+
+type WalletTransaction = {
+    chain: Chains,
+    totalGasNative: number,
+    totalGasUSD: number
+}
+
+export type NetOverview = {
+    totalGas: number,
+    totalTransactions: number,
+    totalSuccessTransactions: number,
+    totalFailedTransactions: number,
+}
