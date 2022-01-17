@@ -9,27 +9,8 @@ body,
 
 body {
   position: relative;
-  /* background: radial-gradient(#42dda4, #1b1b1b); */
-  background: #1b1b1b;
-  background: radial-gradient(circle at top, rgb(46, 58, 54) 0%, rgba(27,27,27,1) 90%);
-  color: #42dda4;
 }
 
-/* body::before {
-  content: "";
-  position: absolute;
-  top: 0; 
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("/smoke-bomb.png");
-  filter: grayscale(100%);
-  background-repeat: no-repeat;
-  background-size: cover;
-  opacity: 0.12;
-  background-position: 20% 0;
-  z-index: 0;
-} */
 
 #__next {
   position: relative;
@@ -90,7 +71,7 @@ input:disabled {
 
 /* COMPONENTS */
 .btn {
-  padding: 0.65em 1.5em;
+  padding: 0.65em 1.25em;
   font-size: 1rem;
   display: flex;
   align-items: center;
@@ -109,6 +90,22 @@ input:disabled {
   background: linear-gradient(45deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 150%);
   color: #f5fffc;
   font-weight: bold;
+}
+
+.btnSecondary {
+  background: none;
+  color: white;
+  font-weight: bold;
+  border: double 1px transparent;
+  background-image: linear-gradient(#202221, #202221), 
+                    linear-gradient(45deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 150%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.btnSecondary:hover{
+  background-image: linear-gradient(45deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 150%);
+  background-clip: unset;
 }
 
 .btnRounded {
@@ -174,6 +171,7 @@ input:disabled {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  user-select: none;
 }
 .addressInputFieldRow {
   margin-bottom: 1rem;
@@ -304,10 +302,17 @@ input:disabled {
 /* PAGES */
 .pageContainer {
   width: 100%;
-  height: 100%;
+  height: min-content;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #1b1b1b;
+  color: white;
+}
+
+.pageContainer.isFirstPage {
+  background: radial-gradient(circle at top, rgb(46, 58, 54) 0%, rgba(27,27,27,1) 90%);
 }
 
 /* search page */
@@ -337,7 +342,9 @@ input:disabled {
 }
 
 .dashboardMain h1 {
-  margin-top: 1rem;
+  font-size: 1.75rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
 }
 
 .topLevelInfoGrid {
@@ -346,18 +353,75 @@ input:disabled {
   grid-gap: 1em;
 }
 
-.overviewItem {
+.overviewTile {
   padding: 1rem;
-  background: white;
   border-radius: 0.7rem;
 }
 
-.overviewItemLabel {
+.overviewTileLabel {
   opacity: 0.7;
   font-size: 0.85rem;
 }
 
-.overviewItemDisplayValue {
-  font-weight: 500;
+.overviewTileDisplayValue {
+  font-weight: 700;
   font-size: 1.45rem;
+}
+
+.chartWrapper {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow:
+    0.5px 0.5px 1.6px rgba(0, 0, 0, 0.046),
+    1px 0.9px 3.8px rgba(0, 0, 0, 0.066),
+    1.6px 1.5px 6.8px rgba(0, 0, 0, 0.079),
+    2.8px 2.7px 11.2px rgba(0, 0, 0, 0.089),
+    6.1px 5.7px 18.5px rgba(0, 0, 0, 0.097),
+    17.5px 16.6px 32.4px rgba(0, 0, 0, 0.104),
+    88px 83px 70px rgba(0, 0, 0, 0.11)
+  ;
+}
+
+.viewCurrencySelect {
+  background-color: #1b1b1b;
+  border: 1px solid white;
+  color: white;
+  font-size: 1.2rem;
+  padding: 0 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+}
+
+.chainFiltersWrapper {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.chainFilterTile {
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+}
+
+.chainFilterTile:hover {
+  cursor: pointer;
+}
+
+.chainFilterTile.isSelected {
+  background: #42dda4;
+  background: linear-gradient(45deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 150%);
+  font-weight: 600;
+}
+
+.tilePrimary {
+  background: #272727;
+  box-shadow:
+    0.5px 0.5px 1.6px rgba(0, 0, 0, 0.046),
+    1px 0.9px 3.8px rgba(0, 0, 0, 0.066),
+    1.6px 1.5px 6.8px rgba(0, 0, 0, 0.079),
+    2.8px 2.7px 11.2px rgba(0, 0, 0, 0.089),
+    6.1px 5.7px 18.5px rgba(0, 0, 0, 0.097),
+    17.5px 16.6px 32.4px rgba(0, 0, 0, 0.104),
+    88px 83px 70px rgba(0, 0, 0, 0.11)
+  ;
 }

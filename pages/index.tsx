@@ -13,7 +13,7 @@ const Home: NextPage = () => {
   const { getWallets, connectedWallets } = useContext(WalletConnectContext)
 
   return (
-    <PageContainer>
+    <PageContainer isFirstPage>
       <ContentContainer>
         <div className="searchPageTopBar">
           <div className="logo">

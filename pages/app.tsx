@@ -8,11 +8,11 @@ import useSummaryData from 'hooks/useSummaryData'
 import useLocalStorage from 'hooks/useLocalStorage'
 import useGeckoPrice, { VSCurrencies } from 'hooks/useGeckoPrice'
 import { formatCurrency } from "@coingecko/cryptoformat";
-import OverviewItem from 'components/OverviewItem'
+import OverviewTile from 'components/OverviewTile'
 import HighCharts from 'components/HighCharts'
 import useGasHistoryChart from 'hooks/useGasHistoryChart'
 import useChainDistributionChart from 'hooks/useChainDistributionChart'
-
+import classNames from 'classnames'
 
 const App: NextPage = () => {
     const price = useGeckoPrice({ tokens: ["ethereum"] })
@@ -21,10 +21,27 @@ const App: NextPage = () => {
     const [addresses, setAddresses] = useState([])
     const [viewCurrency, setViewCurrency] = useLocalStorage<VSCurrencies>("selectedCurrency", "usd")
 
+    const [chainFilter, setChainFilter] = useState([
+        { name: "All", isSelected: true },
+        { name: "Ethereum", isSelected: false },
+        { name: "BSC", isSelected: false },
+        { name: "Avalanche", isSelected: false },
+        { name: "Fantom", isSelected: false },
+        { name: "Polygon", isSelected: false },
+    ])
+
     const { walletInfoArray, totalOverview, isLoading, walletToTransactionsMap } = useSummaryData({ addresses, viewCurrency, price })
 
     const gasHistoryOptions = useGasHistoryChart({ walletToTransactionsMap })
     const chainDistributionOptions = useChainDistributionChart({ walletToTransactionsMap })
+
+    const setSelected = (name) => {
+        setChainFilter((filter) => {
+            return filter.map((chain) => {
+                return { ...chain, isSelected: chain.name === name }
+            })
+        })
+    }
 
     useEffect(() => {
         const { addresses } = router.query
@@ -42,7 +59,7 @@ const App: NextPage = () => {
             <ContentContainer>
                 <div className="dashboardTopBar">
                     <Button
-                        primary
+                        secondary
                         onClick={() => router.back()}
                     >
                         <span className="material-icons">
@@ -50,7 +67,11 @@ const App: NextPage = () => {
                         </span>
                         Edit Addresses
                     </Button>
-                    <select value={viewCurrency} onChange={(e) => setViewCurrency(e.target.value)}>
+                    <select
+                        className="viewCurrencySelect"
+                        value={viewCurrency}
+                        onChange={(e) => setViewCurrency(e.target.value)}
+                    >
                         <option value="USD">USD</option>
                         <option value="CAD">CAD</option>
                         <option value="ETH">ETH</option>
@@ -61,31 +82,46 @@ const App: NextPage = () => {
             <ContentContainer>
                 <div className="dashboardMain">
                     <div className="topLevelInfoGrid">
-                        <OverviewItem
+                        <OverviewTile
                             label='Total gas spent'
                             displayValue={formatCurrency(totalOverview?.totalGas, viewCurrency, "en")}
                         />
-                        <OverviewItem
+                        <OverviewTile
                             label='Total transactions'
                             displayValue={totalOverview?.totalTransactions}
                         />
-                        <OverviewItem
+                        <OverviewTile
                             label='Successful transactions'
                             displayValue={totalOverview?.totalSuccessTransactions}
                         />
-                        <OverviewItem
+                        <OverviewTile
                             label='Failed Transactions'
                             displayValue={totalOverview?.totalFailedTransactions}
                         />
                     </div>
+                    <div className="chainFiltersWrapper">
+                        {chainFilter.map(({ name, isSelected }) => (
+                            <div
+                                className={classNames("chainFilterTile tilePrimary", { isSelected })}
+                                onClick={() => setSelected(name)}
+                                key={name}
+                            >
+                                {name}
+                            </div>
+                        ))}
+                    </div>
                     <h1>Gas usage history</h1>
-                    <HighCharts
-                        options={gasHistoryOptions}
-                    />
+                    <div className='chartWrapper'>
+                        <HighCharts
+                            options={gasHistoryOptions}
+                        />
+                    </div>
                     <h1>Gas usage per chain</h1>
-                    <HighCharts
-                        options={chainDistributionOptions}
-                    />
+                    <div className="chartWrapper">
+                        <HighCharts
+                            options={chainDistributionOptions}
+                        />
+                    </div>
                     {walletInfoArray && walletInfoArray.length > 1 && (<>
                         <h1>Wallets</h1>
                         {walletInfoArray.map(({ address, totalGasNative }) => (
@@ -99,5 +135,6 @@ const App: NextPage = () => {
         </PageContainer>
     )
 }
+
 
 export default App

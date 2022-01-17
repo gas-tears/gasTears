@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
+import HighCharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { HighchartHookParam } from './charts-types'
+import { highchartDefaultOption } from 'utils/HighchartsDefaultOption'
 
 const useChainDistributionChart = ({
     walletToTransactionsMap
 }: HighchartHookParam) => {
-    const [chartOption, setChartOption] = useState<HighchartsReact.Props>({})
+    const [chartOption, setChartOption] = useState<Highcharts.Options>(highchartDefaultOption)
 
     useEffect(() => {
         if (!walletToTransactionsMap) return
@@ -21,12 +23,17 @@ const useChainDistributionChart = ({
                     })
                 }
             })
-        const option: HighchartsReact.Props = {
+        const option: Highcharts.Options = {
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
-                type: 'pie'
+                type: 'pie',
+                backgroundColor: "#1b1b1b",
+                style: {
+                    fontFamily: 'inter',
+                    color: "white"
+                }
             },
             title: {
                 text: ""
@@ -73,7 +80,7 @@ const useChainDistributionChart = ({
             credits: { enabled: false }
         }
 
-        setChartOption(option)
+        setChartOption(HighCharts.merge(option, highchartDefaultOption))
     }, [walletToTransactionsMap])
 
     return chartOption

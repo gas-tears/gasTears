@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import HighchartsReact from 'highcharts-react-official'
+import HighCharts from 'highcharts'
 import { HighchartHookParam } from './charts-types'
 import { formatCurrency } from "@coingecko/cryptoformat";
 
+import { highchartDefaultOption } from 'utils/HighchartsDefaultOption';
 
 const useGasHistoryChart = ({
     walletToTransactionsMap
 }: HighchartHookParam) => {
-    const [chartOption, setChartOption] = useState<HighchartsReact.Props>({})
+    const [chartOption, setChartOption] = useState<Highcharts.Options>(highchartDefaultOption)
 
     useEffect(() => {
         if (!walletToTransactionsMap) return
@@ -26,7 +28,7 @@ const useGasHistoryChart = ({
                     data: processedTransactions
                 }
             })
-        const option: HighchartsReact.Props = {
+        const option: Highcharts.Options = {
             chart: {
                 type: "scatter",
                 zoomType: "x"
@@ -80,7 +82,7 @@ const useGasHistoryChart = ({
             credits: { enabled: false }
         }
 
-        setChartOption(option)
+        setChartOption(HighCharts.merge(option, highchartDefaultOption))
     }, [walletToTransactionsMap])
 
     return chartOption

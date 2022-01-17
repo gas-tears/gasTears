@@ -16,7 +16,8 @@ const Button: React.FC<ButtonProps & React.HTMLAttributes<HTMLButtonElement>> = 
 }) => {
     return (
         <button
-            className={classNames("btn", { "btnPrimary": primary }, { "btnRounded": rounded })}
+            className={
+                classNames("btn", { "btnPrimary": primary }, { "btnRounded": rounded }, { "btnSecondary": secondary })}
             {...props}
         >
             {children}
