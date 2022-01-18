@@ -69,9 +69,16 @@ type WalletTransaction = {
     totalGasUSD: number
 }
 
-export type NetOverview = {
-    totalGas: number,
-    totalTransactions: number,
-    totalSuccessTransactions: number,
-    totalFailedTransactions: number,
+export class NetOverview {
+    totalGas: number
+    totalTransactions: number
+    totalSuccessTransactions: number
+    totalFailedTransactions: number
+
+    constructor() {
+        this.totalGas = 0
+        this.totalTransactions = 0;
+        this.totalSuccessTransactions = 0;
+        this.totalFailedTransactions = 0;
+    }
 }

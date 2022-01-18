@@ -1,10 +1,8 @@
 import React from 'react'
-import { ChainOverviewMap, NetOverview } from "types"
 import OverviewTile from 'components/OverviewTile'
 import { formatCurrency } from "@coingecko/cryptoformat";
-import { VSCurrencies, Chains } from 'types'
+import { VSCurrencies, Chains, ChainOverviewMap, NetOverview } from 'types'
 import { TokenVSCurrencies } from "hooks/useGeckoPrice"
-
 type ViewChains = "all" | Chains
 
 type Props = {
@@ -31,7 +29,7 @@ const SummaryOverview: React.FC<Props> = ({
         if (selectedChain === "all") return netOverview
 
         const info = chainOverviewMap?.[selectedChain]
-        if (!info) return {}
+        if (!info) return new NetOverview()
 
         return {
             totalGas: info.totalGasNative * price[selectedChain][viewCurrency?.toLowerCase()],
