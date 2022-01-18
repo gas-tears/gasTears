@@ -7,34 +7,38 @@ import { formatCurrency } from "@coingecko/cryptoformat";
 import { highchartDefaultOption } from 'utils/HighchartsDefaultOption';
 
 const useGasHistoryChart = ({
-    walletToTransactionsMap
+    chainOverviewMap,
+    price
 }: HighchartHookParam) => {
     const [chartOption, setChartOption] = useState<Highcharts.Options>(highchartDefaultOption)
 
     useEffect(() => {
-        if (!walletToTransactionsMap) return
+        if (!chainOverviewMap) return
+
         const series = Object
-            .entries(walletToTransactionsMap)
-            .filter(([_, transactions]) => Array.isArray(transactions))
-            .map(([walletAddress, transactions]) => {
+            .entries(chainOverviewMap)
+            .map(([chain, chainOverview]) => {
+                const transactions = chainOverview.transactions
+                if (!transactions) return
+
                 const processedTransactions = transactions.map((transaction) => {
-                    const gasInEth = parseFloat(transaction.gasUsed) * parseFloat(transaction.gasPrice) * (0.000000001) ** 2
-                    return { x: parseInt(transaction.timeStamp) * 1000, y: gasInEth, transactionHash: transaction.hash }
+                    const nativeTransactionPrice = parseFloat(transaction.gasUsed) * parseFloat(transaction.gasPrice) * (0.000000001) ** 2
+                    const priceInUSD = nativeTransactionPrice * price[chain]["usd"]
+                    return { x: parseInt(transaction.timeStamp) * 1000, y: priceInUSD, transactionHash: transaction.hash }
                 })
-                //Fixed the final date to today
-                processedTransactions.push({ x: (new Date()).getTime(), y: null, transactionHash: "" })
+                //Make it so that the last day on the graph is today
+                processedTransactions.push({ x: (new Date()).getTime(), y: undefined, transactionHash: "" })
+
                 return {
-                    name: walletAddress,
+                    name: chain,
                     data: processedTransactions
                 }
             })
+
         const option: Highcharts.Options = {
             chart: {
                 type: "scatter",
                 zoomType: "x"
-            },
-            title: {
-                text: ""
             },
             xAxis: {
                 type: 'datetime',
@@ -44,7 +48,12 @@ const useGasHistoryChart = ({
             },
             yAxis: {
                 title: {
-                    text: ''
+                    text: 'Converted Transaction Cost (USD)'
+                },
+                labels: {
+                    formatter: function () {
+                        return formatCurrency(this.value, "usd");
+                    }
                 },
                 min: 0
             },
@@ -70,20 +79,16 @@ const useGasHistoryChart = ({
                     const date = new Date(this.x)
                     return `
                         <div><b>${date.toLocaleString()}</b></div><br/>
-                        <div>Transaction Cost: ${formatCurrency(this.y, "eth")}</div>
+                        <div>Transaction Cost: ${formatCurrency(this.y, "usd")}</div>
                     `
                 }
             },
 
-            colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
-
             series: series,
-            exporting: { enabled: false },
-            credits: { enabled: false }
         }
 
-        setChartOption(HighCharts.merge(option, highchartDefaultOption))
-    }, [walletToTransactionsMap])
+        setChartOption(HighCharts.merge(highchartDefaultOption, option))
+    }, [chainOverviewMap])
 
     return chartOption
 }

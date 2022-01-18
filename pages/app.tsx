@@ -10,7 +10,7 @@ import useGeckoPrice from 'hooks/useGeckoPrice'
 import HighCharts from 'components/HighCharts'
 import useGasHistoryChart from 'hooks/useGasHistoryChart'
 import useChainDistributionChart from 'hooks/useChainDistributionChart'
-import { VSCurrencies } from 'types'
+import { VSCurrencies, ViewChains } from 'types'
 import SummaryOverview from 'components/SummaryOverview'
 import classNames from 'classnames'
 
@@ -18,14 +18,14 @@ const App: NextPage = () => {
     const price = useGeckoPrice({})
     const router = useRouter()
 
-    const [addresses, setAddresses] = useState([])
+    const [addresses, setAddresses] = useState<string[]>([])
     const [viewCurrency, setViewCurrency] = useLocalStorage<VSCurrencies>("selectedCurrency", "usd")
-    const [selectedChain, setSelectedChain] = useLocalStorage("selectedChainView", "all")
+    const [selectedChain, setSelectedChain] = useLocalStorage<ViewChains>("selectedChainView", "all")
 
     const { chainOverviewMap, netOverview, isLoading, walletOverviewMap } = useSummaryData({ addresses, viewCurrency, price })
 
-    // const gasHistoryOptions = useGasHistoryChart({ walletToTransactionsMap })
-    // const chainDistributionOptions = useChainDistributionChart({ walletToTransactionsMap })
+    const gasHistoryOptions = useGasHistoryChart({ chainOverviewMap, price })
+    const chainDistributionOptions = useChainDistributionChart({ chainOverviewMap })
 
     useEffect(() => {
         const { addresses } = router.query
@@ -87,14 +87,14 @@ const App: NextPage = () => {
                     <h1>Gas History</h1>
                     <div className='chartWrapper'>
                         <HighCharts
-                            options={{}}
+                            options={gasHistoryOptions}
                         />
                     </div>
 
                     <h1>Gas usage per chain</h1>
                     <div className="chartWrapper">
                         <HighCharts
-                            options={{}}
+                            options={chainDistributionOptions}
                         />
                     </div>
 
@@ -112,7 +112,14 @@ const App: NextPage = () => {
     )
 }
 
-const chainOptions = [
+
+type ChainOption = {
+    label: string,
+    value: ViewChains
+}
+type ChainOptions = ChainOption[]
+
+const chainOptions: ChainOptions = [
     { label: "All", value: "all" },
     { label: "Ethereum", value: "ethereum" },
     // { label: "BSC", value: "binancecoin" },

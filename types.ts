@@ -35,6 +35,7 @@ export type AddressToTransactionsMap = {
 
 export type Chains = "ethereum" | "binancecoin" | "solana" | "fantom" | "matic-network" | "avalanche-2" | "terra-luna"
 export type VSCurrencies = "usd" | "cad" | "eth" | "btc"
+export type ViewChains = "all" | Chains
 
 
 export type ChainOverviewMap = {
@@ -82,3 +83,4 @@ export class NetOverview {
         this.totalFailedTransactions = 0;
     }
 }
+

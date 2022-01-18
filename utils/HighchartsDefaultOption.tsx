@@ -10,11 +10,17 @@ export const highchartDefaultOption: Highcharts.Options = {
             color: "#fff"
         }
     },
+
+    title: {
+        text: ""
+    },
+
     xAxis: {
         title: {
             style: {
                 color: "#fff"
-            }
+            },
+            text: ""
         },
         labels: {
             style: {
@@ -25,14 +31,16 @@ export const highchartDefaultOption: Highcharts.Options = {
     yAxis: {
         title: {
             style: {
-                color: "#fff"
-            }
+                color: "#fff",
+            },
+            text: ''
         },
         labels: {
             style: {
                 color: "#fff"
             }
-        }
+        },
+        min: 0
     },
     loading: {
         style: {
@@ -43,5 +51,9 @@ export const highchartDefaultOption: Highcharts.Options = {
         style: {
             backgroundColor: "#272727"
         }
-    }
+    },
+    colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
+
+    exporting: { enabled: false },
+    credits: { enabled: false }
 }

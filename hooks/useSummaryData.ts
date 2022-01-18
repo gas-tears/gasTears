@@ -21,11 +21,11 @@ export default function useSummaryData({
     viewCurrency,
     price
 }: Params) {
-    const [chainToAddressesMap, setChainToAddressesMap] = useState<ExplorerResponse>()
+    const [chainToAddressesMap, setChainToAddressesMap] = useState<ExplorerResponse>({})
     const [isLoading, setIsLoading] = useState(false)
-    const [walletOverviewMap, setWalletOverviewMap] = useState<WalletOverviewMap>()
-    const [chainOverviewMap, setChainOverviewMap] = useState<ChainOverviewMap>()
-    const [netOverview, setNetOverview] = useState<NetOverview>()
+    const [walletOverviewMap, setWalletOverviewMap] = useState<WalletOverviewMap>({})
+    const [chainOverviewMap, setChainOverviewMap] = useState<ChainOverviewMap>({})
+    const [netOverview, setNetOverview] = useState<NetOverview>(new NetOverview())
 
     useEffect(() => {
         if (!addresses?.length) return

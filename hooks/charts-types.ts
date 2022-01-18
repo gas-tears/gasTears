@@ -1,5 +1,7 @@
-import { WalletToTransactions } from "types"
+import { ChainOverviewMap } from "types"
+import { TokenVSCurrencies } from "./useGeckoPrice"
 
 export type HighchartHookParam = {
-    walletToTransactionsMap: WalletToTransactions
+    chainOverviewMap: ChainOverviewMap,
+    price?: TokenVSCurrencies
 }

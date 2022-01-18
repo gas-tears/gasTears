@@ -1,9 +1,8 @@
 import React from 'react'
 import OverviewTile from 'components/OverviewTile'
 import { formatCurrency } from "@coingecko/cryptoformat";
-import { VSCurrencies, Chains, ChainOverviewMap, NetOverview } from 'types'
+import { VSCurrencies, Chains, ChainOverviewMap, NetOverview, ViewChains } from 'types'
 import { TokenVSCurrencies } from "hooks/useGeckoPrice"
-type ViewChains = "all" | Chains
 
 type Props = {
     netOverview: NetOverview,
