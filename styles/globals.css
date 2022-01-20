@@ -5,12 +5,8 @@ body,
   margin: 0;
   font-family: 'Inter', sans-serif;
   height: 100%;
+  background: #1b1b1b;
 }
-
-body {
-  position: relative;
-}
-
 
 #__next {
   position: relative;
@@ -26,7 +22,9 @@ a {
 }
 
 button {
+  all: unset;
   border: none;
+  text-align: center;
 }
 
 button:hover {
@@ -53,6 +51,44 @@ input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
 input:disabled {
   cursor: not-allowed;
 }
+
+
+@keyframes glowing {
+  0% {
+    filter:drop-shadow(0 0 2px rgb(203, 245, 229))
+          drop-shadow(0 0 10px rgb(99, 212, 171))
+          drop-shadow(0 0 45px rgba(66,221,164,1));
+  }
+  100% {
+    filter:drop-shadow(0 0 5px rgb(212, 245, 232))
+          drop-shadow(0 0 20px rgb(114, 214, 177))
+          drop-shadow(0 0 60px rgb(69, 214, 161));
+  }
+}
+
+.logoSvg {
+  color: #d4f8ed;
+  will-change: auto;
+  filter:drop-shadow(0 0 2px rgb(203, 245, 229))
+          drop-shadow(0 0 10px rgb(99, 212, 171))
+          drop-shadow(0 0 45px rgba(66,221,164,1));
+  width: 7rem;
+  height: 7rem;
+}
+
+@media only screen and (min-width: 600px) {
+  .logoSvg {
+    animation: glowing linear 2s infinite alternate; 
+  }
+}
+
+@media screen and (prefers-reduced-motion: reduce) { 
+  .logoSvg {
+    animation: unset;
+  }
+}
+
+
 
 .primaryTextGradient {
   background: linear-gradient(45deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 150%);
@@ -167,7 +203,7 @@ input:disabled {
 
 .logo h1 {
   font-size: 2rem;
-  background: linear-gradient(45deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 150%);
+  background: linear-gradient(71deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 200%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -322,11 +358,19 @@ input:disabled {
   flex: 1;
 }
 
-.searchPageMainArea{
+.searchPageLogoArea{
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+}
+
+.searchPageMainArea{
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
 }
 
@@ -396,11 +440,23 @@ input:disabled {
   margin-bottom: 2rem;
   display: flex;
   gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .chainFilterTile {
+  color: white;
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;
+}
+
+.chainFilterTile::after {
+  display: block;
+  content: attr(title);
+  font-weight: bold;
+  height: 1px;
+  color: transparent;
+  overflow: hidden;
+  visibility: hidden;
 }
 
 .chainFilterTile:hover {
@@ -410,7 +466,7 @@ input:disabled {
 .chainFilterTile.isSelected {
   background: #42dda4;
   background: linear-gradient(45deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 150%);
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .tilePrimary {

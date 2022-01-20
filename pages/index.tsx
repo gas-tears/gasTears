@@ -8,6 +8,7 @@ import ContentContainer from 'components/layouts/ContentContainer'
 import PageContainer from 'components/layouts/PageContainer'
 import Button from 'components/Button'
 import SendTip from 'components/SendTip'
+import GasTears from "../public/gastears.svg"
 
 const Home: NextPage = () => {
   const { getWallets, connectedWallets } = useContext(WalletConnectContext)
@@ -29,6 +30,9 @@ const Home: NextPage = () => {
           </Button>
         </div>
       </ContentContainer>
+      <div className="searchPageLogoArea">
+        <GasTears className="logoSvg" />
+      </div>
       <div className="searchPageMainArea">
         <AddAccountsForm />
       </div>

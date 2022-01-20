@@ -44,7 +44,7 @@ const App: NextPage = () => {
                 <div className="dashboardTopBar">
                     <Button
                         secondary
-                        onClick={() => router.back()}
+                        onClick={() => router.push("/")}
                     >
                         <span className="material-icons">
                             arrow_back
@@ -67,13 +67,14 @@ const App: NextPage = () => {
                 <div className="dashboardMain">
                     <div className="chainFiltersWrapper">
                         {chainOptions.map(({ label, value }) => (
-                            <div
+                            <button
                                 className={classNames("chainFilterTile tilePrimary", { isSelected: value === selectedChain })}
                                 onClick={() => setSelectedChain(value)}
                                 key={value}
+                                title={label}
                             >
                                 {label}
-                            </div>
+                            </button>
                         ))}
                     </div>
                     <SummaryOverview
@@ -122,11 +123,11 @@ type ChainOptions = ChainOption[]
 const chainOptions: ChainOptions = [
     { label: "All", value: "all" },
     { label: "Ethereum", value: "ethereum" },
-    // { label: "BSC", value: "binancecoin" },
+    { label: "BSC", value: "binancecoin" },
     // { label: "Solana", value: "solana" },
     { label: "Avalanche", value: "avalanche-2" },
-    // { label: "Fantom", value: "fantom" },
-    // { label: "Polygon", value: "matic-network" },
+    { label: "Fantom", value: "fantom" },
+    { label: "Polygon", value: "matic-network" },
 ]
 
 export default App
