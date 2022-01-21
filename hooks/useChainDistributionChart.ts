@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'
 import HighCharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { HighchartHookParam } from './charts-types'
-import { highchartDefaultOption } from 'utils/HighchartsDefaultOption'
 import { formatCurrency } from "@coingecko/cryptoformat";
+import { colorMapping } from 'utils/HighchartsDefaultOption';
 
 
 const useChainDistributionChart = ({
     chainOverviewMap
 }: HighchartHookParam) => {
-    const [chartOption, setChartOption] = useState<Highcharts.Options>(highchartDefaultOption)
+    const [chartOption, setChartOption] = useState<Highcharts.Options>({})
 
     useEffect(() => {
         if (!chainOverviewMap) return
@@ -19,7 +19,8 @@ const useChainDistributionChart = ({
             .map(([chain, chainOverview]) => {
                 return {
                     name: chain,
-                    y: chainOverview.totalGasUSD
+                    y: chainOverview.totalGasUSD,
+                    color: colorMapping[chain]
                 }
             })
         const option: Highcharts.Options = {
@@ -60,7 +61,7 @@ const useChainDistributionChart = ({
             }],
         }
 
-        setChartOption(HighCharts.merge(highchartDefaultOption, option))
+        setChartOption(option)
     }, [chainOverviewMap])
 
     return chartOption

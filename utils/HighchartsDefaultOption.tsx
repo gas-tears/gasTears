@@ -1,3 +1,6 @@
+import Highcharts from "highcharts"
+import { Chains } from "types"
+
 export const highchartDefaultOption: Highcharts.Options = {
     chart: {
         backgroundColor: "#272727",
@@ -52,8 +55,30 @@ export const highchartDefaultOption: Highcharts.Options = {
             backgroundColor: "#272727"
         }
     },
-    colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
+    plotOptions: {
+        pie: {
+            borderWidth: 0
+        }
+    },
+    // colors: ["#36f2f5", "#ffd166", "#3C80F6", "#FE4A49", "#FF9B71", "#118ab2", "#E0E342", "#06d6a0"],
 
     exporting: { enabled: false },
     credits: { enabled: false }
+}
+
+export default function initHighcharts() {
+    Highcharts.setOptions(highchartDefaultOption)
+}
+
+
+type ColorMapping = {
+    [C in Chains]: string
+}
+
+export const colorMapping: ColorMapping = {
+    ethereum: "#36f2f5",
+    "avalanche-2": "#e66e6f",
+    "matic-network": "#bda2e8",
+    binancecoin: "#fae1a0",
+    fantom: "#52cdf7"
 }

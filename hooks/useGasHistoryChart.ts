@@ -1,16 +1,13 @@
 import { useEffect, useState } from 'react'
-import HighchartsReact from 'highcharts-react-official'
-import HighCharts from 'highcharts'
 import { HighchartHookParam } from './charts-types'
 import { formatCurrency } from "@coingecko/cryptoformat";
-
-import { highchartDefaultOption } from 'utils/HighchartsDefaultOption';
+import { colorMapping } from 'utils/HighchartsDefaultOption';
 
 const useGasHistoryChart = ({
     chainOverviewMap,
     price
 }: HighchartHookParam) => {
-    const [chartOption, setChartOption] = useState<Highcharts.Options>(highchartDefaultOption)
+    const [chartOption, setChartOption] = useState<Highcharts.Options>({})
 
     useEffect(() => {
         if (!chainOverviewMap) return
@@ -31,7 +28,8 @@ const useGasHistoryChart = ({
 
                 return {
                     name: chain,
-                    data: processedTransactions
+                    data: processedTransactions,
+                    color: colorMapping[chain]
                 }
             })
 
@@ -87,7 +85,7 @@ const useGasHistoryChart = ({
             series: series,
         }
 
-        setChartOption(HighCharts.merge(highchartDefaultOption, option))
+        setChartOption(option)
     }, [chainOverviewMap])
 
     return chartOption
