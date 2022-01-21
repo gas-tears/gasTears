@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { HighchartHookParam } from './charts-types'
 import { formatCurrency } from "@coingecko/cryptoformat";
 import { colorMapping } from 'utils/HighchartsDefaultOption';
+import { chainLabelMapping } from 'utils/labels';
 
 const useGasHistoryChart = ({
     chainOverviewMap,
@@ -27,7 +28,7 @@ const useGasHistoryChart = ({
                 processedTransactions.push({ x: (new Date()).getTime(), y: undefined, transactionHash: "" })
 
                 return {
-                    name: chain,
+                    name: chainLabelMapping[chain],
                     data: processedTransactions,
                     color: colorMapping[chain]
                 }

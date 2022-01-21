@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
-import HighCharts from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
 import { HighchartHookParam } from './charts-types'
 import { formatCurrency } from "@coingecko/cryptoformat";
 import { colorMapping } from 'utils/HighchartsDefaultOption';
-
+import { chainLabelMapping } from 'utils/labels';
 
 const useChainDistributionChart = ({
     chainOverviewMap
@@ -18,7 +16,7 @@ const useChainDistributionChart = ({
             .entries(chainOverviewMap)
             .map(([chain, chainOverview]) => {
                 return {
-                    name: chain,
+                    name: chainLabelMapping[chain],
                     y: chainOverview.totalGasUSD,
                     color: colorMapping[chain]
                 }
