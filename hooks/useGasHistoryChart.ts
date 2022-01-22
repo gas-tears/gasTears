@@ -3,10 +3,12 @@ import { HighchartHookParam } from './charts-types'
 import { formatCurrency } from "@coingecko/cryptoformat";
 import { colorMapping } from 'utils/HighchartsDefaultOption';
 import { chainLabelMapping } from 'utils/labels';
+import { chainTransactionExplorerUrls } from 'utils/ChainInfos';
 
 const useGasHistoryChart = ({
     chainOverviewMap,
-    price
+    price,
+    viewCurrency
 }: HighchartHookParam) => {
     const [chartOption, setChartOption] = useState<Highcharts.Options>({})
 
@@ -20,12 +22,16 @@ const useGasHistoryChart = ({
                 if (!transactions) return
 
                 const processedTransactions = transactions.map((transaction) => {
+                    const transactionTime = parseInt(transaction.timeStamp) * 1000
+                    //TODO: do we have native price on the transaction? Or can we add this?
                     const nativeTransactionPrice = parseFloat(transaction.gasUsed) * parseFloat(transaction.gasPrice) * (0.000000001) ** 2
-                    const priceInUSD = nativeTransactionPrice * price[chain]["usd"]
-                    return { x: parseInt(transaction.timeStamp) * 1000, y: priceInUSD, transactionHash: transaction.hash }
+                    const priceInViewCurrency = nativeTransactionPrice * price[chain][viewCurrency]
+                    const transactionUrl = chainTransactionExplorerUrls[chain] + transaction.hash
+
+                    return { x: transactionTime, y: priceInViewCurrency, transactionUrl }
                 })
                 //Make it so that the last day on the graph is today
-                processedTransactions.push({ x: (new Date()).getTime(), y: undefined, transactionHash: "" })
+                processedTransactions.push({ x: (new Date()).getTime(), y: undefined, transactionUrl: "" })
 
                 return {
                     name: chainLabelMapping[chain],
@@ -47,11 +53,11 @@ const useGasHistoryChart = ({
             },
             yAxis: {
                 title: {
-                    text: 'Converted Transaction Cost (USD)'
+                    text: `Converted Transaction Cost (${viewCurrency.toLocaleUpperCase()})`
                 },
                 labels: {
                     formatter: function () {
-                        return formatCurrency(this.value, "usd");
+                        return formatCurrency(this.value, viewCurrency);
                     }
                 },
                 min: 0
@@ -65,7 +71,7 @@ const useGasHistoryChart = ({
                     point: {
                         events: {
                             click: function () {
-                                const url = "https://etherscan.io/tx/" + this.options.transactionHash
+                                const url = this.options.transactionUrl
                                 window.open(url, "_blank")?.focus()
                             }
                         }
@@ -78,7 +84,7 @@ const useGasHistoryChart = ({
                     const date = new Date(this.x)
                     return `
                         <div><b>${date.toLocaleString()}</b></div><br/>
-                        <div>Transaction Cost: ${formatCurrency(this.y, "usd")}</div>
+                        <div>Transaction Cost: ${formatCurrency(this.y, viewCurrency)}</div>
                     `
                 }
             },
@@ -87,7 +93,7 @@ const useGasHistoryChart = ({
         }
 
         setChartOption(option)
-    }, [chainOverviewMap])
+    }, [chainOverviewMap, viewCurrency])
 
     return chartOption
 }

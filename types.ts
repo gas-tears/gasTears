@@ -84,3 +84,7 @@ export class NetOverview {
     }
 }
 
+
+export type ChainTransactionExplorerUrls = {
+    [C in Chains]: string
+}

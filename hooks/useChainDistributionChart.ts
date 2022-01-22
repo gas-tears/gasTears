@@ -5,7 +5,9 @@ import { colorMapping } from 'utils/HighchartsDefaultOption';
 import { chainLabelMapping } from 'utils/labels';
 
 const useChainDistributionChart = ({
-    chainOverviewMap
+    chainOverviewMap,
+    price,
+    viewCurrency
 }: HighchartHookParam) => {
     const [chartOption, setChartOption] = useState<Highcharts.Options>({})
 
@@ -15,9 +17,11 @@ const useChainDistributionChart = ({
         const data = Object
             .entries(chainOverviewMap)
             .map(([chain, chainOverview]) => {
+                const gasInViewCurrency = chainOverview.totalGasNative * price[chain][viewCurrency]
+
                 return {
                     name: chainLabelMapping[chain],
-                    y: chainOverview.totalGasUSD,
+                    y: gasInViewCurrency,
                     color: colorMapping[chain]
                 }
             })
@@ -47,7 +51,7 @@ const useChainDistributionChart = ({
                 formatter: function () {
                     return `
                         <div><b>${this.point.name}</b></div><br/>
-                        <div>Total gas usage: ${formatCurrency(this.y, "usd")} (${this.percentage?.toFixed(1)}%)</div>
+                        <div>Total gas usage: ${formatCurrency(this.y, viewCurrency)} (${this.percentage?.toFixed(1)}%)</div>
                     `
                 }
             },
@@ -60,7 +64,7 @@ const useChainDistributionChart = ({
         }
 
         setChartOption(option)
-    }, [chainOverviewMap])
+    }, [chainOverviewMap, viewCurrency])
 
     return chartOption
 }

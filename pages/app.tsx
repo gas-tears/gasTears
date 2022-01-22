@@ -24,8 +24,8 @@ const App: NextPage = () => {
 
     const { chainOverviewMap, netOverview, isLoading, walletOverviewMap } = useSummaryData({ addresses, viewCurrency, price })
 
-    const gasHistoryOptions = useGasHistoryChart({ chainOverviewMap, price })
-    const chainDistributionOptions = useChainDistributionChart({ chainOverviewMap })
+    const gasHistoryOptions = useGasHistoryChart({ chainOverviewMap, price, viewCurrency })
+    const chainDistributionOptions = useChainDistributionChart({ chainOverviewMap, price, viewCurrency })
 
     useEffect(() => {
         const { addresses } = router.query
@@ -56,10 +56,10 @@ const App: NextPage = () => {
                         value={viewCurrency}
                         onChange={(e) => setViewCurrency(e.target.value)}
                     >
-                        <option value="USD">USD</option>
-                        <option value="CAD">CAD</option>
-                        <option value="ETH">ETH</option>
-                        <option value="BTC">BTC</option>
+                        <option value="usd">USD</option>
+                        <option value="cad">CAD</option>
+                        <option value="eth">ETH</option>
+                        <option value="btc">BTC</option>
                     </select>
                 </div>
             </ContentContainer>
