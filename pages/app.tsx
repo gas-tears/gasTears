@@ -13,6 +13,8 @@ import useChainDistributionChart from 'hooks/useChainDistributionChart'
 import { VSCurrencies, ViewChains } from 'types'
 import SummaryOverview from 'components/SummaryOverview'
 import classNames from 'classnames'
+import WalletOverviewNotFound from 'components/WalletOverviewNotFound'
+import WalletOverview from 'components/WalletOverview'
 
 const App: NextPage = () => {
     const price = useGeckoPrice({})
@@ -86,33 +88,38 @@ const App: NextPage = () => {
                     />
 
                     <h1>Gas History</h1>
-                    <div className='chartWrapper'>
+                    <div className='chartWrapper tilePrimary'>
                         <HighCharts
                             options={gasHistoryOptions}
                         />
                     </div>
 
                     <h1>Gas usage per chain</h1>
-                    <div className="chartWrapper">
+                    <div className="chartWrapper tilePrimary">
                         <HighCharts
                             options={chainDistributionOptions}
                         />
                     </div>
 
-                    {/* {walletInfoArray && walletInfoArray.length > 1 && (<>
-                        <h1>Wallets</h1>
-                        {walletInfoArray.map(({ address, totalGasNative }) => (
-                            <div key={address}>
-                                <b>{address}: </b>
-                                {formatCurrency(totalGasNative * price['ethereum'][viewCurrency.toLowerCase()], viewCurrency, "en")}
-                            </div>))}
-                    </>)} */}
+                    {addresses.length !== 0 && (<>
+                        <h1>Wallet Breakdown</h1>
+
+                        {addresses.map((address) => {
+                            if (!walletOverviewMap[address]) return <WalletOverviewNotFound address={address} />
+                            return <WalletOverview
+                                address={address}
+                                price={price}
+                                viewCurrency={viewCurrency}
+                                selectedChain={selectedChain}
+                                walletSummary={walletOverviewMap[address]}
+                            />
+                        })}
+                    </>)}
                 </div>
             </ContentContainer>
         </PageContainer>
     )
 }
-
 
 type ChainOption = {
     label: string,
@@ -124,7 +131,6 @@ const chainOptions: ChainOptions = [
     { label: "All", value: "all" },
     { label: "Ethereum", value: "ethereum" },
     { label: "BSC", value: "binancecoin" },
-    // { label: "Solana", value: "solana" },
     { label: "Avalanche", value: "avalanche-2" },
     { label: "Fantom", value: "fantom" },
     { label: "Polygon", value: "matic-network" },

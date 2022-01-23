@@ -39,12 +39,11 @@ export type ViewChains = "all" | Chains
 
 
 export type ChainOverviewMap = {
-    [Chain in Chains]?: ChainOverview
+    [Chain in Chains]?: SummaryData
 }
 
-export class ChainOverview {
+export class SummaryData {
     totalGasNative: number
-    totalGasUSD: number
     totalTransactions: number
     totalSuccessTransactions: number
     totalFailedTransactions: number
@@ -52,7 +51,6 @@ export class ChainOverview {
 
     constructor() {
         this.totalGasNative = 0;
-        this.totalGasUSD = 0;
         this.totalTransactions = 0;
         this.totalSuccessTransactions = 0;
         this.totalFailedTransactions = 0;
@@ -61,14 +59,17 @@ export class ChainOverview {
 }
 
 export type WalletOverviewMap = {
-    [address: string]: WalletTransaction[]
+    [address: string]: ChainOverviewMap
 }
 
-type WalletTransaction = {
-    chain: Chains,
-    totalGasNative: number,
-    totalGasUSD: number
-}
+// export class WalletChainSummaryData extends SummaryData {
+//     chain: Chains
+
+//     constructor(chain: Chains) {
+//         super()
+//         this.chain = chain
+//     }
+// }
 
 export class NetOverview {
     totalGas: number

@@ -39,15 +39,15 @@ const SummaryOverview: React.FC<Props> = ({
     return (
         <div className="topLevelInfoGrid">
             <OverviewTile
-                label='Total gas spent'
+                label='Total Gas Fees'
                 displayValue={formatCurrency(totalGas, viewCurrency, "en")}
             />
             <OverviewTile
-                label='Total transactions'
+                label='Total Transactions'
                 displayValue={totalTransactions}
             />
             <OverviewTile
-                label='Successful transactions'
+                label='Successful Transactions'
                 displayValue={totalSuccessTransactions}
             />
             <OverviewTile

@@ -6,8 +6,9 @@ import {
     VSCurrencies,
     ChainOverviewMap,
     WalletOverviewMap,
-    ChainOverview,
-    NetOverview
+    SummaryData,
+    NetOverview,
+    WalletChainSummaryData
 } from "types"
 
 type Params = {
@@ -51,7 +52,7 @@ export default function useSummaryData({
         const chainOverviewMap: ChainOverviewMap = Object
             .keys(chainToAddressesMap)
             .reduce((acc, chain) => ({
-                ...acc, [chain]: new ChainOverview()
+                ...acc, [chain]: new SummaryData()
             }), {})
 
         // Overview is computed while walletOverviewMap is being extracted to save on operations
@@ -60,37 +61,43 @@ export default function useSummaryData({
             .forEach(([chain, addressToTransactionsMap]) => {
                 Object.entries(addressToTransactionsMap)
                     .forEach(([address, transactions]) => {
+                        // If no array was returned, the return for this address is an error 
+                        // therefore we don't want to include it in the overview
+                        if (!Array.isArray(transactions) || !transactions) return
+
                         if (!(address in walletOverviewMap)) {
-                            walletOverviewMap[address] = [];
+                            walletOverviewMap[address] = {};
                         }
 
-                        if (!transactions || !Array.isArray(transactions)) {
-                            walletOverviewMap[address].push({ chain, totalGasNative: 0, totalGasUSD: 0 })
-                            return
-                        }
+                        // if (!transactions) {
+                        //     walletOverviewMap[address][chain] = new SummaryData()
+                        //     return
+                        // }
 
                         const totalOutgoingTransactions: Transaction[] = transactions
                             .filter((transaction) => transaction.from === address.toLowerCase()) //Only count transactions originated from the current address
 
-                        const totalGasNative = totalOutgoingTransactions
-                            .reduce((acc, currentTransaction) => {
-                                chainOverviewMap[chain]["totalTransactions"] += 1
+                        const summaryData = totalOutgoingTransactions
+                            .reduce((overview, currentTransaction) => {
+                                overview["totalTransactions"] += 1
                                 if (currentTransaction.isError === "1") {
-                                    chainOverviewMap[chain]["totalFailedTransactions"] += 1
+                                    overview["totalFailedTransactions"] += 1
                                 } else {
-                                    chainOverviewMap[chain]["totalSuccessTransactions"] += 1
+                                    overview["totalSuccessTransactions"] += 1
                                 }
 
                                 const gas = parseFloat(currentTransaction.gasUsed) * parseFloat(currentTransaction.gasPrice) * (0.000000001) ** 2
-                                return acc + gas
-                            }, 0)
+                                overview["totalGasNative"] += gas
+                                return overview
+                            }, new SummaryData())
 
-                        const totalGasUSD = totalGasNative * price[chain]["usd"]
-
-                        chainOverviewMap[chain]["totalGasNative"] += totalGasNative
-                        chainOverviewMap[chain]["totalGasUSD"] += totalGasUSD
+                        chainOverviewMap[chain]["totalGasNative"] += summaryData.totalGasNative
+                        chainOverviewMap[chain]["totalTransactions"] += summaryData.totalTransactions
+                        chainOverviewMap[chain]["totalFailedTransactions"] += summaryData.totalFailedTransactions
+                        chainOverviewMap[chain]["totalSuccessTransactions"] += summaryData.totalSuccessTransactions
                         chainOverviewMap[chain]["transactions"] = chainOverviewMap[chain]["transactions"].concat(totalOutgoingTransactions)
-                        walletOverviewMap[address].push({ chain, totalGasNative, totalGasUSD })
+
+                        walletOverviewMap[address][chain] = summaryData
                     })
             })
 
@@ -101,12 +108,7 @@ export default function useSummaryData({
     useEffect(() => {
         if (!chainOverviewMap) return
 
-        const overview: NetOverview = {
-            totalGas: 0,
-            totalTransactions: 0,
-            totalSuccessTransactions: 0,
-            totalFailedTransactions: 0,
-        }
+        const overview = new NetOverview()
 
         Object
             .entries(chainOverviewMap)

@@ -53,7 +53,7 @@ const useGasHistoryChart = ({
             },
             yAxis: {
                 title: {
-                    text: `Converted Transaction Cost (${viewCurrency.toLocaleUpperCase()})`
+                    text: `Transaction Cost (${viewCurrency.toLocaleUpperCase()})`
                 },
                 labels: {
                     formatter: function () {

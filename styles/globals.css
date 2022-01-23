@@ -1,3 +1,14 @@
+
+:root {
+  --tile-shadow : 0.5px 0.5px 1.6px rgba(0, 0, 0, 0.046),
+                  1px 0.9px 3.8px rgba(0, 0, 0, 0.066),
+                  1.6px 1.5px 6.8px rgba(0, 0, 0, 0.079),
+                  2.8px 2.7px 11.2px rgba(0, 0, 0, 0.089),
+                  6.1px 5.7px 18.5px rgba(0, 0, 0, 0.097),
+                  17.5px 16.6px 32.4px rgba(0, 0, 0, 0.104),
+                  88px 83px 70px rgba(0, 0, 0, 0.11);
+}
+
 html,
 body,
 #__next {
@@ -415,15 +426,6 @@ input:disabled {
 .chartWrapper {
   border-radius: 0.5rem;
   overflow: hidden;
-  box-shadow:
-    0.5px 0.5px 1.6px rgba(0, 0, 0, 0.046),
-    1px 0.9px 3.8px rgba(0, 0, 0, 0.066),
-    1.6px 1.5px 6.8px rgba(0, 0, 0, 0.079),
-    2.8px 2.7px 11.2px rgba(0, 0, 0, 0.089),
-    6.1px 5.7px 18.5px rgba(0, 0, 0, 0.097),
-    17.5px 16.6px 32.4px rgba(0, 0, 0, 0.104),
-    88px 83px 70px rgba(0, 0, 0, 0.11)
-  ;
 }
 
 .viewCurrencySelect {
@@ -471,13 +473,41 @@ input:disabled {
 
 .tilePrimary {
   background: #272727;
-  box-shadow:
-    0.5px 0.5px 1.6px rgba(0, 0, 0, 0.046),
-    1px 0.9px 3.8px rgba(0, 0, 0, 0.066),
-    1.6px 1.5px 6.8px rgba(0, 0, 0, 0.079),
-    2.8px 2.7px 11.2px rgba(0, 0, 0, 0.089),
-    6.1px 5.7px 18.5px rgba(0, 0, 0, 0.097),
-    17.5px 16.6px 32.4px rgba(0, 0, 0, 0.104),
-    88px 83px 70px rgba(0, 0, 0, 0.11)
-  ;
+  box-shadow: var(--tile-shadow)
+}
+
+
+.walletOverviewSection {
+  margin-bottom: 2rem;
+}
+
+.walletOverviewName {
+  font-size:  0.9rem;
+  font-style: italic;
+  font-weight: 300;
+  margin-bottom: 0.25rem;
+}
+
+.walletOverviewWrapper {
+  border-radius: 0.2rem;
+  box-shadow: var(--tile-shadow);
+  padding: 1.25rem;
+  display: flex;
+}
+
+.walletOverviewSummaryGrid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  grid-gap: 1em;
+}
+
+.walletSummaryItemTitle {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.walletSummaryitemValue {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
