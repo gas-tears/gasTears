@@ -74,6 +74,7 @@ const App: NextPage = () => {
                                 onClick={() => setSelectedChain(value)}
                                 key={value}
                                 title={label}
+                                disabled={chainOverviewMap[value]?.totalTransactions == 0}
                             >
                                 {label}
                             </button>

@@ -451,6 +451,10 @@ input:disabled {
   padding: 0.5rem 1rem;
 }
 
+.chainFilterTile:disabled {
+  opacity: 0.2;
+}
+
 .chainFilterTile::after {
   display: block;
   content: attr(title);
