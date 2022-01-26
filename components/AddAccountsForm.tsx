@@ -18,7 +18,7 @@ type FieldValues = {
 const AddAccountsForm: React.FC = () => {
     const router = useRouter()
     const [storedWallets, setStoredWallets] = useLocalStorage<Wallet[]>("wallets", [{ address: "", isConnectedByUser: false }])
-
+    console.log(storedWallets)
     return (
         <Formik
             initialValues={{
@@ -67,6 +67,7 @@ const AddAccountsForm: React.FC = () => {
                         primary
                         rounded
                         style={{ width: "100%", maxWidth: 200, marginTop: "1rem" }}
+                        disabled={storedWallets.length == 0}
                     >
                         See Gas
                     </Field>
