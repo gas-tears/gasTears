@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { HighchartHookParam } from './charts-types'
 import { formatCurrency } from "@coingecko/cryptoformat";
+import { shortenAddress } from 'utils/Common';
 import { colorMapping } from 'utils/HighchartsDefaultOption';
 import { chainLabelMapping } from 'utils/labels';
 import { chainTransactionExplorerUrls } from 'utils/ChainInfos';
@@ -83,12 +84,10 @@ const useGasHistoryChart = ({
             tooltip: {
                 formatter: function () {
                     const date = new Date(this.x)
-                    const address = this.point.options.address
-                    const shortAddress = address.slice(0, 5) + "..." + address.slice(-4)
 
                     return `
                         <div><b>${date.toLocaleString()}</b></div><br/>
-                        <div>Address: ${shortAddress}</div><br/>
+                        <div>Address: ${shortenAddress(this.point.options.address)}</div><br/>
                         <div>Transaction Cost: ${formatCurrency(this.y, viewCurrency)}</div>
                     `
                 }
