@@ -9,7 +9,8 @@ type Props = {
     chainOverviewMap: ChainOverviewMap,
     viewCurrency: VSCurrencies,
     selectedChain: ViewChains,
-    price: TokenVSCurrencies
+    price: TokenVSCurrencies,
+    isLoading?: boolean
 }
 
 const SummaryOverview: React.FC<Props> = ({
@@ -17,7 +18,8 @@ const SummaryOverview: React.FC<Props> = ({
     chainOverviewMap,
     viewCurrency,
     selectedChain,
-    price
+    price,
+    isLoading
 }) => {
     const {
         totalGas,
@@ -41,18 +43,22 @@ const SummaryOverview: React.FC<Props> = ({
             <OverviewTile
                 label='Total Gas Fees'
                 displayValue={formatCurrency(totalGas, viewCurrency, "en")}
+                isLoading={isLoading}
             />
             <OverviewTile
                 label='Total Transactions'
                 displayValue={totalTransactions}
+                isLoading={isLoading}
             />
             <OverviewTile
                 label='Successful Transactions'
                 displayValue={totalSuccessTransactions}
+                isLoading={isLoading}
             />
             <OverviewTile
                 label='Failed Transactions'
                 displayValue={totalFailedTransactions}
+                isLoading={isLoading}
             />
         </div>
     )

@@ -4,7 +4,7 @@ import { useRouter } from 'next/dist/client/router';
 import InputField from './FormItems/InputField';
 import { WalletConnectContext } from "components/WalletConnectContext"
 import useLocalStorage from 'hooks/useLocalStorage';
-import Button from './Button';
+import Button from './Button/Button';
 
 type Wallet = {
     address: string,
@@ -25,7 +25,6 @@ const AddAccountsForm: React.FC = () => {
                 wallets: storedWallets
             }}
             onSubmit={(values) => {
-                console.log(values)
                 const { wallets } = values
                 const query = wallets
                     .filter(wallet => wallet.address !== "")

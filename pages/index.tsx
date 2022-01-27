@@ -1,12 +1,10 @@
 import type { NextPage } from 'next'
-import styles from '../styles/Home.module.css'
 import AddAccountsForm from '../components/AddAccountsForm'
-import useWalletConnect from 'hooks/useWalletConnect'
 import { WalletConnectContext } from "components/WalletConnectContext"
 import { useContext } from "react"
 import ContentContainer from 'components/layouts/ContentContainer'
 import PageContainer from 'components/layouts/PageContainer'
-import Button from 'components/Button'
+import Button from 'components/Button/Button'
 import SendTip from 'components/SendTip'
 import GasTears from "../public/gastears.svg"
 

@@ -2,13 +2,15 @@ import { TokenVSCurrencies } from 'hooks/useGeckoPrice';
 import React, { useMemo } from 'react';
 import { NetOverview, VSCurrencies, ViewChains, ChainOverviewMap } from "types"
 import { formatCurrency } from "@coingecko/cryptoformat";
+import Skeleton from 'react-loading-skeleton';
 
 type Props = {
     address: string,
     walletSummary: ChainOverviewMap,
     price: TokenVSCurrencies,
     viewCurrency: VSCurrencies,
-    selectedChain: ViewChains
+    selectedChain: ViewChains,
+    isLoading?: boolean
 }
 
 const WalletOverview: React.FC<Props> = ({
@@ -16,7 +18,8 @@ const WalletOverview: React.FC<Props> = ({
     walletSummary,
     price,
     viewCurrency,
-    selectedChain
+    selectedChain,
+    isLoading = false
 }) => {
     const aggregateSummary: NetOverview = useMemo(() => {
         return Object
@@ -55,6 +58,8 @@ const WalletOverview: React.FC<Props> = ({
         totalSuccessTransactions,
         totalFailedTransactions
     } = selectedChain === "all" ? aggregateSummary : selectedChainSummary
+
+    if (isLoading) return <Skeleton height={80} borderRadius={10} style={{ marginBottom: 10 }} />
 
     return (
         <div className='walletOverviewSection'>

@@ -78,6 +78,7 @@ const App: NextPage = () => {
                                     onClick={() => setSelectedChain(value)}
                                     key={value}
                                     title={label}
+                                    isLoading={isLoading}
                                     disabled={chainOverviewMap[value]?.totalTransactions == 0}
                                 >
                                     {label}
@@ -120,6 +121,7 @@ const App: NextPage = () => {
                                     viewCurrency={viewCurrency}
                                     selectedChain={selectedChain}
                                     walletSummary={walletOverviewMap[address]}
+                                    isLoading={isLoading}
                                 />
                             })}
                         </>)}
