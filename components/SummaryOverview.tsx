@@ -1,8 +1,8 @@
-import React from 'react'
-import OverviewTile from 'components/OverviewTile'
 import { formatCurrency } from "@coingecko/cryptoformat";
-import { VSCurrencies, Chains, ChainOverviewMap, NetOverview, ViewChains } from 'types'
-import { TokenVSCurrencies } from "hooks/useGeckoPrice"
+import OverviewTile from 'components/OverviewTile';
+import { TokenVSCurrencies } from "hooks/useGeckoPrice";
+import React from 'react';
+import { ChainOverviewMap, NetOverview, ViewChains, VSCurrencies } from 'types';
 
 type Props = {
     netOverview: NetOverview,

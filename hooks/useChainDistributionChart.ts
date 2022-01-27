@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
-import { HighchartHookParam } from './charts-types'
 import { formatCurrency } from "@coingecko/cryptoformat";
+import { useEffect, useState } from 'react';
 import { colorMapping } from 'utils/HighchartsDefaultOption';
 import { chainLabelMapping } from 'utils/labels';
+import { HighchartHookParam } from './charts-types';
 
 const useChainDistributionChart = ({
     chainOverviewMap,

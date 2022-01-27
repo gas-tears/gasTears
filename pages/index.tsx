@@ -1,11 +1,11 @@
-import type { NextPage } from 'next'
-import AddAccountsForm from '../components/AddAccountsForm'
-import { WalletConnectContext } from "components/WalletConnectContext"
-import { useContext } from "react"
+import Button from 'components/Button/Button'
 import ContentContainer from 'components/layouts/ContentContainer'
 import PageContainer from 'components/layouts/PageContainer'
-import Button from 'components/Button/Button'
 import SendTip from 'components/SendTip'
+import { WalletConnectContext } from "components/WalletConnectContext"
+import type { NextPage } from 'next'
+import { useContext } from "react"
+import AddAccountsForm from '../components/AddAccountsForm'
 import GasTears from "../public/gastears.svg"
 
 const Home: NextPage = () => {

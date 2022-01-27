@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import { HighchartHookParam } from './charts-types'
 import { formatCurrency } from "@coingecko/cryptoformat";
+import { useEffect, useState } from 'react';
+import { chainTransactionExplorerUrls } from 'utils/ChainInfos';
 import { shortenAddress } from 'utils/Common';
 import { colorMapping } from 'utils/HighchartsDefaultOption';
 import { chainLabelMapping } from 'utils/labels';
-import { chainTransactionExplorerUrls } from 'utils/ChainInfos';
+import { HighchartHookParam } from './charts-types';
 
 const useGasHistoryChart = ({
     chainOverviewMap,

@@ -1,9 +1,9 @@
-import React, { useRef } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import HighchartsExporting from 'highcharts/modules/exporting'
-import initHighcharts from 'utils/HighchartsDefaultOption'
+import React, { useRef } from 'react'
 import Skeleton from 'react-loading-skeleton'
+import initHighcharts from 'utils/HighchartsDefaultOption'
 
 if (typeof Highcharts === 'object') {
     HighchartsExporting(Highcharts)

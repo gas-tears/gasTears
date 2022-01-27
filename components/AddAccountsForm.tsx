@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { Formik, Field, Form, FieldArray, useFormikContext } from 'formik';
-import { useRouter } from 'next/dist/client/router';
-import InputField from './FormItems/InputField';
-import { WalletConnectContext } from "components/WalletConnectContext"
+import { WalletConnectContext } from "components/WalletConnectContext";
+import { Field, FieldArray, Form, Formik, useFormikContext } from 'formik';
 import useLocalStorage from 'hooks/useLocalStorage';
+import { useRouter } from 'next/dist/client/router';
+import React, { useContext, useEffect } from 'react';
 import Button from './Button/Button';
+import InputField from './FormItems/InputField';
 
 type Wallet = {
     address: string,

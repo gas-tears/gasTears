@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { ExplorerResponse, Chains } from "types"
+import { Chains, ExplorerResponse } from "types"
 
 type ChainToApiKey = {
   [Chain in Chains]?: string

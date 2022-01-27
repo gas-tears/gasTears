@@ -1,14 +1,8 @@
-import { useState, useEffect } from "react"
 import { TokenVSCurrencies } from 'hooks/useGeckoPrice'
+import { useEffect, useState } from "react"
 import {
-    ExplorerResponse,
-    Transaction,
-    VSCurrencies,
-    ChainOverviewMap,
-    WalletOverviewMap,
-    SummaryData,
-    NetOverview,
-    WalletChainSummaryData
+    ChainOverviewMap, ExplorerResponse, NetOverview, SummaryData, Transaction,
+    VSCurrencies, WalletOverviewMap
 } from "types"
 
 type Params = {

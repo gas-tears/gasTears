@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import MetaMaskOnboarding from '@metamask/onboarding';
+import { useEffect, useRef, useState } from "react";
 import { MetaMaskNetworkName } from "types";
 
 export default function useWalletConnect() {

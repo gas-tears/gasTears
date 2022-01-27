@@ -1,6 +1,7 @@
-import React, { createContext } from "react";
 import useWalletConnect from "hooks/useWalletConnect";
-import { MetaMaskNetworkName } from "types"
+import React, { createContext } from "react";
+import { MetaMaskNetworkName } from "types";
+
 interface WalletConnectContext {
     getWallets: () => Promise<void> | null,
     connectedWallets: string[] | undefined,

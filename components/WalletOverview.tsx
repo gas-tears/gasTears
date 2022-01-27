@@ -1,8 +1,8 @@
+import { formatCurrency } from "@coingecko/cryptoformat";
 import { TokenVSCurrencies } from 'hooks/useGeckoPrice';
 import React, { useMemo } from 'react';
-import { NetOverview, VSCurrencies, ViewChains, ChainOverviewMap } from "types"
-import { formatCurrency } from "@coingecko/cryptoformat";
 import Skeleton from 'react-loading-skeleton';
+import { ChainOverviewMap, NetOverview, ViewChains, VSCurrencies } from "types";
 
 type Props = {
     address: string,

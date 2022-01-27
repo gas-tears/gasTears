@@ -1,24 +1,24 @@
+import Button from 'components/Button/Button'
+import ChainSelector from 'components/Button/ChainSelector'
+import HighCharts from 'components/HighCharts'
+import ContentContainer from 'components/layouts/ContentContainer'
+import PageContainer from 'components/layouts/PageContainer'
+import SendTip from 'components/SendTip'
+import SummaryOverview from 'components/SummaryOverview'
+import WalletOverview from 'components/WalletOverview'
+import WalletOverviewNotFound from 'components/WalletOverviewNotFound'
+import useChainDistributionChart from 'hooks/useChainDistributionChart'
+import useGasHistoryChart from 'hooks/useGasHistoryChart'
+import useGeckoPrice from 'hooks/useGeckoPrice'
+import useLocalStorage from 'hooks/useLocalStorage'
+import useSummaryData from 'hooks/useSummaryData'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/dist/client/router'
-import { useState, useEffect } from "react"
-import PageContainer from 'components/layouts/PageContainer'
-import ContentContainer from 'components/layouts/ContentContainer'
-import Button from 'components/Button/Button'
-import useSummaryData from 'hooks/useSummaryData'
-import useLocalStorage from 'hooks/useLocalStorage'
-import useGeckoPrice from 'hooks/useGeckoPrice'
-import HighCharts from 'components/HighCharts'
-import useGasHistoryChart from 'hooks/useGasHistoryChart'
-import useChainDistributionChart from 'hooks/useChainDistributionChart'
-import { VSCurrencies, ViewChains } from 'types'
-import SummaryOverview from 'components/SummaryOverview'
-import classNames from 'classnames'
-import WalletOverviewNotFound from 'components/WalletOverviewNotFound'
-import WalletOverview from 'components/WalletOverview'
+import { useEffect, useState } from "react"
+import { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
-import ChainSelector from 'components/Button/ChainSelector'
-import { shortenAddress } from 'utils/Common';
+import { ViewChains, VSCurrencies } from 'types'
+import { shortenAddress } from 'utils/Common'
 
 const App: NextPage = () => {
     const price = useGeckoPrice({})
@@ -128,6 +128,7 @@ const App: NextPage = () => {
                         </>)}
                     </div>
                 </ContentContainer>
+                <SendTip />
             </PageContainer>
         </SkeletonTheme>
     )
