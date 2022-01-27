@@ -18,6 +18,7 @@ import WalletOverview from 'components/WalletOverview'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import ChainSelector from 'components/Button/ChainSelector'
+import { shortenAddress } from 'utils/Common';
 
 const App: NextPage = () => {
     const price = useGeckoPrice({})
@@ -116,7 +117,7 @@ const App: NextPage = () => {
                             {addresses.map((address) => {
                                 if (!walletOverviewMap[address]) return <WalletOverviewNotFound address={address} />
                                 return <WalletOverview
-                                    address={address}
+                                    address={shortenAddress(address)}
                                     price={price}
                                     viewCurrency={viewCurrency}
                                     selectedChain={selectedChain}

@@ -18,7 +18,6 @@ type FieldValues = {
 const AddAccountsForm: React.FC = () => {
     const router = useRouter()
     const [storedWallets, setStoredWallets] = useLocalStorage<Wallet[]>("wallets", [{ address: "", isConnectedByUser: false }])
-    console.log(storedWallets)
     return (
         <Formik
             initialValues={{
