@@ -1,8 +1,9 @@
 import { WalletConnectContext } from "components/WalletConnectContext";
-import { Field, FieldArray, Form, Formik, useFormikContext } from 'formik';
+import { Field, FieldArray, FieldProps, Form, Formik, useFormikContext } from 'formik';
 import useLocalStorage from 'hooks/useLocalStorage';
 import { useRouter } from 'next/dist/client/router';
-import React, { useContext, useEffect } from 'react';
+import { default as React, useContext, useEffect } from 'react';
+import * as yup from 'yup';
 import Button from './Button/Button';
 import InputField from './FormItems/InputField';
 
@@ -31,6 +32,7 @@ const AddAccountsForm: React.FC = () => {
                     .join("&")
                 router.push(`/app?${query}`)
             }}
+            validationSchema={validationSchema}
         >
             {({ values }) => (
                 <Form className='addresses-form'>
@@ -42,10 +44,15 @@ const AddAccountsForm: React.FC = () => {
                                 <Field
                                     key={index}
                                     name={`wallets[${index}].address`}
-                                    as={InputField}
-                                    isConnectedByUser={wallet.isConnectedByUser}
-                                    onDelete={() => arrayHelpers.remove(index)}
-                                />
+                                >
+                                    {(formikFieldProps: FieldProps) => (
+                                        <InputField
+                                            {...formikFieldProps}
+                                            isConnectedByUser={wallet.isConnectedByUser}
+                                            onDelete={() => arrayHelpers.remove(index)}
+                                        />
+                                    )}
+                                </Field>
                             ))}
                             {values.wallets.length < 5 &&
                                 <button
@@ -75,6 +82,26 @@ const AddAccountsForm: React.FC = () => {
         </Formik>
     )
 }
+
+const validationSchema = yup.object().shape({
+    wallets: yup.array()
+        .of(
+            yup.object().shape({
+                address: yup
+                    .string()
+                    .required("No wallet, no gas")
+                    .matches(
+                        /^0x[a-fA-F0-9]{40}$/,
+                        "Wrong wallet, no gas"
+                    )
+                ,
+                isConnectedByUser: yup.boolean(),
+            })
+        )
+        .min(1, 'No wallet, no gas')
+        .max(5, 'No wallet, no gas'),
+});
+
 
 type FormikHackProps = {
     setStoredWallets: (value: Wallet[]) => void

@@ -241,6 +241,13 @@ input:disabled {
   font-weight: bold;
 }
 
+.addressInputFieldError {
+  font-size: 0.8rem;
+  color: red;
+  margin-left: 1.2rem;
+  margin-top: 0.25rem;
+}
+
 .addressInputFieldMain {
   display: flex;
   align-items: center;

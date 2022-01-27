@@ -1,5 +1,5 @@
-import { FieldProps } from 'formik'
-import React from 'react'
+import { ErrorMessage, FieldProps } from 'formik'
+import { default as React } from 'react'
 
 type Props = {
     isConnectedByUser?: boolean
@@ -8,7 +8,7 @@ type Props = {
 
 const InputField: React.FC<FieldProps & Props> = ({
     field,
-    form,
+    meta,
     onDelete,
     isConnectedByUser = false,
     ...props
@@ -40,6 +40,7 @@ const InputField: React.FC<FieldProps & Props> = ({
                         </button>
                     )}
                 </div>
+                <ErrorMessage name={field.name} render={(msg) => <div className='addressInputFieldError'>{msg}</div>} />
             </div>
         </div>
     )
