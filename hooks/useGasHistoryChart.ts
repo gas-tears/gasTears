@@ -27,11 +27,12 @@ const useGasHistoryChart = ({
                     const nativeTransactionPrice = parseFloat(transaction.gasUsed) * parseFloat(transaction.gasPrice) * (0.000000001) ** 2
                     const priceInViewCurrency = nativeTransactionPrice * price[chain][viewCurrency]
                     const transactionUrl = chainTransactionExplorerUrls[chain] + transaction.hash
+                    const address = transaction.from
 
-                    return { x: transactionTime, y: priceInViewCurrency, transactionUrl }
+                    return { x: transactionTime, y: priceInViewCurrency, transactionUrl, address }
                 })
                 //Make it so that the last day on the graph is today
-                processedTransactions.push({ x: (new Date()).getTime(), y: undefined, transactionUrl: "" })
+                processedTransactions.push({ x: (new Date()).getTime(), y: undefined, transactionUrl: "", address: "" })
 
                 return {
                     name: chainLabelMapping[chain],
@@ -82,8 +83,12 @@ const useGasHistoryChart = ({
             tooltip: {
                 formatter: function () {
                     const date = new Date(this.x)
+                    const address = this.point.options.address
+                    const shortAddress = address.slice(0, 5) + "..." + address.slice(-4)
+
                     return `
                         <div><b>${date.toLocaleString()}</b></div><br/>
+                        <div>Address: ${shortAddress}</div><br/>
                         <div>Transaction Cost: ${formatCurrency(this.y, viewCurrency)}</div>
                     `
                 }
