@@ -1,13 +1,13 @@
 import useWalletConnect from "hooks/useWalletConnect";
 import React, { createContext } from "react";
-import { MetaMaskNetworkName } from "types";
+import { ChainHexes } from "types";
 
 interface WalletConnectContext {
     getWallets: () => Promise<void> | null,
     connectedWallets: string[],
-    changeNetwork: (network: MetaMaskNetworkName) => Promise<void> | null,
+    changeNetwork: (network: ChainHexes) => Promise<void> | null,
     sendTip: (value: number) => Promise<void> | null,
-    connectedChain: string | undefined
+    connectedChain: ChainHexes
 }
 
 export const WalletConnectContext = createContext<WalletConnectContext>({

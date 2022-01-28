@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { ChainHexes } from 'types'
 import { WalletConnectContext } from './WalletConnectContext'
 
 export default function SendTip() {
@@ -54,7 +55,7 @@ export default function SendTip() {
                     id="chainSelect"
                     className="tipChainSelect"
                     value={connectedChain}
-                    onChange={(e) => changeNetwork(e.target.value)}
+                    onChange={(e) => changeNetwork(e.target.value as ChainHexes)}
                 >
                     {options.map(({ value, label }) => {
                         return <option key={value} value={value}>{label}</option>
@@ -75,13 +76,23 @@ export default function SendTip() {
     )
 }
 
-const autoTipOptions = {
+type TipSizes = "small" | "medium" | "large"
+
+type AutoTipOptions = {
+    [S in TipSizes]: string[]
+}
+
+type ChainAutoTipSize = {
+    [C in ChainHexes]: TipSizes
+}
+
+const autoTipOptions: AutoTipOptions = {
     small: ["0.01", "0.1", "1"],
     medium: ["0.1", "1", "10"],
     large: ["1", "10", "100"],
 }
 
-const chainAutoTipSize = {
+const chainAutoTipSize: ChainAutoTipSize = {
     "0x1": "small",
     "0xa86a": "medium",
     "0xfa": "large",
@@ -90,9 +101,9 @@ const chainAutoTipSize = {
 }
 
 const options = [
-    { value: "0x1", label: "ETH", autoTipSize: "small" },
-    { value: "0xa86a", label: "AVAX", autoTipSize: "medium" },
-    { value: "0xfa", label: "FTM", autoTipSize: "large" },
-    { value: "0x38", label: "BNB", autoTipSize: "medium" },
-    { value: "0x89", label: "MATIC", autoTipSize: "large" },
+    { value: "0x1", label: "ETH" },
+    { value: "0xa86a", label: "AVAX" },
+    { value: "0xfa", label: "FTM" },
+    { value: "0x38", label: "BNB" },
+    { value: "0x89", label: "MATIC" },
 ]
