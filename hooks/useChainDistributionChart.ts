@@ -1,5 +1,6 @@
 import { formatCurrency } from "@coingecko/cryptoformat";
 import { useEffect, useState } from 'react';
+import { Chains, SummaryData } from "types";
 import { colorMapping } from 'utils/HighchartsDefaultOption';
 import { chainLabelMapping } from 'utils/labels';
 import { HighchartHookParam } from './charts-types';
@@ -17,12 +18,12 @@ const useChainDistributionChart = ({
         const data = Object
             .entries(chainOverviewMap)
             .map(([chain, chainOverview]) => {
-                const gasInViewCurrency = chainOverview.totalGasNative * price[chain][viewCurrency]
+                const gasInViewCurrency = chainOverview.totalGasNative * (price?.[chain as Chains]?.[viewCurrency] || 0)
 
                 return {
-                    name: chainLabelMapping[chain],
+                    name: chainLabelMapping[chain as Chains],
                     y: gasInViewCurrency,
-                    color: colorMapping[chain]
+                    color: colorMapping[chain as Chains]
                 }
             })
         const option: Highcharts.Options = {

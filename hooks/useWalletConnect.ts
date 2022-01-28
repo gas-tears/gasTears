@@ -1,10 +1,13 @@
 import MetaMaskOnboarding from '@metamask/onboarding';
 import { useEffect, useRef, useState } from "react";
-import { MetaMaskNetworkName } from "types";
+import { ChainHexes, MetaMaskNetworkName } from "types";
+
+//TODO: this makes it so that we lose type checking for the window object
+declare let window: any
 
 export default function useWalletConnect() {
     const [connectedWallets, setConnectedWallets] = useState<string[]>([])
-    const [connectedChain, setConnectedChain] = useState<string>()
+    const [connectedChain, setConnectedChain] = useState<ChainHexes>("0x1")
     const onboarding = useRef<MetaMaskOnboarding>();
 
     useEffect(() => {
@@ -17,7 +20,7 @@ export default function useWalletConnect() {
 
         (async () => {
             try {
-                const chain = await ethereum.request({ method: 'eth_chainId' })
+                const chain = await window.ethereum.request({ method: 'eth_chainId' })
                 setConnectedChain(chain)
             } catch (error) {
                 console.log(error)
@@ -38,19 +41,19 @@ export default function useWalletConnect() {
     const getWallets = async () => {
         if (!MetaMaskOnboarding.isMetaMaskInstalled()) onboarding?.current?.startOnboarding()
 
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         setConnectedWallets(accounts)
     }
 
-    const changeNetwork = async (chainId: MetaMaskNetworkName) => {
+    const changeNetwork = async (chainId: ChainHexes) => {
         if (!MetaMaskOnboarding.isMetaMaskInstalled()) onboarding?.current?.startOnboarding()
 
         try {
-            await ethereum.request({
+            await window.ethereum.request({
                 method: 'wallet_switchEthereumChain',
                 params: [{ chainId }],
             });
-        } catch (switchError) {
+        } catch (switchError: any) {
             // This error code indicates that the chain has not been added to MetaMask.
             if (switchError.code === 4902) {
                 //TODO: Change chain id to chain name
@@ -71,7 +74,7 @@ export default function useWalletConnect() {
 
         // txHash is a hex string
         // As with any RPC call, it may throw an error
-        const txHash = await ethereum.request({
+        const txHash = await window.ethereum.request({
             method: 'eth_sendTransaction',
             params: [transactionParameters],
         });

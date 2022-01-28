@@ -13,7 +13,7 @@ export type TokenVSCurrencies = {
 }
 
 export default function useGeckoPrice({
-    tokens = ["ethereum", "binancecoin", "solana", "fantom", "matic-network", "avalanche-2", "terra-luna"],
+    tokens = ["ethereum", "binancecoin", "fantom", "matic-network", "avalanche-2"],
     vsCurrencies = ["usd", "cad", "eth", "btc"]
 }: Params) {
     const [prices, setPrices] = useState<TokenVSCurrencies>({})

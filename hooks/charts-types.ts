@@ -3,6 +3,6 @@ import { TokenVSCurrencies } from "./useGeckoPrice"
 
 export type HighchartHookParam = {
     chainOverviewMap: ChainOverviewMap,
-    price?: TokenVSCurrencies,
+    price: TokenVSCurrencies,
     viewCurrency: VSCurrencies
 }

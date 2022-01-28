@@ -5,6 +5,14 @@ import { shortenAddress } from 'utils/Common';
 import { colorMapping } from 'utils/HighchartsDefaultOption';
 import { chainLabelMapping } from 'utils/labels';
 import { HighchartHookParam } from './charts-types';
+import { Chains } from "types";
+import { PointOptionsObject, SeriesOptionsType, SeriesScatterOptions } from "highcharts"
+
+interface CustomPointOptions extends PointOptionsObject {
+    transactionUrl: string,
+    address: string
+}
+
 
 const useGasHistoryChart = ({
     chainOverviewMap,
@@ -16,18 +24,19 @@ const useGasHistoryChart = ({
     useEffect(() => {
         if (!chainOverviewMap) return
 
-        const series = Object
+        const series: SeriesScatterOptions[] = Object
             .entries(chainOverviewMap)
+            .filter(([_, chainOverview]) => chainOverview.totalTransactions > 0)
             .map(([chain, chainOverview]) => {
                 const transactions = chainOverview.transactions
-                if (!transactions) return
 
-                const processedTransactions = transactions.map((transaction) => {
+                const processedTransactions: CustomPointOptions[] = transactions.map((transaction) => {
                     const transactionTime = parseInt(transaction.timeStamp) * 1000
+
                     //TODO: do we have native price on the transaction? Or can we add this?
                     const nativeTransactionPrice = parseFloat(transaction.gasUsed) * parseFloat(transaction.gasPrice) * (0.000000001) ** 2
-                    const priceInViewCurrency = nativeTransactionPrice * price[chain][viewCurrency]
-                    const transactionUrl = chainTransactionExplorerUrls[chain] + transaction.hash
+                    const priceInViewCurrency = nativeTransactionPrice * (price?.[chain as Chains]?.[viewCurrency] || 0)
+                    const transactionUrl = chainTransactionExplorerUrls[chain as Chains] + transaction.hash
                     const address = transaction.from
 
                     return { x: transactionTime, y: priceInViewCurrency, transactionUrl, address }
@@ -36,9 +45,10 @@ const useGasHistoryChart = ({
                 processedTransactions.push({ x: (new Date()).getTime(), y: undefined, transactionUrl: "", address: "" })
 
                 return {
-                    name: chainLabelMapping[chain],
+                    type: "scatter",
+                    name: chainLabelMapping[chain as Chains],
                     data: processedTransactions,
-                    color: colorMapping[chain]
+                    color: colorMapping[chain as Chains]
                 }
             })
 
@@ -59,7 +69,7 @@ const useGasHistoryChart = ({
                 },
                 labels: {
                     formatter: function () {
-                        return formatCurrency(this.value, viewCurrency);
+                        return formatCurrency(this.value as number, viewCurrency);
                     }
                 },
                 min: 0
@@ -73,7 +83,8 @@ const useGasHistoryChart = ({
                     point: {
                         events: {
                             click: function () {
-                                const url = this.options.transactionUrl
+                                const options = this.options as CustomPointOptions
+                                const url = options.transactionUrl
                                 window.open(url, "_blank")?.focus()
                             }
                         }
@@ -84,10 +95,11 @@ const useGasHistoryChart = ({
             tooltip: {
                 formatter: function () {
                     const date = new Date(this.x)
+                    const options = this.point.options as CustomPointOptions
 
                     return `
                         <div><b>${date.toLocaleString()}</b></div><br/>
-                        <div>Address: ${shortenAddress(this.point.options.address)}</div><br/>
+                        <div>Address: ${shortenAddress(options.address)}</div><br/>
                         <div>Transaction Cost: ${formatCurrency(this.y, viewCurrency)}</div>
                     `
                 }
