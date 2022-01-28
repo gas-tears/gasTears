@@ -7,7 +7,7 @@ type ButtonProps = {
     rounded?: boolean
 }
 
-const Button: React.FC<ButtonProps & React.HTMLAttributes<HTMLButtonElement>> = ({
+const Button: React.FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
     children,
     primary,
     secondary,

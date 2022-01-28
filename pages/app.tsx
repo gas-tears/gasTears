@@ -61,7 +61,7 @@ const App: NextPage = () => {
                         <select
                             className="viewCurrencySelect"
                             value={viewCurrency}
-                            onChange={(e) => setViewCurrency(e.target.value)}
+                            onChange={(e) => setViewCurrency(e.target.value as VSCurrencies)}
                         >
                             <option value="usd">USD</option>
                             <option value="cad">CAD</option>
@@ -80,7 +80,7 @@ const App: NextPage = () => {
                                     key={value}
                                     title={label}
                                     isLoading={isLoading}
-                                    disabled={chainOverviewMap[value]?.totalTransactions == 0}
+                                    disabled={value !== "all" && chainOverviewMap[value]?.totalTransactions == 0}
                                 >
                                     {label}
                                 </ChainSelector>

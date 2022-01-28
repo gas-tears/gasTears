@@ -4,7 +4,7 @@ import { MetaMaskNetworkName } from "types";
 
 interface WalletConnectContext {
     getWallets: () => Promise<void> | null,
-    connectedWallets: string[] | undefined,
+    connectedWallets: string[],
     changeNetwork: (network: MetaMaskNetworkName) => Promise<void> | null,
     sendTip: (value: number) => Promise<void> | null,
     connectedChain: string | undefined

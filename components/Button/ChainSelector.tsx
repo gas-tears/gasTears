@@ -7,7 +7,7 @@ type Props = {
     isLoading?: boolean
 }
 
-const ChainSelector: React.FC<Props & React.HTMLAttributes<HTMLButtonElement>> = ({
+const ChainSelector: React.FC<Props & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
     children,
     isSelected,
     isLoading = false,
