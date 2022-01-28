@@ -15,7 +15,7 @@ export const WalletConnectContext = createContext<WalletConnectContext>({
     connectedWallets: [],
     changeNetwork: () => null,
     sendTip: () => null,
-    connectedChain: undefined
+    connectedChain: "0x1"
 })
 
 const WalletConnectProvider: React.FC = ({
