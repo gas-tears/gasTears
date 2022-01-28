@@ -26,7 +26,6 @@ const InputField: React.FC<FieldProps & Props> = ({
                         disabled={isConnectedByUser}
                         placeholder='Connect or paste a valid crypto address here'
                         {...field}
-                        {...props}
                     />
                     {onDelete && (
                         <button
