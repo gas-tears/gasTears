@@ -1,8 +1,7 @@
 import { formatCurrency } from "@coingecko/cryptoformat";
-import { TokenVSCurrencies } from 'hooks/useGeckoPrice';
 import React, { useMemo } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { ChainOverviewMap, NetOverview, ViewChains, VSCurrencies } from "types";
+import { Chains, ChainOverviewMap, NetOverview, TokenVSCurrencies, ViewChains, VSCurrencies } from "types";
 
 type Props = {
     address: string,
@@ -25,12 +24,10 @@ const WalletOverview: React.FC<Props> = ({
         return Object
             .entries(walletSummary)
             .reduce((summaryData, [chain, chainData]) => {
-                props.forEach((prop) => {
-                    summaryData[prop] += chainData[prop]
-                })
-
-                const gas = chainData.totalGasNative * price[chain][viewCurrency]
-                summaryData["totalGas"] += gas
+                summaryData.totalTransactions += chainData.totalTransactions
+                summaryData.totalSuccessTransactions += chainData.totalSuccessTransactions
+                summaryData.totalFailedTransactions += chainData.totalFailedTransactions
+                summaryData.totalGas += chainData.totalGasNative * (price[chain as Chains]?.[viewCurrency] || 0)
                 return summaryData
             }, new NetOverview())
     }, [walletSummary, viewCurrency])
@@ -42,12 +39,10 @@ const WalletOverview: React.FC<Props> = ({
         if (selectedChain === "all" || !walletSummary[selectedChain]) return summaryData
 
         const selectedChainData = walletSummary[selectedChain]
-        props.forEach((prop) => {
-            summaryData[prop] = selectedChainData[prop]
-        })
-
-        const gas = selectedChainData.totalGasNative * price[selectedChain][viewCurrency]
-        summaryData["totalGas"] = gas
+        summaryData.totalTransactions += selectedChainData?.totalTransactions || 0
+        summaryData.totalSuccessTransactions += selectedChainData?.totalSuccessTransactions || 0
+        summaryData.totalFailedTransactions += selectedChainData?.totalFailedTransactions || 0
+        summaryData.totalGas = (selectedChainData?.totalGasNative || 0) * (price[selectedChain as Chains]?.[viewCurrency] || 0)
 
         return summaryData
     }, [walletSummary, viewCurrency, selectedChain])
@@ -89,7 +84,5 @@ const SummaryTile: React.FC<SummaryTileProps> = ({ title, displayValue }) => {
         </div>
     )
 }
-
-const props = ["totalTransactions", "totalSuccessTransactions", "totalFailedTransactions"]
 
 export default WalletOverview;

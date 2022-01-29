@@ -25,7 +25,7 @@ export type WalletToTransactions = {
 }
 
 export type ExplorerResponse = {
-    [C in Chains]?: AddressToTransactionsMap
+    [Chain in Chains]: AddressToTransactionsMap
 }
 
 export type AddressToTransactionsMap = {
@@ -38,9 +38,8 @@ export type VSCurrencies = "usd" | "cad" | "eth" | "btc"
 export type ViewChains = "all" | Chains
 export type ChainHexes = "0x1" | "0xa86a" | "0xfa" | "0x38" | "0x89"
 
-
 export type ChainOverviewMap = {
-    [Chain in Chains]?: SummaryData
+    [Chain in Chains]: SummaryData
 }
 
 export class SummaryData {
@@ -63,15 +62,6 @@ export type WalletOverviewMap = {
     [address: string]: ChainOverviewMap
 }
 
-// export class WalletChainSummaryData extends SummaryData {
-//     chain: Chains
-
-//     constructor(chain: Chains) {
-//         super()
-//         this.chain = chain
-//     }
-// }
-
 export class NetOverview {
     totalGas: number
     totalTransactions: number
@@ -86,7 +76,12 @@ export class NetOverview {
     }
 }
 
-
 export type ChainTransactionExplorerUrls = {
     [C in Chains]: string
+}
+
+export type TokenVSCurrencies = {
+    [C in Chains]?: {
+        [C in VSCurrencies]?: number
+    }
 }

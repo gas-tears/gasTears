@@ -1,15 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Chains, VSCurrencies } from 'types'
+import { Chains, VSCurrencies, TokenVSCurrencies } from 'types'
 
 type Params = {
     tokens?: Chains[],
     vsCurrencies?: VSCurrencies[]
-}
-
-export type TokenVSCurrencies = {
-    [C in Chains]?: {
-        [C in VSCurrencies]?: number
-    }
 }
 
 export default function useGeckoPrice({

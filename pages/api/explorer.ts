@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Chains, ExplorerResponse } from "types"
 
@@ -31,9 +30,15 @@ export default async function handler(
   res: NextApiResponse<ExplorerResponse>
 ) {
   const { addresses } = JSON.parse(req.body)
-  const result : ExplorerResponse = {}
   const chains : Chains[] = ["avalanche-2", "binancecoin", "ethereum", "fantom", "matic-network"];
-
+  const result : ExplorerResponse = {
+    "avalanche-2": {},
+    "binancecoin": {},
+    "ethereum": {},
+    "fantom": {},
+    "matic-network": {}
+  }
+  
   await Promise.all(chains.map(async (chain: Chains) => {
     const allTransactions = await Promise.all(addresses.map((address: string) => getAllTransactions(address, chain)))
     addresses.forEach((address: string, index: number) => {
@@ -51,7 +56,7 @@ const getAllTransactions = (address: string, chain: Chains) => {
   return new Promise(async (resolve, reject) => {
     const url = CHAIN_TO_API_ENDPOINT_URL[chain]?.concat(`?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&sort=asc&apikey=${CHAIN_TO_API_KEY_MAP[chain]}`)
     
-    const res = await fetch(url)
+    const res = await fetch(url || "")
     const resJSON = await res.json()
     
     // Return early if there was error with api query, don't want to reject because that will fail the Promise.all
@@ -64,7 +69,7 @@ const getAllTransactions = (address: string, chain: Chains) => {
       const prevLastBlock = resultTransactions[resultTransactions.length - 1].blockNumber
       const url = CHAIN_TO_API_ENDPOINT_URL[chain]?.concat(`?module=account&action=txlist&address=${address}&startblock=${prevLastBlock}&endblock=99999999&page=1&sort=asc&apikey=${CHAIN_TO_API_KEY_MAP[chain]}`)
       
-      const res = await fetch(url)
+      const res = await fetch(url || "")
       const resJSON = await res.json()
 
       // Return early if there was error with api query, don't want to reject because that will fail the Promise.all
