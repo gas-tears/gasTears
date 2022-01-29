@@ -1,10 +1,11 @@
-import { Chains } from 'types'
+import { ViewChains } from 'types'
 
 type ChainNameMapping = {
-    [C in Chains]: string
+    [C in ViewChains]: string
 }
 
 export const chainLabelMapping: ChainNameMapping = {
+    "all": "All chains",
     "avalanche-2": "Avalanche",
     fantom: "Fantom",
     binancecoin: "BSC",

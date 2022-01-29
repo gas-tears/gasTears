@@ -81,6 +81,7 @@ const App: NextPage = () => {
                                     title={label}
                                     isLoading={isLoading}
                                     disabled={value !== "all" && chainOverviewMap[value]?.totalTransactions == 0}
+                                    iconName={value === "all" ? undefined : value}
                                 >
                                     {label}
                                 </ChainSelector>
@@ -120,7 +121,6 @@ const App: NextPage = () => {
                                     address={shortenAddress(address)}
                                     price={price}
                                     viewCurrency={viewCurrency}
-                                    selectedChain={selectedChain}
                                     walletSummary={walletOverviewMap[address]}
                                     isLoading={isLoading}
                                 />
@@ -141,7 +141,7 @@ type ChainOption = {
 type ChainOptions = ChainOption[]
 
 const chainOptions: ChainOptions = [
-    { label: "All", value: "all" },
+    { label: "All Chains", value: "all" },
     { label: "Ethereum", value: "ethereum" },
     { label: "BSC", value: "binancecoin" },
     { label: "Avalanche", value: "avalanche-2" },

@@ -1,14 +1,17 @@
 import { formatCurrency } from "@coingecko/cryptoformat";
-import React, { useMemo } from 'react';
+import classNames from "classnames";
+import { default as React, useMemo, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { Chains, ChainOverviewMap, NetOverview, TokenVSCurrencies, ViewChains, VSCurrencies } from "types";
+import { ChainOverviewMap, Chains, NetOverview, TokenVSCurrencies, ViewChains, VSCurrencies } from "types";
+import { chainLabelMapping } from "../utils/labels";
+import Icon from "./Icon/Icon";
 
 type Props = {
     address: string,
     walletSummary: ChainOverviewMap,
     price: TokenVSCurrencies,
     viewCurrency: VSCurrencies,
-    selectedChain: ViewChains,
+    // selectedChain: ViewChains,
     isLoading?: boolean
 }
 
@@ -17,9 +20,11 @@ const WalletOverview: React.FC<Props> = ({
     walletSummary,
     price,
     viewCurrency,
-    selectedChain,
+    // selectedChain,
     isLoading = false
 }) => {
+    const [selectedChain, setSelectedChain] = useState<ViewChains>("all")
+
     const aggregateSummary: NetOverview = useMemo(() => {
         return Object
             .entries(walletSummary)
@@ -56,10 +61,25 @@ const WalletOverview: React.FC<Props> = ({
 
     if (isLoading) return <Skeleton height={80} borderRadius={10} style={{ marginBottom: 10 }} />
 
+    const chains = Object.keys(walletSummary)
+
     return (
         <div className='walletOverviewSection'>
             <h2 className='walletOverviewName'>{address}</h2>
             <div className="walletOverviewWrapper tilePrimary">
+                <div className="walletOverviewChainIconsGrid">
+                    {["all", ...chains].map((chain) =>
+                        <button
+                            onClick={() => setSelectedChain(chain as ViewChains)}
+                            className={classNames("walletOverviewChainIconWrapper", { selected: chain === selectedChain })}
+                            title={chainLabelMapping[chain as ViewChains]}
+                        >
+                            {chain === "all" ?
+                                <div className="all">All</div> :
+                                <Icon className="walletOverviewChainIcon" name={chain as Chains} />}
+                        </button>
+                    )}
+                </div>
                 <div className="walletOverviewSummaryGrid">
                     <SummaryTile title="Gas Fees" displayValue={formatCurrency(totalGas, viewCurrency)} />
                     <SummaryTile title="Transactions" displayValue={totalTransactions} />
