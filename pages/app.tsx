@@ -24,13 +24,11 @@ import { chainLabelMapping } from 'utils/labels'
 const App: NextPage = () => {
     const price = useGeckoPrice({})
     const router = useRouter()
-
     const [addresses, setAddresses] = useState<string[]>([])
     const [viewCurrency, setViewCurrency] = useLocalStorage<VSCurrencies>("selectedCurrency", "usd")
     const [selectedChain, setSelectedChain] = useLocalStorage<ViewChains>("selectedChainView", "all")
 
     const { chainOverviewMap, netOverview, isLoading, walletOverviewMap } = useSummaryData({ addresses, viewCurrency, price })
-
     const gasHistoryOptions = useGasHistoryChart({ chainOverviewMap, price, viewCurrency })
     const chainDistributionOptions = useChainDistributionChart({ chainOverviewMap, price, viewCurrency })
 
@@ -119,6 +117,7 @@ const App: NextPage = () => {
                             {addresses.map((address) => {
                                 if (!walletOverviewMap[address]) return <WalletOverviewNotFound address={address} />
                                 return <WalletOverview
+                                    key={address}
                                     address={shortenAddress(address)}
                                     price={price}
                                     viewCurrency={viewCurrency}

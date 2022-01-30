@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Chains, VSCurrencies, TokenVSCurrencies } from 'types'
+import { Chains, TokenVSCurrencies, VSCurrencies } from 'types'
 
-type Params = {
+export type Params = {
     tokens?: Chains[],
     vsCurrencies?: VSCurrencies[]
 }
 
 export default function useGeckoPrice({
-    tokens = ["ethereum", "binancecoin", "fantom", "matic-network", "avalanche-2"],
-    vsCurrencies = ["usd", "cad", "eth", "btc"]
-}: Params) {
-    const [prices, setPrices] = useState<TokenVSCurrencies>({})
+    tokens = ["avalanche-2", "binancecoin", "ethereum", "fantom", "matic-network"],
+    vsCurrencies = ["usd", "cad", "btc", "eth"]
+}: Params) : TokenVSCurrencies {
+    const [prices, setPrices] = useState<TokenVSCurrencies>()
 
     useEffect(() => {
         async function getPrices() {
@@ -21,5 +21,5 @@ export default function useGeckoPrice({
         getPrices()
     }, [])
 
-    return prices
+    return prices!
 }

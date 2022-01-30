@@ -1,5 +1,4 @@
-import { ChainOverviewMap, VSCurrencies } from "types"
-import { TokenVSCurrencies } from "./useGeckoPrice"
+import { ChainOverviewMap, TokenVSCurrencies, VSCurrencies } from "types"
 
 export type HighchartHookParam = {
     chainOverviewMap: ChainOverviewMap,

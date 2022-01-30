@@ -81,7 +81,7 @@ export type ChainTransactionExplorerUrls = {
 }
 
 export type TokenVSCurrencies = {
-    [C in Chains]?: {
-        [C in VSCurrencies]?: number
+    [C in Chains]: {
+        [C in VSCurrencies]: number
     }
 }

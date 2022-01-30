@@ -11,7 +11,6 @@ type Props = {
     walletSummary: ChainOverviewMap,
     price: TokenVSCurrencies,
     viewCurrency: VSCurrencies,
-    // selectedChain: ViewChains,
     isLoading?: boolean
 }
 
@@ -20,7 +19,6 @@ const WalletOverview: React.FC<Props> = ({
     walletSummary,
     price,
     viewCurrency,
-    // selectedChain,
     isLoading = false
 }) => {
     const [selectedChain, setSelectedChain] = useState<ViewChains>("all")
@@ -32,7 +30,7 @@ const WalletOverview: React.FC<Props> = ({
                 summaryData.totalTransactions += chainData.totalTransactions
                 summaryData.totalSuccessTransactions += chainData.totalSuccessTransactions
                 summaryData.totalFailedTransactions += chainData.totalFailedTransactions
-                summaryData.totalGas += chainData.totalGasNative * (price[chain as Chains]?.[viewCurrency] || 0)
+                summaryData.totalGas += chainData.totalGasNative * (price?.[chain as Chains]?.[viewCurrency] || 0)
                 return summaryData
             }, new NetOverview())
     }, [walletSummary, viewCurrency])
@@ -47,7 +45,7 @@ const WalletOverview: React.FC<Props> = ({
         summaryData.totalTransactions += selectedChainData?.totalTransactions || 0
         summaryData.totalSuccessTransactions += selectedChainData?.totalSuccessTransactions || 0
         summaryData.totalFailedTransactions += selectedChainData?.totalFailedTransactions || 0
-        summaryData.totalGas = (selectedChainData?.totalGasNative || 0) * (price[selectedChain as Chains]?.[viewCurrency] || 0)
+        summaryData.totalGas = (selectedChainData?.totalGasNative || 0) * (price?.[selectedChain as Chains]?.[viewCurrency] || 0)
 
         return summaryData
     }, [walletSummary, viewCurrency, selectedChain])
@@ -70,6 +68,7 @@ const WalletOverview: React.FC<Props> = ({
                 <div className="walletOverviewChainIconsGrid">
                     {["all", ...chains].map((chain) =>
                         <button
+                            key={chain}
                             onClick={() => setSelectedChain(chain as ViewChains)}
                             className={classNames("walletOverviewChainIconWrapper", { selected: chain === selectedChain })}
                             title={chainLabelMapping[chain as ViewChains]}
