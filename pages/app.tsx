@@ -19,6 +19,7 @@ import { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { ViewChains, VSCurrencies } from 'types'
 import { shortenAddress } from 'utils/Common'
+import { chainLabelMapping } from 'utils/labels'
 
 const App: NextPage = () => {
     const price = useGeckoPrice({})
@@ -78,7 +79,7 @@ const App: NextPage = () => {
                                     isSelected={value === selectedChain}
                                     onClick={() => setSelectedChain(value)}
                                     key={value}
-                                    title={label}
+                                    title={chainLabelMapping[value]}
                                     isLoading={isLoading}
                                     disabled={value !== "all" && chainOverviewMap[value]?.totalTransactions == 0}
                                     iconName={value === "all" ? undefined : value}
@@ -141,7 +142,7 @@ type ChainOption = {
 type ChainOptions = ChainOption[]
 
 const chainOptions: ChainOptions = [
-    { label: "All Chains", value: "all" },
+    { label: "All", value: "all" },
     { label: "Ethereum", value: "ethereum" },
     { label: "BSC", value: "binancecoin" },
     { label: "Avalanche", value: "avalanche-2" },
