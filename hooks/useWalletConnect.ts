@@ -15,7 +15,7 @@ export default function useWalletConnect() {
 
         if (!MetaMaskOnboarding.isMetaMaskInstalled()) return
 
-        const addresses = window.ethereum?._state?.accounts.length === 0 ? null : window.ethereum?._state?.accounts;
+        const addresses = window.ethereum?._state?.accounts?.length === 0 ? null : window.ethereum?._state?.accounts;
         setConnectedWallets(addresses || []);
 
         (async () => {
