@@ -1,6 +1,7 @@
 import MetaMaskOnboarding from '@metamask/onboarding';
 import { useEffect, useRef, useState } from "react";
 import { ChainHexes, MetaMaskNetworkName } from "types";
+import { flushSync } from "react-dom"
 
 //TODO: this makes it so that we lose type checking for the window object
 declare let window: any
@@ -43,6 +44,7 @@ export default function useWalletConnect() {
 
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         setConnectedWallets(accounts)
+        return accounts
     }
 
     const changeNetwork = async (chainId: ChainHexes) => {
@@ -64,11 +66,15 @@ export default function useWalletConnect() {
 
     const sendTip = async (value: number) => {
         if (!MetaMaskOnboarding.isMetaMaskInstalled()) onboarding?.current?.startOnboarding()
+        let wallets = connectedWallets
+        if (wallets.length === 0) {
+            wallets = await getWallets()
+        }
 
         const transactionParameters = {
             nonce: '0x00', // ignored by MetaMask
             to: '0xE00669A884B8eB60bc6C1222A931407C46596085', // Required except during contract publications.
-            from: connectedWallets[0], // must match user's active address.
+            from: wallets[0], // must match user's active address.
             value: convertValueToHexString(value * 10 ** 18), // Only required to send ether to the recipient from the initiating external account.
         };
 

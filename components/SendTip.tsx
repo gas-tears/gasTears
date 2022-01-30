@@ -45,6 +45,7 @@ export default function SendTip() {
                             <button
                                 className='btn btnAutoTip btnSmall'
                                 onClick={() => sendTip(parseFloat(option))}
+                                key={option}
                             >
                                 {option}
                             </button>
