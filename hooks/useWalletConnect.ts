@@ -1,7 +1,6 @@
 import MetaMaskOnboarding from '@metamask/onboarding';
 import { useEffect, useRef, useState } from "react";
 import { ChainHexes, MetaMaskNetworkName } from "types";
-import { flushSync } from "react-dom"
 
 //TODO: this makes it so that we lose type checking for the window object
 declare let window: any
