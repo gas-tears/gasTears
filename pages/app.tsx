@@ -32,8 +32,6 @@ const App: NextPage = () => {
     const gasHistoryOptions = useGasHistoryChart({ chainOverviewMap, price, viewCurrency })
     const chainDistributionOptions = useChainDistributionChart({ chainOverviewMap, price, viewCurrency })
 
-    //Test
-
     useEffect(() => {
         const { addresses } = router.query
         if (!addresses) return
