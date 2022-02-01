@@ -7,7 +7,7 @@ import '../styles/globals.css'
 function MyApp({ Component, pageProps }: AppProps) {
   return (<>
     <Head>
-      <title>Gas Usage Tracker</title>
+      <title>Gas Tears - Cry About Your Gas Usage</title>
       <meta name="description" content="Keep track of all the gas that you spent through your blockchain exploration" />
       <link rel="icon" href="/favicon.ico" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />

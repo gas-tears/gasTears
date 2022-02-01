@@ -327,7 +327,7 @@ input:disabled {
 }
 
 .tipJarWrapper {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
@@ -561,4 +561,14 @@ input:disabled {
 .walletSummaryitemValue {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.recaptchaTOS{
+  font-size: 0.6rem;
+  margin-bottom: 0.5rem;
+  color: #b8b8b8
+}
+
+.recaptchaTOS a{
+  color:rgb(69, 214, 161)
 }
