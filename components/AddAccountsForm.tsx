@@ -33,17 +33,23 @@ const AddAccountsForm: React.FC = () => {
                     .filter(wallet => wallet.address !== "")
                     .map(wallet => "addresses=" + wallet.address)
                     .join("&")
-                grecaptcha.ready(function() {
+                grecaptcha.ready(function () {
                     grecaptcha
-                        .execute('6LdYfEkeAAAAALIxY3AisT6fBgj12DW3aV8GDBWn', {action: 'submit'})
-                        .then(async function(token: string) {
+                        .execute('6LdYfEkeAAAAALIxY3AisT6fBgj12DW3aV8GDBWn', { action: 'submit' })
+                        .then(async function (token: string) {
                             const apiRes = await fetch('/api/recaptcha', {
                                 method: "POST",
                                 body: JSON.stringify({
                                     token
                                 })
                             })
-                            router.push(`/app?${query}`)
+
+                            const res = await apiRes.json()
+                            if (res.success && res.score >= 0.5) {
+                                if (apiRes.ok) {
+                                    router.push(`/app?${query}`)
+                                }
+                            }
                         })
                 })
             }}
