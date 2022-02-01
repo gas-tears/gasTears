@@ -1,6 +1,7 @@
 import Button from 'components/Button/Button'
 import ContentContainer from 'components/layouts/ContentContainer'
 import PageContainer from 'components/layouts/PageContainer'
+import RecaptchaTOS from 'components/RecaptchaTOS'
 import SendTip from 'components/SendTip'
 import { WalletConnectContext } from "components/WalletConnectContext"
 import type { NextPage } from 'next'
@@ -35,6 +36,7 @@ const Home: NextPage = () => {
         <AddAccountsForm />
       </div>
       <SendTip />
+      <RecaptchaTOS />
     </PageContainer>
   )
 }

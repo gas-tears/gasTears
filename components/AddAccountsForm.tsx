@@ -7,6 +7,8 @@ import * as yup from 'yup';
 import Button from './Button/Button';
 import InputField from './FormItems/InputField';
 
+declare let grecaptcha: any
+
 type Wallet = {
     address: string,
     isConnectedByUser: boolean
@@ -19,6 +21,7 @@ type FieldValues = {
 const AddAccountsForm: React.FC = () => {
     const router = useRouter()
     const [storedWallets, setStoredWallets] = useLocalStorage<Wallet[]>("wallets", [{ address: "", isConnectedByUser: false }])
+
     return (
         <Formik
             initialValues={{
@@ -30,7 +33,13 @@ const AddAccountsForm: React.FC = () => {
                     .filter(wallet => wallet.address !== "")
                     .map(wallet => "addresses=" + wallet.address)
                     .join("&")
-                router.push(`/app?${query}`)
+                grecaptcha.ready(function() {
+                    grecaptcha
+                        .execute('6LdYfEkeAAAAALIxY3AisT6fBgj12DW3aV8GDBWn', {action: 'submit'})
+                        .then(function() {
+                            router.push(`/app?${query}`)
+                        })
+                })
             }}
             validationSchema={validationSchema}
         >

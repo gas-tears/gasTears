@@ -99,7 +99,9 @@ input:disabled {
   }
 }
 
-
+.grecaptcha-badge {
+  visibility: hidden;
+}
 
 .primaryTextGradient {
   background: linear-gradient(45deg, rgba(66,221,164,1) 0%, rgba(12,109,196,1) 150%);

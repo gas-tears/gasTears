@@ -3,6 +3,7 @@ import ChainSelector from 'components/Button/ChainSelector'
 import HighCharts from 'components/HighCharts'
 import ContentContainer from 'components/layouts/ContentContainer'
 import PageContainer from 'components/layouts/PageContainer'
+import RecaptchaTOS from 'components/RecaptchaTOS'
 import SendTip from 'components/SendTip'
 import SummaryOverview from 'components/SummaryOverview'
 import WalletOverview from 'components/WalletOverview'
@@ -129,6 +130,7 @@ const App: NextPage = () => {
                     </div>
                 </ContentContainer>
                 <SendTip />
+                <RecaptchaTOS />
             </PageContainer>
         </SkeletonTheme>
     )
