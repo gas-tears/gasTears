@@ -36,7 +36,13 @@ const AddAccountsForm: React.FC = () => {
                 grecaptcha.ready(function() {
                     grecaptcha
                         .execute('6LdYfEkeAAAAALIxY3AisT6fBgj12DW3aV8GDBWn', {action: 'submit'})
-                        .then(function() {
+                        .then(async function(token: string) {
+                            const apiRes = await fetch('/api/recaptcha', {
+                                method: "POST",
+                                body: JSON.stringify({
+                                    token
+                                })
+                            })
                             router.push(`/app?${query}`)
                         })
                 })
