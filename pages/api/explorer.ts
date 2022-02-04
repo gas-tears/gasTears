@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Chains, ExplorerResponse } from "types"
+import { Chains, ExplorerResponse, Transaction } from "types"
 
 type ChainToApiKey = {
   [Chain in Chains]?: string
@@ -63,7 +63,7 @@ const getAllTransactions = (address: string, chain: Chains) => {
     if (resJSON.status !== "1") resolve(resJSON) 
 
     let resultTransactions = resJSON.result
-    const totalTransactions = resultTransactions
+    const rawTotalTransactions = resultTransactions
 
     while (resultTransactions.length === 10000) { //10,000 is the max result the api will return
       const prevLastBlock = resultTransactions[resultTransactions.length - 1].blockNumber
@@ -76,8 +76,20 @@ const getAllTransactions = (address: string, chain: Chains) => {
       if (resJSON.status !== "1") resolve(resJSON) 
 
       resultTransactions = resJSON.result
-      totalTransactions.concat(resultTransactions)
+      rawTotalTransactions.concat(resultTransactions)
     }
+
+    const totalTransactions = rawTotalTransactions
+      .map((transaction: Transaction) => {
+        return {
+          timeStamp: transaction.timeStamp,
+          hash: transaction.hash,
+          from: transaction.from,
+          gas: transaction.gas,
+          gasPrice: transaction.gasPrice,
+          isError: transaction.isError,
+          gasUsed: transaction.gasUsed
+      }})
 
     resolve(totalTransactions)
   })
