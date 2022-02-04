@@ -76,6 +76,7 @@ const useGasHistoryChart = ({
             },
             plotOptions: {
                 series: {
+                    turboThreshold: 10000,
                     marker: {
                         enabled: true
                     },
