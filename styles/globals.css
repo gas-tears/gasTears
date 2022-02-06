@@ -17,6 +17,7 @@ body,
   font-family: 'Inter', sans-serif;
   height: 100%;
   background: #1b1b1b;
+  color: #dde7e4;
 }
 
 #__next {
@@ -566,9 +567,72 @@ input:disabled {
 .recaptchaTOS{
   font-size: 0.6rem;
   margin-bottom: 0.5rem;
-  color: #b8b8b8
+  color: #b8b8b8;
+  text-align: center;
 }
 
 .recaptchaTOS a{
   color:rgb(69, 214, 161)
+}
+
+.comingSoonLogoText {
+  font-size: 2.25rem; 
+  margin-bottom: 4rem;
+  color: #d4f8ed;
+  filter:drop-shadow(0 0 2px rgb(203, 245, 229))
+          drop-shadow(0 0 10px rgb(99, 212, 171))
+          drop-shadow(0 0 45px rgba(66,221,164,1));
+}
+
+.comingSoonPageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.comingSoonContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 8rem;
+}
+
+.signupWrapper {
+  border: 1px solid white;
+  width: 20rem;
+  height: 10rem;
+  border-radius: 1rem;
+}
+
+
+.comingSoonText {
+  text-align: center;
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.comingSoonInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.comingSoonInput > .btn {
+  margin-top: 1.5rem;
+}
+
+
+@media only screen and (min-width: 600px) {
+  .comingSoonInput {
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .comingSoonInput > .btn {
+    margin-top: 0;
+  }
 }
