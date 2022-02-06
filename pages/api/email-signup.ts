@@ -25,8 +25,6 @@ export default async function handler(
 
     const resJSON = await apiRes.json()
 
-    console.log(resJSON)
-
     const { status, detail } = resJSON
 
     res.status(status === "pending" ? 200 : status).json({ message: detail })

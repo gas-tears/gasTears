@@ -24,20 +24,6 @@ const ComingSoon: NextPage = () => {
             return
         }
 
-        const token = await grecaptcha.execute('6LdYfEkeAAAAALIxY3AisT6fBgj12DW3aV8GDBWn', { action: 'submit' })
-        const apiRes = await fetch('/api/recaptcha', {
-            method: "POST",
-            body: JSON.stringify({
-                token
-            })
-        })
-
-        const res = await apiRes.json()
-        if (!res.success && res.score < 0.5) {
-            toast.error("Something seems wrong...")
-            return
-        }
-
         toast.promise(
             mailSignUp(email),
             {
