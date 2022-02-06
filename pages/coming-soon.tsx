@@ -1,11 +1,11 @@
-import type { NextPage } from 'next'
-import GasTears from "../public/gastears.svg"
-import Button from 'components/Button/Button'
-import React, { useState } from 'react'
-import * as yup from 'yup';
-import { toast, ToastContainer } from 'react-toastify';
+import Button from 'components/Button/Button';
 import mailSignUp from 'lib/mailSignup';
+import type { NextPage } from 'next';
+import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as yup from 'yup';
+import GasTears from "../public/gastears.svg";
 
 declare let grecaptcha: any
 
@@ -55,8 +55,8 @@ const ComingSoon: NextPage = () => {
                 <GasTears className="logoSvg" />
                 <h1 className="comingSoonLogoText">GasTears</h1>
 
-                <h2 style={{ fontSize: "1.75rem" }}>We are launching soon!</h2>
-                <p className="comingSoonText">Sign up bellow to be notified of our release</p>
+                <h2 style={{ fontSize: "1.75rem" }}>Launching Soon!</h2>
+                <p className="comingSoonText">Sign up below to be notified of our release</p>
                 <form
                     className="comingSoonInput"
                     onSubmit={submitEmail}
