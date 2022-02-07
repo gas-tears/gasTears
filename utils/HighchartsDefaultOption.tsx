@@ -10,7 +10,10 @@ export const highchartDefaultOption: Highcharts.Options = {
     },
     legend: {
         itemStyle: {
-            color: "#fff"
+            color: "#d6d6d6"
+        },
+        itemHoverStyle: {
+            color: "#ffffff"
         }
     },
 

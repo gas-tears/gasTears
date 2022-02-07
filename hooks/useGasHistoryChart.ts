@@ -13,7 +13,6 @@ interface CustomPointOptions extends PointOptionsObject {
     address: string
 }
 
-
 const useGasHistoryChart = ({
     chainOverviewMap,
     price,

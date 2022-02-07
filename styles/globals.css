@@ -537,7 +537,7 @@ input:disabled {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.3;
+  opacity: 0.6;
   transition: opacity 200ms ease, transform 200ms ease;
 }
 
@@ -554,13 +554,14 @@ input:disabled {
   font-weight: bold
 }
 
-.walletOverviewChainIconWrapper.selected {
-  opacity: 1;
-}
 
 .walletOverviewChainIconWrapper:hover{
-  opacity: 0.7;
-  transform: scale(1.1)
+  opacity: 0.9;
+  transform: scale(1.2)
+}
+
+.walletOverviewChainIconWrapper.selected {
+  opacity: 1;
 }
 
 .walletOverviewChainIcon {
