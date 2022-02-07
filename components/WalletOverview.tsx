@@ -11,7 +11,6 @@ type Props = {
     walletSummary: ChainOverviewMap,
     price: TokenVSCurrencies,
     viewCurrency: VSCurrencies,
-    // selectedChain: ViewChains,
     isLoading?: boolean
 }
 
@@ -20,7 +19,6 @@ const WalletOverview: React.FC<Props> = ({
     walletSummary,
     price,
     viewCurrency,
-    // selectedChain,
     isLoading = false
 }) => {
     const [selectedChain, setSelectedChain] = useState<ViewChains>("all")
@@ -68,18 +66,21 @@ const WalletOverview: React.FC<Props> = ({
             <h2 className='walletOverviewName'>{address}</h2>
             <div className="walletOverviewWrapper tilePrimary">
                 <div className="walletOverviewChainIconsGrid">
-                    {["all", ...chains].map((chain) =>
-                        <button
-                            key={chain}
-                            onClick={() => setSelectedChain(chain as ViewChains)}
-                            className={classNames("walletOverviewChainIconWrapper", { selected: chain === selectedChain })}
-                            title={chainLabelMapping[chain as ViewChains]}
-                        >
-                            {chain === "all" ?
-                                <div className="all">All</div> :
-                                <Icon className="walletOverviewChainIcon" name={chain as Chains} />}
-                        </button>
-                    )}
+                    {["all", ...chains].map((chain) => {
+                        if (chain !== "all" && walletSummary[chain as Chains].totalTransactions === 0) return
+                        return (
+                            <button
+                                key={chain}
+                                onClick={() => setSelectedChain(chain as ViewChains)}
+                                className={classNames("walletOverviewChainIconWrapper", { selected: chain === selectedChain })}
+                                title={chainLabelMapping[chain as ViewChains]}
+                            >
+                                {chain === "all" ?
+                                    <div className="all">All</div> :
+                                    <Icon className="walletOverviewChainIcon" name={chain as Chains} />}
+                            </button>
+                        )
+                    })}
                 </div>
                 <div className="walletOverviewSummaryGrid">
                     <SummaryTile title="Gas Fees" displayValue={formatCurrency(totalGas, viewCurrency)} />
