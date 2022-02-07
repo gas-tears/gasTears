@@ -685,7 +685,7 @@ input:disabled {
 .footerContent {
   flex: 1; 
   position: relative;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .tipAndCaptchaContainer {
@@ -700,4 +700,10 @@ input:disabled {
     bottom: 0; 
     right: 0 
   }
+
+  .footerContent .recaptchaTOS,
+  .footerContent .socialLinkWrapper {
+    margin: 0;
+  }
+
 }

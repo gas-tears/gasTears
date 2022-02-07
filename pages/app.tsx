@@ -113,7 +113,7 @@ const App: NextPage = () => {
                             />
                         </div>
 
-                        {addresses.length !== 0 && (<>
+                        {addresses.length > 1 && (<>
                             <h1>Wallet Breakdown</h1>
 
                             {addresses.map((address) => {
