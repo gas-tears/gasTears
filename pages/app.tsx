@@ -143,7 +143,7 @@ type ChainOption = {
 type ChainOptions = ChainOption[]
 
 const chainOptions: ChainOptions = [
-    { label: "All", value: "all" },
+    { label: "All Chains", value: "all" },
     { label: "Ethereum", value: "ethereum" },
     { label: "BSC", value: "binancecoin" },
     { label: "Avalanche", value: "avalanche-2" },

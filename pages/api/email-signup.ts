@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { ExplorerResponse } from "types"
 
 export default async function handler(
     req: NextApiRequest,

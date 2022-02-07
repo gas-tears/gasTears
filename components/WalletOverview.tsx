@@ -11,6 +11,7 @@ type Props = {
     walletSummary: ChainOverviewMap,
     price: TokenVSCurrencies,
     viewCurrency: VSCurrencies,
+    // selectedChain: ViewChains,
     isLoading?: boolean
 }
 
@@ -19,6 +20,7 @@ const WalletOverview: React.FC<Props> = ({
     walletSummary,
     price,
     viewCurrency,
+    // selectedChain,
     isLoading = false
 }) => {
     const [selectedChain, setSelectedChain] = useState<ViewChains>("all")
