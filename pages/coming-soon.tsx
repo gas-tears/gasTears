@@ -87,7 +87,7 @@ const ComingSoon: NextPage = () => {
                     </form>
                 </div>
             </div>
-            {/* <SocialsLink /> */}
+            <SocialsLink />
             <RecaptchaTOS />
         </PageContainer>
     </>)

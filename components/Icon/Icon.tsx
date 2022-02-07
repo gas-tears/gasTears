@@ -3,11 +3,18 @@ import BnbLogo from "./svg/bnb-logo.svg"
 import EthLogo from "./svg/eth-logo.svg"
 import FtmLogo from "./svg/ftm-logo.svg"
 import MaticLogo from "./svg/matic-logo.svg"
+import DiscordLogo from "./svg/discord-logo.svg"
+import RedditLogo from "./svg/reddit-logo.svg"
+import TikTokLogo from "./svg/tiktok-logo.svg"
+import TwitterLogo from "./svg/twitter-logo.svg"
+
 
 import React from 'react';
 import { Chains } from "types"
 
-export type IconName = Chains | "blockChain"
+export type Socials = "discord" | "reddit" | "tiktok" | "twitter"
+
+export type IconName = Chains | "blockChain" | Socials
 
 type Props = {
     name: IconName
@@ -32,7 +39,11 @@ const IconsMap: IconsMapType = {
     "ethereum": EthLogo,
     "fantom": FtmLogo,
     "matic-network": MaticLogo,
-    "blockChain": MaticLogo
+    "blockChain": MaticLogo,
+    "discord": DiscordLogo,
+    "reddit": RedditLogo,
+    "tiktok": TikTokLogo,
+    "twitter": TwitterLogo,
 }
 
 export default Icon;
