@@ -21,6 +21,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { ViewChains, VSCurrencies } from 'types'
 import { shortenAddress } from 'utils/Common'
 import { chainLabelMapping } from 'utils/labels'
+import FooterContent from 'components/FooterContent'
 
 const App: NextPage = () => {
     const price = useGeckoPrice({})
@@ -129,8 +130,7 @@ const App: NextPage = () => {
                         </>)}
                     </div>
                 </ContentContainer>
-                <SendTip />
-                <RecaptchaTOS />
+                <FooterContent />
             </PageContainer>
         </SkeletonTheme>
     )

@@ -405,6 +405,7 @@ input:disabled {
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-top: 1rem;
 }
 
 .searchPageMainArea{
@@ -586,7 +587,8 @@ input:disabled {
 
 .recaptchaTOS{
   font-size: 0.6rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0 0.5rem;
   color: #b8b8b8;
   text-align: center;
   justify-self: center;
@@ -678,4 +680,24 @@ input:disabled {
 
 .socialLinkWrapper > a:hover {
   opacity: 1;
+}
+
+.footerContent {
+  flex: 1; 
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.tipAndCaptchaContainer {
+  display: flex; 
+  flex-direction: column; 
+  align-content: center; 
+}
+
+@media only screen and (min-width: 770px) {
+  .socialLinksContainer {
+    position: absolute; 
+    bottom: 0; 
+    right: 0 
+  }
 }

@@ -1,13 +1,12 @@
 import Button from 'components/Button/Button'
 import ContentContainer from 'components/layouts/ContentContainer'
 import PageContainer from 'components/layouts/PageContainer'
-import RecaptchaTOS from 'components/RecaptchaTOS'
-import SendTip from 'components/SendTip'
 import { WalletConnectContext } from "components/WalletConnectContext"
 import type { NextPage } from 'next'
 import { useContext } from "react"
 import AddAccountsForm from '../components/AddAccountsForm'
 import GasTears from "../public/gastears.svg"
+import FooterContent from 'components/FooterContent'
 
 const Home: NextPage = () => {
   const { getWallets, connectedWallets } = useContext(WalletConnectContext)
@@ -35,8 +34,7 @@ const Home: NextPage = () => {
       <div className="searchPageMainArea">
         <AddAccountsForm />
       </div>
-      <SendTip />
-      <RecaptchaTOS />
+      <FooterContent />
     </PageContainer>
   )
 }
