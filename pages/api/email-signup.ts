@@ -7,8 +7,10 @@ export default async function handler(
 ) {
     const { email } = JSON.parse(req.body)
 
-    const url = 'https://us20.api.mailchimp.com/3.0/lists/80e1a388f7/members'
+    const mailChimpApiKey = process.env.MAIL_CHIMP_API_KEY
+    const region = mailChimpApiKey?.split("-")[1]
 
+    const url = `https://${region}.api.mailchimp.com/3.0/lists/${process.env.MAIL_CHIMP_LIST_ID}/members`
     const data = JSON.stringify({
         email_address: email,
         status: "pending"
@@ -17,14 +19,13 @@ export default async function handler(
     const apiRes = await fetch(url, {
         method: "POST",
         headers: {
-            "Authorization": `Bearer ${process.env.MAIL_CHIMP_API_KEY}`,
+            "Authorization": `Bearer ${mailChimpApiKey}`,
             "Content-type": "application/json"
         },
         body: data
     })
 
     const resJSON = await apiRes.json()
-
     const { status, detail } = resJSON
 
     res.status(status === "pending" ? 200 : status).json({ message: detail })

@@ -25,10 +25,8 @@ const mailSignUp = (email: string) => {
                 })
             })
 
-            console.log(apiRes)
-
             if (apiRes.ok) {
-                resolve("You have sucessfully signed up to our email list. Please check your inbox to confirm your email address")
+                resolve("You have sucessfully signed up to our email list. Please check your inbox or spam folder to confirm your email address")
             }
 
             else if (apiRes.status === 400) {
@@ -40,6 +38,7 @@ const mailSignUp = (email: string) => {
             }
         } catch (error: any) {
             console.error(error)
+            reject("An error has occured, please try again later.")
         }
 
     })

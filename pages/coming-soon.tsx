@@ -6,6 +6,9 @@ import * as yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
 import mailSignUp from 'lib/mailSignup';
 import 'react-toastify/dist/ReactToastify.css';
+import RecaptchaTOS from "components/RecaptchaTOS"
+import PageContainer from "components/layouts/PageContainer"
+import SocialsLink from "components/SocialsLinks"
 
 declare let grecaptcha: any
 
@@ -50,39 +53,43 @@ const ComingSoon: NextPage = () => {
 
     return (<>
         <ToastContainer {...ToastContainer.defaultProps} theme="dark" position={toast.POSITION.BOTTOM_CENTER} />
-        <div className='comingSoonPageWrapper'>
-            <div className="comingSoonContent">
-                <GasTears className="logoSvg" />
-                <h1 className="comingSoonLogoText">GasTears</h1>
+        <PageContainer>
+            <div className='comingSoonPageWrapper'>
+                <div className="comingSoonContent">
+                    <GasTears className="logoSvg" />
+                    <h1 className="comingSoonLogoText">GasTears</h1>
 
-                <h2 style={{ fontSize: "1.75rem" }}>We are launching soon!</h2>
-                <p className="comingSoonText">Sign up bellow to be notified of our release</p>
-                <form
-                    className="comingSoonInput"
-                    onSubmit={submitEmail}
-                >
-                    <div>
-                        <input
-                            value={email}
-                            onChange={(e) => setEmail(e.currentTarget.value)}
-                            className="addressTextInput"
-                            type="text"
-                            placeholder='example@email.com'
-                        />
-                        {formError &&
-                            <div className='addressInputFieldError'>{formError}</div>
-                        }
-                    </div>
-                    <Button
-                        primary
-                        rounded
-                        type="submit"
+                    <h2 style={{ fontSize: "1.75rem" }}>We are launching soon!</h2>
+                    <p className="comingSoonText">Sign up bellow to be notified of our release</p>
+                    <form
+                        className="comingSoonInput"
+                        onSubmit={submitEmail}
                     >
-                        Notify me
-                    </Button>
-                </form>
+                        <div>
+                            <input
+                                value={email}
+                                onChange={(e) => setEmail(e.currentTarget.value)}
+                                className="addressTextInput"
+                                type="text"
+                                placeholder='example@email.com'
+                            />
+                            {formError &&
+                                <div className='addressInputFieldError'>{formError}</div>
+                            }
+                        </div>
+                        <Button
+                            primary
+                            rounded
+                            type="submit"
+                        >
+                            Notify me
+                        </Button>
+                    </form>
+                </div>
             </div>
-        </div>
+            {/* <SocialsLink /> */}
+            <RecaptchaTOS />
+        </PageContainer>
     </>)
 }
 
