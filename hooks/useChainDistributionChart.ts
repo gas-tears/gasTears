@@ -50,6 +50,7 @@ const useChainDistributionChart = ({
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
+
                     dataLabels: {
                         enabled: true,
                         style: {
@@ -59,9 +60,10 @@ const useChainDistributionChart = ({
                         formatter: function () {
                             const point = this.point as CustomPointOptions
                             return `
-                                <div><b>${point.name}</b></div><br/>
-                                <div>${formatCurrency(this.y || 0, viewCurrency)} (${this.percentage?.toFixed(2)}%)</div><br/>
-                                <div>${point.numTransactions} transactions</div>
+                                <div style="display:flex;flex-direction:column">
+                                    <div>${point.name}</div><br>
+                                    <div>${formatCurrency(this.y || 0, viewCurrency)} (${this.percentage?.toFixed(2)}%)</div><br>
+                                </div>
                             `
                         }
                     },
