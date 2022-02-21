@@ -63,7 +63,7 @@ const useChainDistributionChart = ({
                                 <div style="display:flex;flex-direction:column">
                                     <div>${point.name} (${point.numTransactions} txn)</div><br>
                                     <div>${formatCurrency(this.y || 0, viewCurrency)} (${this.percentage?.toFixed(2)}%)</div><br>
-                                    <div>${formatCurrency(this.y || 0 / point.numTransactions, viewCurrency, "en", false, { significantFigures: 2 })}/txn</div>
+                                    <div>${formatCurrency((this.y || 0) / point.numTransactions, viewCurrency, "en", false, { significantFigures: 2 })}/txn</div>
                                 </div>
                             `
                         }

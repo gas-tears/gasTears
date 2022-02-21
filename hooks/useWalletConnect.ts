@@ -72,7 +72,7 @@ export default function useWalletConnect() {
 
         const transactionParameters = {
             nonce: '0x00', // ignored by MetaMask
-            to: '0xE00669A884B8eB60bc6C1222A931407C46596085', // Required except during contract publications.
+            to: "0x9C3F644c6ac48b34B908aA8F4142a3fE8ccCfEa7", // Required except during contract publications.
             from: wallets[0], // must match user's active address.
             value: convertValueToHexString(value * 10 ** 18), // Only required to send ether to the recipient from the initiating external account.
         };
