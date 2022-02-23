@@ -7,6 +7,7 @@ import DiscordLogo from "./svg/discord-logo.svg"
 import RedditLogo from "./svg/reddit-logo.svg"
 import TikTokLogo from "./svg/tiktok-logo.svg"
 import TwitterLogo from "./svg/twitter-logo.svg"
+import HooLogo from "./svg/hoo-logo.svg"
 
 
 import React from 'react';
@@ -44,6 +45,7 @@ const IconsMap: IconsMapType = {
     "reddit": RedditLogo,
     "tiktok": TikTokLogo,
     "twitter": TwitterLogo,
+    "hoo-token": HooLogo,
 }
 
 export default Icon;
