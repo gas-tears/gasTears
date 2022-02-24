@@ -29,6 +29,7 @@ export default function useSummaryData({
         "ethereum": new SummaryData,
         "fantom": new SummaryData,
         "matic-network": new SummaryData,
+        "hoo-token": new SummaryData
     }
 
     const emptyExplorerResponse : ExplorerResponse = {
@@ -37,6 +38,7 @@ export default function useSummaryData({
         "ethereum": {},
         "fantom": {},
         "matic-network": {},
+        "hoo-token": {}
     }
 
     const [chainToAddressesMap, setChainToAddressesMap] = useState<ExplorerResponse>(emptyExplorerResponse)
@@ -71,7 +73,8 @@ export default function useSummaryData({
             binancecoin: new SummaryData(),
             ethereum: new SummaryData(),
             fantom: new SummaryData(),
-            "matic-network": new SummaryData()
+            "matic-network": new SummaryData(),
+            "hoo-token": new SummaryData()
         }
 
         // Overview is computed while walletOverviewMap is being extracted to save on operations
@@ -90,7 +93,8 @@ export default function useSummaryData({
                                 binancecoin: new SummaryData(),
                                 ethereum: new SummaryData(),
                                 fantom: new SummaryData(),
-                                "matic-network": new SummaryData() 
+                                "matic-network": new SummaryData(),
+                                "hoo-token": new SummaryData()
                             };
                         }
 

@@ -83,5 +83,6 @@ export const colorMapping: ColorMapping = {
     "avalanche-2": "#e66e6f",
     "matic-network": "#bda2e8",
     binancecoin: "#fae1a0",
-    fantom: "#52cdf7"
+    fantom: "#52cdf7",
+    "hoo-token": "#00d8b0"
 }

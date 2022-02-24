@@ -15,6 +15,7 @@ const CHAIN_TO_API_KEY_MAP: ChainToApiKey = {
   "ethereum": process.env.ETHERSCAN_API_KEY,
   "fantom": process.env.FTMSCAN_API_KEY,
   "matic-network": process.env.POLYGONSCAN_API_KEY,
+  "hoo-token": process.env.HOOSCAN_API_KEY
 }
 
 const CHAIN_TO_API_ENDPOINT_URL: ChainToApiEndpointUrl = {
@@ -22,7 +23,8 @@ const CHAIN_TO_API_ENDPOINT_URL: ChainToApiEndpointUrl = {
   "binancecoin": "https://api.bscscan.com/api",
   "ethereum": "https://api.etherscan.io/api",
   "fantom": "https://api.ftmscan.com/api",
-  "matic-network": "https://api.polygonscan.com/api"
+  "matic-network": "https://api.polygonscan.com/api",
+  "hoo-token": "https://api.hooscan.com/api"
 }
 
 export default async function handler(
@@ -30,13 +32,14 @@ export default async function handler(
   res: NextApiResponse<ExplorerResponse>
 ) {
   const { addresses } = JSON.parse(req.body)
-  const chains: Chains[] = ["avalanche-2", "binancecoin", "ethereum", "fantom", "matic-network"];
+  const chains: Chains[] = ["avalanche-2", "binancecoin", "ethereum", "fantom", "matic-network", "hoo-token"];
   const result: ExplorerResponse = {
     "avalanche-2": {},
     "binancecoin": {},
     "ethereum": {},
     "fantom": {},
-    "matic-network": {}
+    "matic-network": {},
+    "hoo-token": {}
   }
 
   await Promise.all(chains.map(async (chain: Chains) => {

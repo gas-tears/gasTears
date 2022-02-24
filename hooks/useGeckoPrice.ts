@@ -7,9 +7,9 @@ export type Params = {
 }
 
 export default function useGeckoPrice({
-    tokens = ["avalanche-2", "binancecoin", "ethereum", "fantom", "matic-network"],
+    tokens = ["avalanche-2", "binancecoin", "ethereum", "fantom", "matic-network", "hoo-token"],
     vsCurrencies = ["usd", "cad", "btc", "eth"]
-}: Params) : TokenVSCurrencies {
+}: Params): TokenVSCurrencies {
     const [prices, setPrices] = useState<TokenVSCurrencies>()
 
     useEffect(() => {

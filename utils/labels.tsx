@@ -10,5 +10,6 @@ export const chainLabelMapping: ChainNameMapping = {
     fantom: "Fantom",
     binancecoin: "BSC",
     "matic-network": "Polygon",
-    ethereum: "Ethereum"
+    ethereum: "Ethereum",
+    "hoo-token": "HSC",
 }

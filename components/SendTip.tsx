@@ -99,6 +99,7 @@ const chainAutoTipSize: ChainAutoTipSize = {
     "0xfa": "large",
     "0x38": "medium",
     "0x89": "large",
+    "0xAA": "large"
 }
 
 const options = [
@@ -107,4 +108,5 @@ const options = [
     { value: "0xfa", label: "FTM" },
     { value: "0x38", label: "BNB" },
     { value: "0x89", label: "MATIC" },
+    { value: "0xAA", label: "HOO" },
 ]

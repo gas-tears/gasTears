@@ -149,6 +149,7 @@ const chainOptions: ChainOptions = [
     { label: "Avalanche", value: "avalanche-2" },
     { label: "Fantom", value: "fantom" },
     { label: "Polygon", value: "matic-network" },
+    { label: "HSC", value: "hoo-token" },
 ]
 
 export default App

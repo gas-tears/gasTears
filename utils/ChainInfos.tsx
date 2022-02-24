@@ -5,5 +5,6 @@ export const chainTransactionExplorerUrls: ChainTransactionExplorerUrls = {
     "matic-network": "https://polygonscan.com/tx/",
     binancecoin: "https://bscscan.com/tx/",
     ethereum: "https://etherscan.io/tx/",
-    fantom: "https://ftmscan.com/tx/"
+    fantom: "https://ftmscan.com/tx/",
+    "hoo-token": "https://hooscan.com/tx/"
 }
