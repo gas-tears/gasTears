@@ -66,7 +66,7 @@ const getAllTransactions = (address: string, chain: Chains) => {
     if (resJSON.status !== "1") resolve(resJSON)
 
     let resultTransactions = resJSON.result
-    const rawTotalTransactions = resultTransactions
+    let rawTotalTransactions = resultTransactions
 
     while (resultTransactions.length === 10000) { //10,000 is the max result the api will return
       const prevLastBlock = resultTransactions[resultTransactions.length - 1].blockNumber
@@ -77,9 +77,8 @@ const getAllTransactions = (address: string, chain: Chains) => {
 
       // Return early if there was error with api query, don't want to reject because that will fail the Promise.all
       if (resJSON.status !== "1") resolve(resJSON)
-
       resultTransactions = resJSON.result
-      rawTotalTransactions.concat(resultTransactions)
+      rawTotalTransactions = rawTotalTransactions.concat(resultTransactions)
     }
 
     const totalTransactions = rawTotalTransactions
