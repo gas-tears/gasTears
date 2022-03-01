@@ -63,6 +63,9 @@ export const highchartDefaultOption: Highcharts.Options = {
             borderWidth: 0
         }
     },
+    tooltip: {
+        useHTML: true
+    },
     // colors: ["#36f2f5", "#ffd166", "#3C80F6", "#FE4A49", "#FF9B71", "#118ab2", "#E0E342", "#06d6a0"],
 
     exporting: { enabled: false },

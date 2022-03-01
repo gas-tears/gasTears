@@ -22,6 +22,7 @@ import { ViewChains, VSCurrencies } from 'types'
 import { shortenAddress } from 'utils/Common'
 import { chainLabelMapping } from 'utils/labels'
 import FooterContent from 'components/FooterContent'
+import useDailyGasUsageChart from 'hooks/useDailyGasUsageChart'
 
 const App: NextPage = () => {
     const price = useGeckoPrice({})
@@ -29,10 +30,12 @@ const App: NextPage = () => {
     const [addresses, setAddresses] = useState<string[]>([])
     const [viewCurrency, setViewCurrency] = useLocalStorage<VSCurrencies>("selectedCurrency", "usd")
     const [selectedChain, setSelectedChain] = useLocalStorage<ViewChains>("selectedChainView", "all")
+    const [gasHistoryView, setGasHistoryView] = useLocalStorage("selectedChainView", "individual")
 
     const { chainOverviewMap, netOverview, isLoading, walletOverviewMap } = useSummaryData({ addresses, viewCurrency, price })
     const gasHistoryOptions = useGasHistoryChart({ chainOverviewMap, price, viewCurrency })
     const chainDistributionOptions = useChainDistributionChart({ chainOverviewMap, price, viewCurrency })
+    const dailyGasUsageOptions = useDailyGasUsageChart({ chainOverviewMap, price, viewCurrency })
 
     useEffect(() => {
         const { addresses } = router.query
@@ -60,7 +63,7 @@ const App: NextPage = () => {
                             Edit Addresses
                         </Button>
                         <select
-                            className="viewCurrencySelect"
+                            className="select"
                             value={viewCurrency}
                             onChange={(e) => setViewCurrency(e.target.value as VSCurrencies)}
                         >
@@ -97,11 +100,21 @@ const App: NextPage = () => {
                             isLoading={isLoading}
                         />
 
-                        <h1>Gas History</h1>
+                        <div className="sectionHeaderContainer">
+                            <h1>Gas History</h1>
+                            <select
+                                className="select"
+                                value={gasHistoryView}
+                                onChange={(e) => setGasHistoryView(e.target.value)}
+                            >
+                                <option value="individual">Individual Transaction</option>
+                                <option value="daily">Daily Totals</option>
+                            </select>
+                        </div>
                         <div className='chartWrapper tilePrimary'>
                             <HighCharts
                                 isLoading={isLoading}
-                                options={gasHistoryOptions}
+                                options={gasHistoryView === "individual" ? gasHistoryOptions : dailyGasUsageOptions}
                             />
                         </div>
 

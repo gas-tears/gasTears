@@ -459,12 +459,12 @@ input:disabled {
   overflow: hidden;
 }
 
-.viewCurrencySelect {
+.select {
   background-color: #1b1b1b;
   border: 1px solid white;
   color: white;
   font-size: 1.2rem;
-  padding: 0 0.5rem;
+  padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 1rem;
 }
@@ -707,4 +707,16 @@ input:disabled {
     margin: 0;
   }
 
+}
+
+.sectionHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.sectionHeaderContainer h1 {
+  margin: 0
 }
