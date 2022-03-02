@@ -2,9 +2,10 @@ import { formatCurrency } from "@coingecko/cryptoformat";
 import classNames from "classnames";
 import { default as React, useMemo, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { ChainOverviewMap, Chains, NetOverview, TokenVSCurrencies, ViewChains, VSCurrencies } from "types";
+import { ChainOverviewMap, Chains, TokenVSCurrencies, ViewChains, VSCurrencies } from "types";
 import { chainLabelMapping } from "../utils/labels";
 import Icon from "./Icon/Icon";
+import { NetOverview } from "utils/classes"
 
 type Props = {
     address: string,
@@ -27,10 +28,9 @@ const WalletOverview: React.FC<Props> = ({
         return Object
             .entries(walletSummary)
             .reduce((summaryData, [chain, chainData]) => {
-                summaryData.totalTransactions += chainData.totalTransactions
-                summaryData.totalSuccessTransactions += chainData.totalSuccessTransactions
-                summaryData.totalFailedTransactions += chainData.totalFailedTransactions
-                summaryData.totalGas += chainData.totalGasNative * (price?.[chain as Chains]?.[viewCurrency] || 0)
+                const totalGas = chainData.totalGasNative * (price?.[chain as Chains]?.[viewCurrency] || 0)
+                summaryData.updateTotals(totalGas, chainData)
+
                 return summaryData
             }, new NetOverview())
     }, [walletSummary, viewCurrency])
@@ -42,10 +42,9 @@ const WalletOverview: React.FC<Props> = ({
         if (selectedChain === "all" || !walletSummary[selectedChain]) return summaryData
 
         const selectedChainData = walletSummary[selectedChain]
-        summaryData.totalTransactions += selectedChainData?.totalTransactions || 0
-        summaryData.totalSuccessTransactions += selectedChainData?.totalSuccessTransactions || 0
-        summaryData.totalFailedTransactions += selectedChainData?.totalFailedTransactions || 0
-        summaryData.totalGas = (selectedChainData?.totalGasNative || 0) * (price?.[selectedChain as Chains]?.[viewCurrency] || 0)
+
+        const totalGas = (selectedChainData?.totalGasNative || 0) * (price?.[selectedChain as Chains]?.[viewCurrency] || 0)
+        summaryData.updateTotals(totalGas, selectedChainData)
 
         return summaryData
     }, [walletSummary, viewCurrency, selectedChain])

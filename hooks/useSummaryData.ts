@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import {
-    ChainOverviewMap, Chains, ExplorerResponse, NetOverview, SummaryData, TokenVSCurrencies, Transaction,
+    ChainOverviewMap, Chains, ExplorerResponse, TokenVSCurrencies, Transaction,
     VSCurrencies, WalletOverviewMap
 } from "types"
+import { initChainOverviewMap, initExplorerResponse } from "utils/Common"
+import { SummaryData, NetOverview } from "utils/classes"
 
 type Params = {
     addresses: string[],
@@ -11,40 +13,24 @@ type Params = {
 }
 
 type ReturnObject = {
-    netOverview : NetOverview,
-    chainOverviewMap : ChainOverviewMap,
+    netOverview: NetOverview,
+    chainOverviewMap: ChainOverviewMap,
     walletOverviewMap: WalletOverviewMap,
     isLoading: boolean,
     chainToAddressesMap: ExplorerResponse
 }
 
+
 export default function useSummaryData({
     addresses,
     viewCurrency,
     price
-}: Params) : ReturnObject {
-    const emptyChainOverviewMap : ChainOverviewMap = {
-        "avalanche-2": new SummaryData,
-        "binancecoin": new SummaryData,
-        "ethereum": new SummaryData,
-        "fantom": new SummaryData,
-        "matic-network": new SummaryData,
-        "hoo-token": new SummaryData
-    }
-
-    const emptyExplorerResponse : ExplorerResponse = {
-        "avalanche-2": {},
-        "binancecoin": {},
-        "ethereum": {},
-        "fantom": {},
-        "matic-network": {},
-        "hoo-token": {}
-    }
-
-    const [chainToAddressesMap, setChainToAddressesMap] = useState<ExplorerResponse>(emptyExplorerResponse)
+}: Params): ReturnObject {
     const [isLoading, setIsLoading] = useState(false)
+
+    const [chainToAddressesMap, setChainToAddressesMap] = useState<ExplorerResponse>(() => initExplorerResponse())
     const [walletOverviewMap, setWalletOverviewMap] = useState<WalletOverviewMap>({})
-    const [chainOverviewMap, setChainOverviewMap] = useState<ChainOverviewMap>(emptyChainOverviewMap)
+    const [chainOverviewMap, setChainOverviewMap] = useState<ChainOverviewMap>(() => initChainOverviewMap())
     const [netOverview, setNetOverview] = useState<NetOverview>(new NetOverview())
 
     useEffect(() => {
@@ -68,14 +54,7 @@ export default function useSummaryData({
     useEffect(() => {
         if (!chainToAddressesMap || !price) return
 
-        const chainOverviewMap: ChainOverviewMap = {
-            "avalanche-2": new SummaryData(),
-            binancecoin: new SummaryData(),
-            ethereum: new SummaryData(),
-            fantom: new SummaryData(),
-            "matic-network": new SummaryData(),
-            "hoo-token": new SummaryData()
-        }
+        const chainOverviewMap = initChainOverviewMap()
 
         // Overview is computed while walletOverviewMap is being extracted to save on operations
         const walletOverviewMap: WalletOverviewMap = {}
@@ -88,14 +67,7 @@ export default function useSummaryData({
                         if (!Array.isArray(transactions) || !transactions) return
 
                         if (!(address in walletOverviewMap)) {
-                            walletOverviewMap[address] = {
-                                "avalanche-2": new SummaryData(),
-                                binancecoin: new SummaryData(),
-                                ethereum: new SummaryData(),
-                                fantom: new SummaryData(),
-                                "matic-network": new SummaryData(),
-                                "hoo-token": new SummaryData()
-                            };
+                            walletOverviewMap[address] = initChainOverviewMap();
                         }
 
                         const totalOutgoingTransactions: Transaction[] = transactions
@@ -104,22 +76,19 @@ export default function useSummaryData({
                         const summaryData = totalOutgoingTransactions
                             .reduce((overview, currentTransaction) => {
                                 overview["totalTransactions"] += 1
-                                if (currentTransaction.isError === "1") {
-                                    overview["totalFailedTransactions"] += 1
-                                } else {
-                                    overview["totalSuccessTransactions"] += 1
-                                }
+                                overview[currentTransaction.isError === "1" ? "totalFailedTransactions" : "totalSuccessTransactions"] += 1
 
                                 const gas = parseFloat(currentTransaction.gasUsed) * parseFloat(currentTransaction.gasPrice) * (0.000000001) ** 2
                                 overview["totalGasNative"] += gas
                                 return overview
                             }, new SummaryData())
 
-                        chainOverviewMap[chain as Chains]["totalGasNative"] += summaryData.totalGasNative
-                        chainOverviewMap[chain as Chains]["totalTransactions"] += summaryData.totalTransactions
-                        chainOverviewMap[chain as Chains]["totalFailedTransactions"] += summaryData.totalFailedTransactions
-                        chainOverviewMap[chain as Chains]["totalSuccessTransactions"] += summaryData.totalSuccessTransactions
-                        chainOverviewMap[chain as Chains]["transactions"] = chainOverviewMap[chain as Chains]["transactions"].concat(totalOutgoingTransactions)
+                        const chainInfo = chainOverviewMap[chain as Chains]
+                        chainInfo["totalGasNative"] += summaryData.totalGasNative
+                        chainInfo["totalTransactions"] += summaryData.totalTransactions
+                        chainInfo["totalFailedTransactions"] += summaryData.totalFailedTransactions
+                        chainInfo["totalSuccessTransactions"] += summaryData.totalSuccessTransactions
+                        chainInfo["transactions"] = chainInfo["transactions"].concat(totalOutgoingTransactions)
 
                         walletOverviewMap[address][chain as Chains] = summaryData
                     })
@@ -137,12 +106,8 @@ export default function useSummaryData({
         Object
             .entries(chainOverviewMap)
             .forEach(([chain, chainInfo]) => {
-                const { totalGasNative } = chainInfo
-                const totalGasInSelectedCurrency = totalGasNative * (price?.[chain as Chains]?.[viewCurrency] || 0)
-                overview["totalGas"] += totalGasInSelectedCurrency
-                overview["totalTransactions"] += chainInfo.transactions.length
-                overview["totalSuccessTransactions"] += chainInfo.transactions.filter((transaction) => transaction.isError === "0").length
-                overview["totalFailedTransactions"] += chainInfo.transactions.filter((transaction) => transaction.isError === "1").length
+                const totalGasInSelectedCurrency = chainInfo.totalGasNative * (price?.[chain as Chains]?.[viewCurrency] || 0)
+                overview.updateTotals(totalGasInSelectedCurrency, chainInfo)
             })
 
         setNetOverview(overview)
