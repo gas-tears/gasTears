@@ -76,7 +76,13 @@ const useDailyGasUsageChart = ({
             },
             plotOptions: {
                 series: {
-                    stickyTracking: true
+                    stickyTracking: true,
+                    cursor: undefined,
+                    point: {
+                        events: {
+                            mouseOver: undefined
+                        }
+                    }
                 },
                 column: {
                     borderWidth: 0,
