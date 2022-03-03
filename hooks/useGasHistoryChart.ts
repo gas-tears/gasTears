@@ -60,7 +60,8 @@ const useGasHistoryChart = ({
                 type: 'datetime',
                 title: {
                     text: ''
-                }
+                },
+                crosshair: false
             },
             yAxis: {
                 title: {
@@ -96,6 +97,7 @@ const useGasHistoryChart = ({
                 enabled: true
             },
             tooltip: {
+                shared: false,
                 formatter: function () {
                     const date = new Date(this.x)
                     const options = this.point.options as CustomPointOptions
