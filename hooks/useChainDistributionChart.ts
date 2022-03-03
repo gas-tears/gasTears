@@ -1,10 +1,10 @@
 import { formatCurrency } from "@coingecko/cryptoformat";
 import { useEffect, useState } from 'react';
-import { Chains, SummaryData } from "types";
+import { Chains } from "types";
 import { colorMapping } from 'utils/HighchartsDefaultOption';
 import { chainLabelMapping } from 'utils/labels';
 import { HighchartHookParam } from './charts-types';
-import { Point, SeriesOptionsType, SeriesScatterOptions } from "highcharts"
+import { Point } from "highcharts"
 
 
 interface CustomPointOptions extends Point {

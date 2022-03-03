@@ -1,7 +1,9 @@
 import { formatCurrency } from "@coingecko/cryptoformat";
 import OverviewTile from 'components/OverviewTile';
 import React from 'react';
-import { Chains, ChainOverviewMap, NetOverview, TokenVSCurrencies, ViewChains, VSCurrencies } from 'types';
+import { Chains, ChainOverviewMap, TokenVSCurrencies, ViewChains, VSCurrencies } from 'types';
+import { NetOverview } from "utils/classes";
+
 
 type Props = {
     netOverview: NetOverview,
