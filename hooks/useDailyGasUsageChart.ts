@@ -5,11 +5,6 @@ import { Chains } from "types";
 import { PointOptionsObject, SeriesColumnOptions } from "highcharts"
 import { colorMapping } from 'utils/HighchartsDefaultOption';
 
-interface CustomPointOptions extends PointOptionsObject {
-    transactionUrl: string,
-    address: string
-}
-
 const useDailyGasUsageChart = ({
     chainOverviewMap,
     price,
@@ -62,7 +57,8 @@ const useDailyGasUsageChart = ({
                 title: {
                     text: ''
                 },
-                type: "datetime"
+                type: "datetime",
+                crosshair: true
             },
             yAxis: {
                 title: {
@@ -88,6 +84,7 @@ const useDailyGasUsageChart = ({
                 }
             },
             tooltip: {
+                shared: true,
                 formatter: function () {
                     const date = new Date(this.x)
 
