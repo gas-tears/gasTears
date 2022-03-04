@@ -33,7 +33,7 @@ const App: NextPage = () => {
     const { chainOverviewMap, netOverview, isLoading, walletOverviewMap } = useSummaryData({ addresses, viewCurrency, price })
     const gasHistoryOptions = useGasHistoryChart({ chainOverviewMap, price, viewCurrency })
     const chainDistributionOptions = useChainDistributionChart({ chainOverviewMap, price, viewCurrency })
-    const dailyGasUsageOptions = useDailyGasUsageChart({ chainOverviewMap, price, viewCurrency })
+    const dailyGasUsageOptions = useDailyGasUsageChart({ chainOverviewMap, price, viewCurrency, selectedChain })
 
     useEffect(() => {
         const { addresses } = router.query

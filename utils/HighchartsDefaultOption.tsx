@@ -1,5 +1,5 @@
 import Highcharts from "highcharts"
-import { Chains } from "types"
+import { Chains, ViewChains } from "types"
 
 export const highchartDefaultOption: Highcharts.Options = {
     chart: {
@@ -80,10 +80,11 @@ export default function initHighcharts() {
 
 
 type ColorMapping = {
-    [C in Chains]: string
+    [C in ViewChains]: string
 }
 
 export const colorMapping: ColorMapping = {
+    "all": "#36f2f5",
     ethereum: "#36f2f5",
     "avalanche-2": "#e66e6f",
     "matic-network": "#bda2e8",

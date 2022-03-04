@@ -1,15 +1,16 @@
 import { formatCurrency } from "@coingecko/cryptoformat";
 import { useEffect, useState } from 'react';
 import { HighchartHookParam } from './charts-types';
-import { Chains } from "types";
-import { PointOptionsObject, SeriesColumnOptions } from "highcharts"
+import { Chains, ViewChains } from "types";
+import { SeriesColumnOptions } from "highcharts"
 import { colorMapping } from 'utils/HighchartsDefaultOption';
 
 const useDailyGasUsageChart = ({
     chainOverviewMap,
     price,
-    viewCurrency
-}: HighchartHookParam) => {
+    viewCurrency,
+    selectedChain
+}: HighchartHookParam & { selectedChain: ViewChains }) => {
     const [chartOption, setChartOption] = useState<Highcharts.Options>({})
 
     useEffect(() => {
@@ -19,8 +20,10 @@ const useDailyGasUsageChart = ({
 
         Object
             .entries(chainOverviewMap)
-            .filter(([_, chainOverview]) => chainOverview.totalTransactions > 0)
             .forEach(([chain, chainOverview]) => {
+                if (chainOverview.totalTransactions === 0) return
+                if (selectedChain !== "all" && selectedChain !== chain) return
+
                 const transactions = chainOverview.transactions
 
                 transactions.forEach((transaction) => {
@@ -31,12 +34,8 @@ const useDailyGasUsageChart = ({
                     const nativeTransactionPrice = parseFloat(transaction.gasUsed) * parseFloat(transaction.gasPrice) * (0.000000001) ** 2
                     const priceInViewCurrency = nativeTransactionPrice * (price?.[chain as Chains]?.[viewCurrency] || 0)
 
-                    if (dailyUsageMap.has(transactionTime)) {
-                        const dayValue = dailyUsageMap.get(transactionTime)
-                        dailyUsageMap.set(transactionTime, dayValue + priceInViewCurrency)
-                    } else {
-                        dailyUsageMap.set(transactionTime, priceInViewCurrency)
-                    }
+                    const dayValue = (dailyUsageMap.get(transactionTime) || 0) + priceInViewCurrency
+                    dailyUsageMap.set(transactionTime, dayValue)
                 })
             })
 
@@ -45,7 +44,7 @@ const useDailyGasUsageChart = ({
             data: Array.from(dailyUsageMap),
             type: "column",
             stickyTracking: true,
-            color: colorMapping["ethereum"]
+            color: colorMapping[selectedChain]
         }]
 
         const option: Highcharts.Options = {
@@ -106,7 +105,7 @@ const useDailyGasUsageChart = ({
         }
 
         setChartOption(option)
-    }, [chainOverviewMap, viewCurrency])
+    }, [chainOverviewMap, viewCurrency, selectedChain])
 
     return chartOption
 }
