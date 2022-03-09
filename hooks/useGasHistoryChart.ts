@@ -6,7 +6,7 @@ import { colorMapping } from 'utils/HighchartsDefaultOption';
 import { chainLabelMapping } from 'utils/labels';
 import { HighchartHookParam } from './charts-types';
 import { Chains } from "types";
-import { PointOptionsObject, SeriesOptionsType, SeriesScatterOptions } from "highcharts"
+import { PointOptionsObject, SeriesScatterOptions } from "highcharts"
 
 interface CustomPointOptions extends PointOptionsObject {
     transactionUrl: string,
@@ -60,7 +60,8 @@ const useGasHistoryChart = ({
                 type: 'datetime',
                 title: {
                     text: ''
-                }
+                },
+                crosshair: false
             },
             yAxis: {
                 title: {
@@ -92,15 +93,18 @@ const useGasHistoryChart = ({
                     }
                 }
             },
-
+            legend: {
+                enabled: true
+            },
             tooltip: {
+                shared: false,
                 formatter: function () {
                     const date = new Date(this.x)
                     const options = this.point.options as CustomPointOptions
 
                     return `
-                        <div><b>${date.toLocaleString()}</b></div><br/>
-                        <div>Address: ${shortenAddress(options.address)}</div><br/>
+                        <div><b>${date.toLocaleString()}</b></div>
+                        <div>Address: ${shortenAddress(options.address)}</div>
                         <div>Transaction Cost: ${formatCurrency(this.y, viewCurrency)}</div>
                     `
                 }

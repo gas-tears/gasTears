@@ -1,5 +1,5 @@
 import Highcharts from "highcharts"
-import { Chains } from "types"
+import { Chains, ViewChains } from "types"
 
 export const highchartDefaultOption: Highcharts.Options = {
     chart: {
@@ -63,6 +63,11 @@ export const highchartDefaultOption: Highcharts.Options = {
             borderWidth: 0
         }
     },
+    tooltip: {
+        useHTML: true,
+        followTouchMove: true,
+        followPointer: true,
+    },
     // colors: ["#36f2f5", "#ffd166", "#3C80F6", "#FE4A49", "#FF9B71", "#118ab2", "#E0E342", "#06d6a0"],
 
     exporting: { enabled: false },
@@ -75,10 +80,11 @@ export default function initHighcharts() {
 
 
 type ColorMapping = {
-    [C in Chains]: string
+    [C in ViewChains]: string
 }
 
 export const colorMapping: ColorMapping = {
+    "all": "#36f2f5",
     ethereum: "#36f2f5",
     "avalanche-2": "#e66e6f",
     "matic-network": "#bda2e8",
