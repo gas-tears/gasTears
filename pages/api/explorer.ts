@@ -87,7 +87,6 @@ const getAllTransactions = (address: string, chain: Chains) => {
           timeStamp: transaction.timeStamp,
           hash: transaction.hash,
           from: transaction.from,
-          gas: transaction.gas,
           gasPrice: transaction.gasPrice,
           isError: transaction.isError,
           gasUsed: transaction.gasUsed
