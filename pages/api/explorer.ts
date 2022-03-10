@@ -97,3 +97,11 @@ const getAllTransactions = (address: string, chain: Chains) => {
     resolve(totalTransactions)
   })
 }
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: false,
+    },
+  },
+}
