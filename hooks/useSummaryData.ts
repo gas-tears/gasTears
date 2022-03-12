@@ -38,11 +38,12 @@ export default function useSummaryData({
 
         const getTransactions = async () => {
             setIsLoading(true)
-            const apiRes = await fetch("/api/explorer", {
+            const apiRes = await fetch("https://gas-tears.herokuapp.com/explorer", {
                 method: "POST",
                 body: JSON.stringify({
                     addresses
-                })
+                }),
+                mode: "cors"
             })
             const apiJSON = await apiRes.json()
             setIsLoading(false)
