@@ -43,6 +43,10 @@ export default function useSummaryData({
                 body: JSON.stringify({
                     addresses
                 }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
                 mode: "cors"
             })
             const apiJSON = await apiRes.json()
