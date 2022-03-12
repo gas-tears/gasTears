@@ -54,7 +54,8 @@ const useGasHistoryChart = ({
         const option: Highcharts.Options = {
             chart: {
                 type: "scatter",
-                zoomType: "x"
+                zoomType: "x",
+
             },
             xAxis: {
                 type: 'datetime',
@@ -74,10 +75,15 @@ const useGasHistoryChart = ({
                 },
                 min: 0
             },
+            boost: {
+                useGPUTranslations: true,
+                // Chart-level boost when there are more than 5 series in the chart
+                seriesThreshold: 1
+            },
             plotOptions: {
                 series: {
                     turboThreshold: 0,
-                    boostThreshold: 10000,
+                    boostThreshold: 1,
                     marker: {
                         enabled: true
                     },
