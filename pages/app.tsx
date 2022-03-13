@@ -128,7 +128,7 @@ const App: NextPage = () => {
                             <h1>Wallet Breakdown</h1>
 
                             {addresses.map((address) => {
-                                if (!walletOverviewMap[address]) return <WalletOverviewNotFound address={address} />
+                                if (!walletOverviewMap[address]) return <WalletOverviewNotFound key={address} address={address} />
                                 return <WalletOverview
                                     key={address}
                                     address={shortenAddress(address)}

@@ -26,6 +26,7 @@ export default function useSummaryData({
     viewCurrency,
     price
 }: Params): ReturnObject {
+
     const [isLoading, setIsLoading] = useState(false)
 
     const [chainToAddressesMap, setChainToAddressesMap] = useState<ExplorerResponse>(() => initExplorerResponse())
@@ -35,14 +36,21 @@ export default function useSummaryData({
 
     useEffect(() => {
         if (!addresses?.length) return
-
+        console.log(addresses)
         const getTransactions = async () => {
             setIsLoading(true)
-            const apiRes = await fetch("https://gas-tears.herokuapp.com/explorer", {
+
+            const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_API_LOCAL_URL || process.env.NEXT_PUBLIC_EXPLORER_API_URL || ""
+            // const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_API_URL || "" //uncomment to test with the prod api
+
+            const apiRes = await fetch(EXPLORER_URL, {
                 method: "POST",
                 body: JSON.stringify({
                     addresses
                 }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 credentials: 'include',
             })
             const apiJSON = await apiRes.json()
