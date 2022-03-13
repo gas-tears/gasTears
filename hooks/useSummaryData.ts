@@ -40,7 +40,8 @@ export default function useSummaryData({
         const getTransactions = async () => {
             setIsLoading(true)
 
-            const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_API_LOCAL_URL || process.env.NEXT_PUBLIC_EXPLORER_API_URL || ""
+            // const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_API_LOCAL_URL || process.env.NEXT_PUBLIC_EXPLORER_API_URL || ""
+            const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_API_URL || ""
             // const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_API_URL || "" //uncomment to test with the prod api
 
             const apiRes = await fetch(EXPLORER_URL, {
